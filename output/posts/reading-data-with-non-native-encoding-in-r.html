@@ -169,9 +169,16 @@ No. :
 </pre>
 
 <p>
-To recap: regardless of platform (Windows, Mac Linux), use the <a href="https://github.com/hadley/readr">readr</a> package to read data into R. This will re-encode the contents of the file to UTF-8 for you. Make sure you specify the encoding using the <code>locale</code> argument as shown in the example above. Ignore the ugly <code>print.data.frame</code> bug and use <code>print.listof</code> to check that your data was imported correctly.
+To recap: 
 </p>
-
+<ul class="org-ul">
+<li>Regardless of platform (Windows, Mac Linux), use the <a href="https://github.com/hadley/readr">readr</a> package to read data into R. This will re-encode the contents of the file to UTF-8 for you. 
+</li>
+<li>Make sure you specify the encoding using the <code>locale</code> argument as shown in the example above. 
+</li>
+<li>Ignore the ugly <code>print.data.frame</code> bug and use <code>print.listof</code> to check that your data was imported correctly.
+</li>
+</ul>
 <p>
 Those wishing for more details about this issue can read on.
 </p>

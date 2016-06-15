@@ -11,7 +11,7 @@ If you are on a deadline and just need to get the job done this section should b
 </p>
 
 <p>
-To read a text file with non ASCII encoding into R you should a) determine the encoding and b) read it in such a way that the information is re-encoded into UTF-8, and c) ignore the bug in the <code>data.frame</code> print method on Windows. Hopefully the encoding is specified in the documentation that accompanied your data. If not, you can guess the encoding using the <code>stri_read_raw</code> and <code>stri_enc_detect</code> functions in the <code>`stringi`</code> package. You can ensure that the information is re-encoded to UTF-8 by using the <code>`readr`</code> package.
+To read a text file with non ASCII encoding into R you should a) determine the encoding and b) read it in such a way that the information is re-encoded into UTF-8, and c) ignore the bug in the <code>data.frame</code> print method on Windows. Hopefully the encoding is specified in the documentation that accompanied your data. If not, you can guess the encoding using the <code>stri_read_raw</code> and <code>stri_enc_detect</code> functions in the <a href="http://www.gagolewski.com/software/stringi/">stringi</a>  package. You can ensure that the information is re-encoded to UTF-8 by using the <a href="https://github.com/hadley/readr">readr</a> package.
 </p>
 
 <p>
@@ -78,7 +78,7 @@ No. :
 </pre>
 
 <p>
-To recap: regardless of platform (Windows, Mac Linux), use the <code>`readr`</code> package to read data into R. This will re-encode the contents of the file to UTF-8 for you. Make sure you specify the encoding using the <code>locale</code> argument as shown in the example above. Ignore the ugly <code>print.data.frame</code> bug and use <code>print.listof</code> to check that your data was imported correctly.
+To recap: regardless of platform (Windows, Mac Linux), use the <a href="https://github.com/hadley/readr">readr</a> package to read data into R. This will re-encode the contents of the file to UTF-8 for you. Make sure you specify the encoding using the <code>locale</code> argument as shown in the example above. Ignore the ugly <code>print.data.frame</code> bug and use <code>print.listof</code> to check that your data was imported correctly.
 </p>
 
 <p>
@@ -278,7 +278,7 @@ No. :
 [1] 22 18  3
 </pre>
 <p>
-OK it works, but honestly that too much work for something as simple as reading a .csv file into R. As suggested at the beginning of this post, a better strategy is to use the <code>`readr`</code> package because it will do the conversion to UTF-8 for you:
+OK it works, but honestly that too much work for something as simple as reading a .csv file into R. As suggested at the beginning of this post, a better strategy is to use the <a href="https://github.com/hadley/readr">readr</a> package because it will do the conversion to UTF-8 for you:
 </p>
 
 <div class="highlight"><pre><span></span><span class="kp">print.listof</span><span class="p">(</span>read_csv<span class="p">(</span><span class="s">&quot;example_files/arabic_utf-8.csv&quot;</span><span class="p">),</span> locale <span class="o">=</span> locale<span class="p">(</span>encoding <span class="o">=</span> <span class="s">&quot;UTF-8&quot;</span><span class="p">))</span>

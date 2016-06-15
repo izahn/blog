@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/"><channel><title>Bits and pieces of code, loosely tied together with prose (Encoding)</title><link>http://people.fas.harvard.edu/%7Eizahn/blog/</link><description></description><atom:link type="application/rss+xml" rel="self" href="http://people.fas.harvard.edu/~izahn/blog/categories/encoding.xml"></atom:link><language>en</language><lastBuildDate>Wed, 15 Jun 2016 17:51:23 GMT</lastBuildDate><generator>https://getnikola.com/</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Reading data with non-native encoding in R</title><link>http://people.fas.harvard.edu/%7Eizahn/blog/posts/reading-data-with-non-native-encoding-in-r.html</link><dc:creator>Ista Zahn</dc:creator><description>&lt;div id="outline-container-sec-1" class="outline-2"&gt;
+<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/" version="2.0"><channel><title>Bits and pieces of code, loosely tied together with prose (Encoding)</title><link>http://people.fas.harvard.edu/%7Eizahn/blog/</link><description></description><atom:link rel="self" href="http://people.fas.harvard.edu/~izahn/blog/categories/encoding.xml" type="application/rss+xml"></atom:link><language>en</language><lastBuildDate>Wed, 15 Jun 2016 17:53:25 GMT</lastBuildDate><generator>https://getnikola.com/</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Reading data with non-native encoding in R</title><link>http://people.fas.harvard.edu/%7Eizahn/blog/posts/reading-data-with-non-native-encoding-in-r.html</link><dc:creator>Ista Zahn</dc:creator><description>&lt;div id="outline-container-sec-1" class="outline-2"&gt;
 &lt;h2 id="sec-1"&gt;Importing files with non-native encoding in R on Windows&lt;/h2&gt;
 &lt;div class="outline-text-2" id="text-1"&gt;
 &lt;p&gt;
@@ -78,8 +78,16 @@ No. :
 &lt;/pre&gt;
 
 &lt;p&gt;
-To recap: regardless of platform (Windows, Mac Linux), use the &lt;a href="https://github.com/hadley/readr"&gt;readr&lt;/a&gt; package to read data into R. This will re-encode the contents of the file to UTF-8 for you. Make sure you specify the encoding using the &lt;code&gt;locale&lt;/code&gt; argument as shown in the example above. Ignore the ugly &lt;code&gt;print.data.frame&lt;/code&gt; bug and use &lt;code&gt;print.listof&lt;/code&gt; to check that your data was imported correctly.
+To recap: 
 &lt;/p&gt;
+&lt;ul class="org-ul"&gt;
+&lt;li&gt;Regardless of platform (Windows, Mac Linux), use the &lt;a href="https://github.com/hadley/readr"&gt;readr&lt;/a&gt; package to read data into R. This will re-encode the contents of the file to UTF-8 for you. 
+&lt;/li&gt;
+&lt;li&gt;Make sure you specify the encoding using the &lt;code&gt;locale&lt;/code&gt; argument as shown in the example above. 
+&lt;/li&gt;
+&lt;li&gt;Ignore the ugly &lt;code&gt;print.data.frame&lt;/code&gt; bug and use &lt;code&gt;print.listof&lt;/code&gt; to check that your data was imported correctly.
+&lt;/li&gt;
+&lt;/ul&gt;
 
 &lt;p&gt;
 Those wishing for more details about this issue can read on.
