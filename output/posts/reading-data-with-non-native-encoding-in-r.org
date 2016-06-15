@@ -16,9 +16,11 @@
 #+PROPERTY: session *R*
 #+PROPERTY: exports both
 
-* Best practices for importing files with non-native encoding in R
+* Importing files with non-native encoding in R on Windows
 
-This section gives the basic facts and recommendations for importing files with arbitrary encoding. If you are on a deadline and just need to get the job done this section should be all you need. Additional background and discussion is presented in later sections.
+This section gives the basic facts and recommendations for importing files with arbitrary encoding on Windows. The issues described here by and large to not apply on Mac or Linux; they are specific to running [[http:r-project.org][R]] on Windows.
+
+ If you are on a deadline and just need to get the job done this section should be all you need. Additional background and discussion is presented in later sections.
 
 To read a text file with non ASCII encoding into R you should a) determine the encoding and b) read it in such a way that the information is re-encoded into UTF-8, and c) ignore the bug in the ~data.frame~ print method on Windows. Hopefully the encoding is specified in the documentation that accompanied your data. If not, you can guess the encoding using the ~stri_read_raw~ and ~stri_enc_detect~ functions in the =`stringi`= package. You can ensure that the information is re-encoded to UTF-8 by using the =`readr`= package.
 
@@ -26,6 +28,7 @@ For example, I have two versions of a file containing numbers and Japanese chara
 
 #+BEGIN_SRC R
   library(readr)
+  options(stringsAsFactors = FALSE)
   read_csv("example_files/japanese_utf8.csv",
            locale = locale(encoding = "UTF-8"))
   read_csv("example_files/japanese_shiftjis.csv",
@@ -33,48 +36,27 @@ For example, I have two versions of a file containing numbers and Japanese chara
 #+END_SRC
 
 #+RESULTS:
-#+begin_example
-
-Attaching package: ‘readr’
-
-The following object is masked from ‘package:rvest’:
-
-    guess_encoding
-    No.         発行日 朝夕刊         面名 ページ    文字数
-1 00001 2015年09月25日   週刊     週刊朝日    022 05786文字
-2 00002 2015年09月25日   週刊     週刊朝日    018 05422文字
-3 00003 2015年09月21日   朝刊       ３総合    003 01066文字
-4 00004 2015年09月21日   朝刊 オピニオン２    008 00449文字
-5 00005 2015年09月21日   朝刊       ３総合    003 02222文字
-6 00006 2015年09月21日   朝刊       ２総合    002 02326文字
-    No.         発行日 朝夕刊         面名 ページ    文字数
-1 00001 2015年09月25日   週刊     週刊朝日    022 05786文字
-2 00002 2015年09月25日   週刊     週刊朝日    018 05422文字
-3 00003 2015年09月21日   朝刊       ３総合    003 01066文字
-4 00004 2015年09月21日   朝刊 オピニオン２    008 00449文字
-5 00005 2015年09月21日   朝刊       ３総合    003 02222文字
-6 00006 2015年09月21日   朝刊       ２総合    002 02326文字
-#+end_example
+:     No.         発行日 朝夕刊     面名 ページ
+: 1 00001 2015年09月25日   週刊 週刊朝日    022
+: 2 00002 2015年09月25日   週刊 週刊朝日    018
+: 3 00003 2015年09月21日   朝刊   ３総合    003
+:     No.         発行日 朝夕刊     面名 ページ
+: 1 00001 2015年09月25日   週刊 週刊朝日    022
+: 2 00002 2015年09月25日   週刊 週刊朝日    018
+: 3 00003 2015年09月21日   朝刊   ３総合    003
 
 On Windows there is a bug in ~print.data.frame~ that causes ~data.frame~'s with UTF-8 encoded columns to be displayed incorrectly in non UTF-8 locales. Running the above example on Windows produces this:
 
 #+begin_example
-    No.         <U+767A><U+884C><U+65E5> <U+671D><U+5915><U+520A>                          <U+9762><U+540D> <U+30DA><U+30FC><U+30B8> <U+6587><U+5B57><U+6570>
-1 00001 2015<U+5E74>09<U+6708>25<U+65E5>         <U+9031><U+520A>          <U+9031><U+520A><U+671D><U+65E5>                      022    05786<U+6587><U+5B57>
-2 00002 2015<U+5E74>09<U+6708>25<U+65E5>         <U+9031><U+520A>          <U+9031><U+520A><U+671D><U+65E5>                      018    05422<U+6587><U+5B57>
-3 00003 2015<U+5E74>09<U+6708>21<U+65E5>         <U+671D><U+520A>                         3<U+7DCF><U+5408>                      003    01066<U+6587><U+5B57>
-4 00004 2015<U+5E74>09<U+6708>21<U+65E5>         <U+671D><U+520A> <U+30AA><U+30D4><U+30CB><U+30AA><U+30F3>2                      008    00449<U+6587><U+5B57>
-5 00005 2015<U+5E74>09<U+6708>21<U+65E5>         <U+671D><U+520A>                         3<U+7DCF><U+5408>                      003    02222<U+6587><U+5B57>
-6 00006 2015<U+5E74>09<U+6708>21<U+65E5>         <U+671D><U+520A>                         2<U+7DCF><U+5408>                      002    02326<U+6587><U+5B57>
-> read_csv("example_files/japanese_shiftjis.csv",
-+          locale = locale(encoding = "SHIFT-JIS"))
-    No.         <U+767A><U+884C><U+65E5> <U+671D><U+5915><U+520A>                          <U+9762><U+540D> <U+30DA><U+30FC><U+30B8> <U+6587><U+5B57><U+6570>
-1 00001 2015<U+5E74>09<U+6708>25<U+65E5>         <U+9031><U+520A>          <U+9031><U+520A><U+671D><U+65E5>                      022    05786<U+6587><U+5B57>
-2 00002 2015<U+5E74>09<U+6708>25<U+65E5>         <U+9031><U+520A>          <U+9031><U+520A><U+671D><U+65E5>                      018    05422<U+6587><U+5B57>
-3 00003 2015<U+5E74>09<U+6708>21<U+65E5>         <U+671D><U+520A>                         3<U+7DCF><U+5408>                      003    01066<U+6587><U+5B57>
-4 00004 2015<U+5E74>09<U+6708>21<U+65E5>         <U+671D><U+520A> <U+30AA><U+30D4><U+30CB><U+30AA><U+30F3>2                      008    00449<U+6587><U+5B57>
-5 00005 2015<U+5E74>09<U+6708>21<U+65E5>         <U+671D><U+520A>                         3<U+7DCF><U+5408>                      003    02222<U+6587><U+5B57>
-6 00006 2015<U+5E74>09<U+6708>21<U+65E5>         <U+671D><U+520A>                         2<U+7DCF><U+5408>                      002    02326<U+6587><U+5B57>
+    No.         <U+767A><U+884C><U+65E5> <U+671D><U+5915><U+520A>                 <U+9762><U+540D> <U+30DA><U+30FC><U+30B8>
+1 00001 2015<U+5E74>09<U+6708>25<U+65E5>         <U+9031><U+520A> <U+9031><U+520A><U+671D><U+65E5>                      022
+2 00002 2015<U+5E74>09<U+6708>25<U+65E5>         <U+9031><U+520A> <U+9031><U+520A><U+671D><U+65E5>                      018
+3 00003 2015<U+5E74>09<U+6708>21<U+65E5>         <U+671D><U+520A>                3<U+7DCF><U+5408>                      003
+
+    No.         <U+767A><U+884C><U+65E5> <U+671D><U+5915><U+520A>                 <U+9762><U+540D> <U+30DA><U+30FC><U+30B8>
+1 00001 2015<U+5E74>09<U+6708>25<U+65E5>         <U+9031><U+520A> <U+9031><U+520A><U+671D><U+65E5>                      022
+2 00002 2015<U+5E74>09<U+6708>25<U+65E5>         <U+9031><U+520A> <U+9031><U+520A><U+671D><U+65E5>                      018
+3 00003 2015<U+5E74>09<U+6708>21<U+65E5>         <U+671D><U+520A>                3<U+7DCF><U+5408>                      003
 
 #+end_example
 which looks terrible but does not actually indicate a problem. The information is encoded correctly, but due to a long-standing bug it is _displayed_ incorrectly. You can check to see if the values are correct by converting the data.frame by (ab)using ~print.listof~, e.g.,
@@ -86,96 +68,243 @@ which looks terrible but does not actually indicate a problem. The information i
 
 #+begin_example
 No. :
-[1] "00001" "00002" "00003" "00004" "00005" "00006"
+[1] "00001" "00002" "00003"
 
 発行日 :
-[1] "2015年09月25日" "2015年09月25日" "2015年09月21日" "2015年09月21日" "2015年09月21日" "2015年09月21日"
+[1] "2015年09月25日" "2015年09月25日" "2015年09月21日"
 
 朝夕刊 :
-[1] "週刊" "週刊" "朝刊" "朝刊" "朝刊" "朝刊"
+[1] "週刊" "週刊" "朝刊"
 
 面名 :
-[1] "週刊朝日"     "週刊朝日"     "３総合"       "オピニオン２" "３総合"       "２総合"      
+[1] "週刊朝日" "週刊朝日" "３総合"  
 
 ページ :
-[1] "022" "018" "003" "008" "003" "002"
+[1] "022" "018" "003"
 
-文字数 :
-[1] "05786文字" "05422文字" "01066文字" "00449文字" "02222文字" "02326文字"
 #+end_example
 
 To recap: regardless of platform (Windows, Mac Linux), use the =`readr`= package to read data into R. This will re-encode the contents of the file to UTF-8 for you. Make sure you specify the encoding using the ~locale~ argument as shown in the example above. Ignore the ugly =print.data.frame= bug and use =print.listof= to check that your data was imported correctly.
 
 Those wishing for more details about this issue can read on.
 
-* There are more encodings on this earth than dreamed of in your philosophy
-
-I've been using R since 2006 or so, about a decade at the time of this writing. For the first two or three of those years I mostly ran OS X, and since then I've been running Linux. I have only occasionally run in to encoding problems when running R on those platforms, and any issues I did encounter were quickly resolved. Quite simply, text in R is not an issue on Mac and Linux.
-
-Sadly, the R text encoding story on Windows is quite different. Since 2013 I've worked as a data analyst and consultant at Harvard University. In that capacity I've seen many students and researchers struggle with this issue, and the answers haven't always been clear to me, even after a decade of using R on a daily basis.
-
 * What is the problem?
 
-The problem is that the basic R functions for reading and writing data from and to files does no work in any reasonable way on Windows. Let's try it, using some simplified data from a project I worked on last year. For illustration I've created two files containing a mix of English letters, numbers, and Japanese characters. I saved one version with UTF-8 encoding, and another with SHIFT-JIS. On Linux we can read both files easily, provided only that we correctly specify the encoding if the file is not already encoded in UTF-8:
+The problem is that the basic R functions for reading and writing data from and to files does no work in any reasonable way on Windows. If you are struggling with this you are not alone! There are numerous [[http://stackoverflow.com/search?tab=votes&q=%255br%255d%2520%255bencoding%255d%2520windows][questions on stackoverflow]], blog posts (e.g., [[http://www.r-bloggers.com/r-and-foreign-characters/][this one]] by Rolf Fredheim, and [[http://withr.me/configure-character-encoding-for-r-under-linux-and-windows/][another]] by Huidong Tian), and anguished [[http://search.gmane.org/?query=encoding+windows+%2522utf-8%2522+%2522read%2522&author=&group=gmane.comp.lang.r.general&sort=date&DEFAULTOP=and&xP=Zencod%2509Zwindow%2509utf%25098%2509read&xFILTERS=Gcomp.lang.r.general---A][mailing list posts]]. Thinking of the person-hours wasted on this issue over the years almost brings a tear to my eye. 
+
+Let's try it, using some simplified data from a project I worked on last year. For illustration I've created two files containing a mix of English letters, numbers, and Japanese characters. I saved one version with UTF-8 encoding, and another with SHIFT-JIS. On Linux we can read both files easily, provided only that we correctly specify the encoding if the file is not already encoded in UTF-8:
 
 #+BEGIN_SRC R
   read.csv("example_files/japanese_utf8.csv")
 #+END_SRC
 
 #+RESULTS:
-:   No.         発行日 朝夕刊         面名 ページ    文字数
-: 1   1 2015年09月25日   週刊     週刊朝日     22 05786文字
-: 2   2 2015年09月25日   週刊     週刊朝日     18 05422文字
-: 3   3 2015年09月21日   朝刊       ３総合      3 01066文字
-: 4   4 2015年09月21日   朝刊 オピニオン２      8 00449文字
-: 5   5 2015年09月21日   朝刊       ３総合      3 02222文字
-: 6   6 2015年09月21日   朝刊       ２総合      2 02326文字
+:   No.         発行日 朝夕刊     面名 ページ
+: 1   1 2015年09月25日   週刊 週刊朝日     22
+: 2   2 2015年09月25日   週刊 週刊朝日     18
+: 3   3 2015年09月21日   朝刊   ３総合      3
 
 #+BEGIN_SRC R
   read.csv("example_files/japanese_shiftjis.csv", fileEncoding = "SHIFT-JIS")
 #+END_SRC
 
 #+RESULTS:
-:   No.         発行日 朝夕刊         面名 ページ    文字数
-: 1   1 2015年09月25日   週刊     週刊朝日     22 05786文字
-: 2   2 2015年09月25日   週刊     週刊朝日     18 05422文字
-: 3   3 2015年09月21日   朝刊       ３総合      3 01066文字
-: 4   4 2015年09月21日   朝刊 オピニオン２      8 00449文字
-: 5   5 2015年09月21日   朝刊       ３総合      3 02222文字
-: 6   6 2015年09月21日   朝刊       ２総合      2 02326文字
+:   No.         発行日 朝夕刊     面名 ページ
+: 1   1 2015年09月25日   週刊 週刊朝日     22
+: 2   2 2015年09月25日   週刊 週刊朝日     18
+: 3   3 2015年09月21日   朝刊   ３総合      3
 
-On Windows things are much more difficult:
+On Windows things are much more difficult. Using ~read.csv~ with the default options does not work because ~read.csv~ assumes that the encoding of the file matches the Windows locale settings:
 
 #+BEGIN_SRC R :eval no
   read.csv("example_files/japanese_utf8.csv")
 #+END_SRC
 
 #+RESULTS:
-:  No.         ç.ºè.Œæ.. æœ.å..å.Š             é..å.. ãƒšãƒ.ã..   æ..å..æ..
-: 1   1 2015å¹´09æœˆ25æ—¥    é€±åˆŠ       é€±åˆŠæœæ—¥        22 05786æ–‡å­—
-: 2   2 2015å¹´09æœˆ25æ—¥    é€±åˆŠ       é€±åˆŠæœæ—¥        18 05422æ–‡å­—
-: 3   3 2015å¹´09æœˆ21æ—¥    æœåˆŠ          ï¼“ç·åˆ         3 01066æ–‡å­—
-: 4   4 2015å¹´09æœˆ21æ—¥    æœåˆŠ ã‚ªãƒ”ãƒ‹ã‚ªãƒ³ï¼’         8 00449æ–‡å­—
-: 5   5 2015å¹´09æœˆ21æ—¥    æœåˆŠ          ï¼“ç·åˆ         3 02222æ–‡å­—
-: 6   6 2015å¹´09æœˆ21æ—¥    æœåˆŠ          ï¼’ç·åˆ         2 02326æ–‡å­—
 
+#+begin_example
+  No.         ç.ºè.Œæ.. æœ.å..å.Š       é..å.. ãƒšãƒ.ã..
+1   1 2015å¹´09æœˆ25æ—¥    é€±åˆŠ é€±åˆŠæœæ—¥        22
+2   2 2015å¹´09æœˆ25æ—¥    é€±åˆŠ é€±åˆŠæœæ—¥        18
+3   3 2015å¹´09æœˆ21æ—¥    æœåˆŠ    ï¼“ç·åˆ         3
+#+end_example
 
+Trying to tell R that the file is encoded in UTF-8 not a general solution because ~read.csv~ will then try to re-encode from UTF-8 to the native encoding, which may or may not work depending on the contents of the file. On my system trying to read a UTF-8 encoded file containing Japanese characters with the fileEncoding falls flat on its face:
 #+BEGIN_SRC R :eal no
   read.csv("example_files/japanese_utf8.csv", fileEncoding = "UTF-8")
 #+END_SRC
 
 #+RESULTS:
-: read.csv("example_files/japanese_utf8.csv", fileEncoding = "UTF-8")
-: [1] No. X  
-: <0 rows> (or 0-length row.names)
-: Warning messages:
-: 1: In read.table(file = file, header = header, sep = sep, quote = quote,  :
-:   invalid input found on input connection 'example_files/japanese_utf8.csv'
-: 2: In read.table(file = file, header = header, sep = sep, quote = quote,  :
-:   incomplete final line found by readTableHeader on 'example_files/japanese_utf8.csv'
-: 
+#+begin_example
+[1] No. X  
+<0 rows> (or 0-length row.names)
+Warning messages:
+1: In read.table(file = file, header = header, sep = sep, quote = quote,  :
+  invalid input found on input connection 'example_files/japanese_utf8.csv'
+2: In read.table(file = file, header = header, sep = sep, quote = quote,  :
+  incomplete final line found by readTableHeader on 'example_files/japanese_utf8.csv'
+#+end_example
 
-Ouch. OK, so how does it work?
+
+Finally, we might try the ~encoding~ argument rather than ~fileEncoding~. This simply marks the strings with the specified encoding:
+#+BEGIN_SRC R :eal no
+  read.csv("example_files/japanese_utf8.csv", encoding = "UTF-8")
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+read.csv("example_files/japanese_utf8.csv", encoding = "UTF-8")
+  No.        X.U.767A..U.884C..U.65E5. X.U.671D..U.5915..U.520A.                X.U.9762..U.540D. X.U.30DA..U.30FC..U.30B8.
+1   1 2015<U+5E74>09<U+6708>25<U+65E5>          <U+9031><U+520A> <U+9031><U+520A><U+671D><U+65E5>                        22
+2   2 2015<U+5E74>09<U+6708>25<U+65E5>          <U+9031><U+520A> <U+9031><U+520A><U+671D><U+65E5>                        18
+3   3 2015<U+5E74>09<U+6708>21<U+65E5>          <U+671D><U+520A>                3<U+7DCF><U+5408>                         3
+#+end_example
+This kind of works, though you wouldn't know it from the output. As mentioned above, there is a bug in the ~print.data.frame~ function that prevents UTF-8 encoded text from displaying correctly. We can use another print method to see that the column values have been read in correctly:
+#+BEGIN_SRC R :eval no
+  print.listof(read.csv("example_files/japanese_utf8.csv", encoding = "UTF-8"))
+#+END_SRC
+
+#+begin_example
+No. :
+[1] 1 2 3
+
+X.U.767A..U.884C..U.65E5. :
+[1] "2015年09月25日" "2015年09月25日" "2015年09月21日"
+
+X.U.671D..U.5915..U.520A. :
+[1] "週刊" "週刊" "朝刊"
+
+X.U.9762..U.540D. :
+[1] "週刊朝日" "週刊朝日" "３総合"  
+
+X.U.30DA..U.30FC..U.30B8. :
+[1] 22 18  3
+
+#+end_example
+
+Unfortunately there are two problems with this: first, the names of the columns have not been correctly encoded, and second, this will only work if your input data is in UTF-8 in the first place. Trying to apply this strategy to our SHIFT-JIS encoded file will not work at all:
+#+BEGIN_SRC R :eval no
+
+#+END_SRC
+
+#+begin_example
+No. :
+[1] 1 2 3
+
+X...s.ú :
+[1] "2015”N09ŒŽ25“ú" "2015”N09ŒŽ25“ú" "2015”N09ŒŽ21“ú"
+
+X....Š. :
+[1] "TŠ§" "TŠ§" "’©Š§"
+
+X.Ê.. :
+[1] "TŠ§’©“ú" "TŠ§’©“ú" "‚R‘‡"  
+
+ƒy..ƒW :
+[1] 22 18  3
+
+#+end_example
+
+Ouch! Why is this so hard? Can we make it suck less?
 
 * Encoding in R
-Basically R gives you two (and only two!) ways of encoding strings. You can use the default encoding of your OS, or you can use UTF-8. On OS X and Linux these options are often the same, since the default OS encoding is usually UTF-8. On Windows there is no such luck. On my Windows 7 machine the default is "Windows codepage 1252". The problem with this is that many characters (such as Japanse) cannot be represented in codepage 1252. 
+Basically R gives you two ways of handling character encoding. You can use the default encoding of your OS, or you can use UTF-8[fn:1]. On OS X and Linux these options are often the same, since the default OS encoding is usually UTF-8; this is a great advantage because just about everything can be represented in UTF-8. On Windows there is no such luck. On my Windows 7 machine the default is "Windows code page 1252"; many characters (such as Japanese) cannot be represented in code page 1252. If I want to work with Japanese text in R on Windows I have two options; change my locale to Japanese, or I can convert strings to UTF-8 and mark them as such.
+
+In some ways just changing your locale to one that can accommodate the data you are working with is the simplest approach. Again, on Mac and Linux the locale usually specifies UTF-8 encoding, so no changes are needed; things should just work as you would expect them to. On windows we can change the locale to match the data we are working with using the ~Sys.setlocale~ function. This sometimes works well; for example, we can read our UTF-8 and SHIFT-JIS encoded data on Windows as follows:
+
+#+BEGIN_SRC R :eval no
+  setlocale("LC_ALL", "English_United States.932")
+  read.csv("example_files/japanese_shiftjis.csv")
+  read.csv("example_files/japanese_utf8.csv", fileEncoding = "UTF-8")
+#+END_SRC
+
+#+begin_example
+[1] "LC_COLLATE=English_United States.932;LC_CTYPE=English_United States.932;LC_MONETARY=English_United States.932;LC_NUMERIC=C;LC_TIME=English_United States.932"
+
+  No.         発行日 朝夕刊     面名 ページ
+1   1 2015年09月25日   週刊 週刊朝日     22
+2   2 2015年09月25日   週刊 週刊朝日     18
+3   3 2015年09月21日   朝刊   ３総合      3
+
+  No.         発行日 朝夕刊     面名 ページ
+1   1 2015年09月25日   週刊 週刊朝日     22
+2   2 2015年09月25日   週刊 週刊朝日     18
+3   3 2015年09月21日   朝刊   ３総合      3
+
+#+end_example
+
+This works fine until we want to read some other kind of text in the same R session, and then we are right back to the same old problem. Another issue with this method is that it does not work in Rstudio unless the locale is set on startup; you cannot change the locale of a running session in Rstudio[fn:2].
+
+Because the ~Sys.setlocale~ method only works for a subset of languages in any given session, our best bet is to read store everything in UTF-8 (and make sure it is marked as such). It is not convenient to do this using the ~read.table~ family of functions in R, but it is possible with some care:
+#+BEGIN_SRC R :eval no
+  x <- read.csv("example_files/japanese_shiftjis.csv", 
+                encoding = "UTF-8", 
+                check.names = FALSE # otherwise R will mangle the names
+                )
+  charcols <- !sapply(x, is.numeric)
+  x[charcols] <- lapply(x[charcols], iconv, from = "SHIFT-JIS", to = "UTF-8")
+  names(x) <- iconv(names(x), from = "SHIFT-JIS", to = "UTF-8")
+  print.listof(x)
+#+END_SRC 
+
+#+begin_example
+No. :
+[1] 1 2 3
+
+発行日 :
+[1] "2015年09月25日" "2015年09月25日" "2015年09月21日"
+
+朝夕刊 :
+[1] "週刊" "週刊" "朝刊"
+
+面名 :
+[1] "週刊朝日" "週刊朝日" "３総合"  
+
+ページ :
+[1] 22 18  3
+#+end_example
+OK it works, but honestly that too much work for something as simple as reading a .csv file into R. As suggested at the beginning of this post, a better strategy is to use the =`readr`= package because it will do the conversion to UTF-8 for you:
+
+#+BEGIN_SRC R :eval no
+  print.listof(read_csv("example_files/arabic_utf-8.csv"), locale = locale(encoding = "UTF-8"))
+  print.listof(read_csv("example_files/japanese_utf8.csv"), locale = locale(encoding = "UTF-8"))
+  print.listof(read_csv("example_files/japanese_utf8.csv"), locale = locale(encoding = "SHIFT-JIS"))
+#+END_SRC
+
+#+begin_example
+X5 :
+[1] "1895-01-02" "1895-01-07" "1895-01-16"
+X8 :
+[1] "اصلى" "اصلى" "اصلى"
+X12 :
+[1] "وقائع" "وقائع" "وقائع"
+
+No. :
+[1] "00001" "00002" "00003"
+発行日 :
+[1] "2015年09月25日" "2015年09月25日" "2015年09月21日"
+朝夕刊 :
+[1] "週刊" "週刊" "朝刊"
+面名 :
+[1] "週刊朝日" "週刊朝日" "３総合"  
+ページ :
+[1] "022" "018" "003"
+
+
+No. :
+[1] "00001" "00002" "00003"
+発行日 :
+[1] "2015年09月25日" "2015年09月25日" "2015年09月21日"
+朝夕刊 :
+[1] "週刊" "週刊" "朝刊"
+面名 :
+[1] "週刊朝日" "週刊朝日" "３総合"  
+ページ :
+[1] "022" "018" "003"
+
+#+end_example
+* Footnotes
+
+[fn:2] See https://support.rstudio.com/hc/en-us/articles/200532197-Character-Encoding
+
+[fn:1] We can also mark strings as encoded in =latin1=, but that is so rarely useful that I will not discuss it further.

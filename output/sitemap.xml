@@ -7,7 +7,7 @@
                         http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
  <url>
   <loc>http://people.fas.harvard.edu/%7Eizahn/blog/2016/index.html</loc>
-  <lastmod>2016-06-14T19:55:00Z</lastmod>
+  <lastmod>2016-06-15T17:41:00Z</lastmod>
  </url>
  <url>
   <loc>http://people.fas.harvard.edu/%7Eizahn/blog/archive.html</loc>
@@ -15,15 +15,15 @@
  </url>
  <url>
   <loc>http://people.fas.harvard.edu/%7Eizahn/blog/categories/cat_r.html</loc>
-  <lastmod>2016-06-14T19:55:00Z</lastmod>
+  <lastmod>2016-06-15T17:41:00Z</lastmod>
  </url>
  <url>
   <loc>http://people.fas.harvard.edu/%7Eizahn/blog/categories/encoding.html</loc>
-  <lastmod>2016-06-14T19:55:00Z</lastmod>
+  <lastmod>2016-06-15T17:41:00Z</lastmod>
  </url>
  <url>
   <loc>http://people.fas.harvard.edu/%7Eizahn/blog/categories/files.html</loc>
-  <lastmod>2016-06-14T19:55:00Z</lastmod>
+  <lastmod>2016-06-15T17:41:00Z</lastmod>
  </url>
  <url>
   <loc>http://people.fas.harvard.edu/%7Eizahn/blog/categories/index.html</loc>
@@ -31,15 +31,15 @@
  </url>
  <url>
   <loc>http://people.fas.harvard.edu/%7Eizahn/blog/categories/r.html</loc>
-  <lastmod>2016-06-14T19:55:00Z</lastmod>
+  <lastmod>2016-06-15T17:41:00Z</lastmod>
  </url>
  <url>
   <loc>http://people.fas.harvard.edu/%7Eizahn/blog/categories/shift-jis.html</loc>
-  <lastmod>2016-06-14T19:55:00Z</lastmod>
+  <lastmod>2016-06-15T17:41:00Z</lastmod>
  </url>
  <url>
   <loc>http://people.fas.harvard.edu/%7Eizahn/blog/categories/utf-8.html</loc>
-  <lastmod>2016-06-14T19:55:00Z</lastmod>
+  <lastmod>2016-06-15T17:41:00Z</lastmod>
  </url>
  <url>
   <loc>http://people.fas.harvard.edu/%7Eizahn/blog/galleries/index.html</loc>
@@ -47,7 +47,7 @@
  </url>
  <url>
   <loc>http://people.fas.harvard.edu/%7Eizahn/blog/index.html</loc>
-  <lastmod>2016-06-14T19:55:00Z</lastmod>
+  <lastmod>2016-06-15T17:41:00Z</lastmod>
  </url>
  <url>
   <loc>http://people.fas.harvard.edu/%7Eizahn/blog/listings/index.html</loc>
@@ -55,6 +55,6 @@
  </url>
  <url>
   <loc>http://people.fas.harvard.edu/%7Eizahn/blog/posts/reading-data-with-non-native-encoding-in-r.html</loc>
-  <lastmod>2016-06-14T19:55:00Z</lastmod>
+  <lastmod>2016-06-15T17:41:00Z</lastmod>
  </url>
 </urlset>

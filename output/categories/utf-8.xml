@@ -1,9 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Bits and pieces of code, loosely tied together with prose (UTF-8)</title><link>http://people.fas.harvard.edu/%7Eizahn/blog/</link><description></description><atom:link rel="self" href="http://people.fas.harvard.edu/~izahn/blog/categories/utf-8.xml" type="application/rss+xml"></atom:link><language>en</language><lastBuildDate>Tue, 14 Jun 2016 19:55:40 GMT</lastBuildDate><generator>https://getnikola.com/</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Reading data with non-native encoding in R</title><link>http://people.fas.harvard.edu/%7Eizahn/blog/posts/reading-data-with-non-native-encoding-in-r.html</link><dc:creator>Ista Zahn</dc:creator><description>&lt;div id="outline-container-sec-1" class="outline-2"&gt;
-&lt;h2 id="sec-1"&gt;Best practices for importing files with non-native encoding in R&lt;/h2&gt;
+<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/"><channel><title>Bits and pieces of code, loosely tied together with prose (UTF-8)</title><link>http://people.fas.harvard.edu/%7Eizahn/blog/</link><description></description><atom:link rel="self" href="http://people.fas.harvard.edu/~izahn/blog/categories/utf-8.xml" type="application/rss+xml"></atom:link><language>en</language><lastBuildDate>Wed, 15 Jun 2016 17:41:15 GMT</lastBuildDate><generator>https://getnikola.com/</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Reading data with non-native encoding in R</title><link>http://people.fas.harvard.edu/%7Eizahn/blog/posts/reading-data-with-non-native-encoding-in-r.html</link><dc:creator>Ista Zahn</dc:creator><description>&lt;div id="outline-container-sec-1" class="outline-2"&gt;
+&lt;h2 id="sec-1"&gt;Importing files with non-native encoding in R on Windows&lt;/h2&gt;
 &lt;div class="outline-text-2" id="text-1"&gt;
 &lt;p&gt;
-This section gives the basic facts and recommendations for importing files with arbitrary encoding. If you are on a deadline and just need to get the job done this section should be all you need. Additional background and discussion is presented in later sections.
+This section gives the basic facts and recommendations for importing files with arbitrary encoding on Windows. The issues described here by and large to not apply on Mac or Linux; they are specific to running &lt;a href="http://people.fas.harvard.edu/~izahn/blog/r-project.org"&gt;R&lt;/a&gt; on Windows.
+&lt;/p&gt;
+
+&lt;p&gt;
+If you are on a deadline and just need to get the job done this section should be all you need. Additional background and discussion is presented in later sections.
 &lt;/p&gt;
 
 &lt;p&gt;
@@ -15,6 +19,7 @@ For example, I have two versions of a file containing numbers and Japanese chara
 &lt;/p&gt;
 
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kn"&gt;library&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;readr&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="kp"&gt;options&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;stringsAsFactors &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="kc"&gt;FALSE&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 read_csv&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;"example_files/japanese_utf8.csv"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
 	 locale &lt;span class="o"&gt;=&lt;/span&gt; locale&lt;span class="p"&gt;(&lt;/span&gt;encoding &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;"UTF-8"&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
 read_csv&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;"example_files/japanese_shiftjis.csv"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
@@ -22,25 +27,14 @@ read_csv&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;"example_files
 &lt;/pre&gt;&lt;/div&gt;
 
 &lt;pre class="example"&gt;
-Attaching package: ‘readr’
-
-The following object is masked from ‘package:rvest’:
-
-    guess_encoding
-    No.         発行日 朝夕刊         面名 ページ    文字数
-1 00001 2015年09月25日   週刊     週刊朝日    022 05786文字
-2 00002 2015年09月25日   週刊     週刊朝日    018 05422文字
-3 00003 2015年09月21日   朝刊       ３総合    003 01066文字
-4 00004 2015年09月21日   朝刊 オピニオン２    008 00449文字
-5 00005 2015年09月21日   朝刊       ３総合    003 02222文字
-6 00006 2015年09月21日   朝刊       ２総合    002 02326文字
-    No.         発行日 朝夕刊         面名 ページ    文字数
-1 00001 2015年09月25日   週刊     週刊朝日    022 05786文字
-2 00002 2015年09月25日   週刊     週刊朝日    018 05422文字
-3 00003 2015年09月21日   朝刊       ３総合    003 01066文字
-4 00004 2015年09月21日   朝刊 オピニオン２    008 00449文字
-5 00005 2015年09月21日   朝刊       ３総合    003 02222文字
-6 00006 2015年09月21日   朝刊       ２総合    002 02326文字
+    No.         発行日 朝夕刊     面名 ページ
+1 00001 2015年09月25日   週刊 週刊朝日    022
+2 00002 2015年09月25日   週刊 週刊朝日    018
+3 00003 2015年09月21日   朝刊   ３総合    003
+    No.         発行日 朝夕刊     面名 ページ
+1 00001 2015年09月25日   週刊 週刊朝日    022
+2 00002 2015年09月25日   週刊 週刊朝日    018
+3 00003 2015年09月21日   朝刊   ３総合    003
 &lt;/pre&gt;
 
 &lt;p&gt;
@@ -48,22 +42,15 @@ On Windows there is a bug in &lt;code&gt;print.data.frame&lt;/code&gt; that caus
 &lt;/p&gt;
 
 &lt;pre class="example"&gt;
-    No.         &amp;lt;U+767A&amp;gt;&amp;lt;U+884C&amp;gt;&amp;lt;U+65E5&amp;gt; &amp;lt;U+671D&amp;gt;&amp;lt;U+5915&amp;gt;&amp;lt;U+520A&amp;gt;                          &amp;lt;U+9762&amp;gt;&amp;lt;U+540D&amp;gt; &amp;lt;U+30DA&amp;gt;&amp;lt;U+30FC&amp;gt;&amp;lt;U+30B8&amp;gt; &amp;lt;U+6587&amp;gt;&amp;lt;U+5B57&amp;gt;&amp;lt;U+6570&amp;gt;
-1 00001 2015&amp;lt;U+5E74&amp;gt;09&amp;lt;U+6708&amp;gt;25&amp;lt;U+65E5&amp;gt;         &amp;lt;U+9031&amp;gt;&amp;lt;U+520A&amp;gt;          &amp;lt;U+9031&amp;gt;&amp;lt;U+520A&amp;gt;&amp;lt;U+671D&amp;gt;&amp;lt;U+65E5&amp;gt;                      022    05786&amp;lt;U+6587&amp;gt;&amp;lt;U+5B57&amp;gt;
-2 00002 2015&amp;lt;U+5E74&amp;gt;09&amp;lt;U+6708&amp;gt;25&amp;lt;U+65E5&amp;gt;         &amp;lt;U+9031&amp;gt;&amp;lt;U+520A&amp;gt;          &amp;lt;U+9031&amp;gt;&amp;lt;U+520A&amp;gt;&amp;lt;U+671D&amp;gt;&amp;lt;U+65E5&amp;gt;                      018    05422&amp;lt;U+6587&amp;gt;&amp;lt;U+5B57&amp;gt;
-3 00003 2015&amp;lt;U+5E74&amp;gt;09&amp;lt;U+6708&amp;gt;21&amp;lt;U+65E5&amp;gt;         &amp;lt;U+671D&amp;gt;&amp;lt;U+520A&amp;gt;                         3&amp;lt;U+7DCF&amp;gt;&amp;lt;U+5408&amp;gt;                      003    01066&amp;lt;U+6587&amp;gt;&amp;lt;U+5B57&amp;gt;
-4 00004 2015&amp;lt;U+5E74&amp;gt;09&amp;lt;U+6708&amp;gt;21&amp;lt;U+65E5&amp;gt;         &amp;lt;U+671D&amp;gt;&amp;lt;U+520A&amp;gt; &amp;lt;U+30AA&amp;gt;&amp;lt;U+30D4&amp;gt;&amp;lt;U+30CB&amp;gt;&amp;lt;U+30AA&amp;gt;&amp;lt;U+30F3&amp;gt;2                      008    00449&amp;lt;U+6587&amp;gt;&amp;lt;U+5B57&amp;gt;
-5 00005 2015&amp;lt;U+5E74&amp;gt;09&amp;lt;U+6708&amp;gt;21&amp;lt;U+65E5&amp;gt;         &amp;lt;U+671D&amp;gt;&amp;lt;U+520A&amp;gt;                         3&amp;lt;U+7DCF&amp;gt;&amp;lt;U+5408&amp;gt;                      003    02222&amp;lt;U+6587&amp;gt;&amp;lt;U+5B57&amp;gt;
-6 00006 2015&amp;lt;U+5E74&amp;gt;09&amp;lt;U+6708&amp;gt;21&amp;lt;U+65E5&amp;gt;         &amp;lt;U+671D&amp;gt;&amp;lt;U+520A&amp;gt;                         2&amp;lt;U+7DCF&amp;gt;&amp;lt;U+5408&amp;gt;                      002    02326&amp;lt;U+6587&amp;gt;&amp;lt;U+5B57&amp;gt;
-&amp;gt; read_csv("example_files/japanese_shiftjis.csv",
-+          locale = locale(encoding = "SHIFT-JIS"))
-    No.         &amp;lt;U+767A&amp;gt;&amp;lt;U+884C&amp;gt;&amp;lt;U+65E5&amp;gt; &amp;lt;U+671D&amp;gt;&amp;lt;U+5915&amp;gt;&amp;lt;U+520A&amp;gt;                          &amp;lt;U+9762&amp;gt;&amp;lt;U+540D&amp;gt; &amp;lt;U+30DA&amp;gt;&amp;lt;U+30FC&amp;gt;&amp;lt;U+30B8&amp;gt; &amp;lt;U+6587&amp;gt;&amp;lt;U+5B57&amp;gt;&amp;lt;U+6570&amp;gt;
-1 00001 2015&amp;lt;U+5E74&amp;gt;09&amp;lt;U+6708&amp;gt;25&amp;lt;U+65E5&amp;gt;         &amp;lt;U+9031&amp;gt;&amp;lt;U+520A&amp;gt;          &amp;lt;U+9031&amp;gt;&amp;lt;U+520A&amp;gt;&amp;lt;U+671D&amp;gt;&amp;lt;U+65E5&amp;gt;                      022    05786&amp;lt;U+6587&amp;gt;&amp;lt;U+5B57&amp;gt;
-2 00002 2015&amp;lt;U+5E74&amp;gt;09&amp;lt;U+6708&amp;gt;25&amp;lt;U+65E5&amp;gt;         &amp;lt;U+9031&amp;gt;&amp;lt;U+520A&amp;gt;          &amp;lt;U+9031&amp;gt;&amp;lt;U+520A&amp;gt;&amp;lt;U+671D&amp;gt;&amp;lt;U+65E5&amp;gt;                      018    05422&amp;lt;U+6587&amp;gt;&amp;lt;U+5B57&amp;gt;
-3 00003 2015&amp;lt;U+5E74&amp;gt;09&amp;lt;U+6708&amp;gt;21&amp;lt;U+65E5&amp;gt;         &amp;lt;U+671D&amp;gt;&amp;lt;U+520A&amp;gt;                         3&amp;lt;U+7DCF&amp;gt;&amp;lt;U+5408&amp;gt;                      003    01066&amp;lt;U+6587&amp;gt;&amp;lt;U+5B57&amp;gt;
-4 00004 2015&amp;lt;U+5E74&amp;gt;09&amp;lt;U+6708&amp;gt;21&amp;lt;U+65E5&amp;gt;         &amp;lt;U+671D&amp;gt;&amp;lt;U+520A&amp;gt; &amp;lt;U+30AA&amp;gt;&amp;lt;U+30D4&amp;gt;&amp;lt;U+30CB&amp;gt;&amp;lt;U+30AA&amp;gt;&amp;lt;U+30F3&amp;gt;2                      008    00449&amp;lt;U+6587&amp;gt;&amp;lt;U+5B57&amp;gt;
-5 00005 2015&amp;lt;U+5E74&amp;gt;09&amp;lt;U+6708&amp;gt;21&amp;lt;U+65E5&amp;gt;         &amp;lt;U+671D&amp;gt;&amp;lt;U+520A&amp;gt;                         3&amp;lt;U+7DCF&amp;gt;&amp;lt;U+5408&amp;gt;                      003    02222&amp;lt;U+6587&amp;gt;&amp;lt;U+5B57&amp;gt;
-6 00006 2015&amp;lt;U+5E74&amp;gt;09&amp;lt;U+6708&amp;gt;21&amp;lt;U+65E5&amp;gt;         &amp;lt;U+671D&amp;gt;&amp;lt;U+520A&amp;gt;                         2&amp;lt;U+7DCF&amp;gt;&amp;lt;U+5408&amp;gt;                      002    02326&amp;lt;U+6587&amp;gt;&amp;lt;U+5B57&amp;gt;
+    No.         &amp;lt;U+767A&amp;gt;&amp;lt;U+884C&amp;gt;&amp;lt;U+65E5&amp;gt; &amp;lt;U+671D&amp;gt;&amp;lt;U+5915&amp;gt;&amp;lt;U+520A&amp;gt;                 &amp;lt;U+9762&amp;gt;&amp;lt;U+540D&amp;gt; &amp;lt;U+30DA&amp;gt;&amp;lt;U+30FC&amp;gt;&amp;lt;U+30B8&amp;gt;
+1 00001 2015&amp;lt;U+5E74&amp;gt;09&amp;lt;U+6708&amp;gt;25&amp;lt;U+65E5&amp;gt;         &amp;lt;U+9031&amp;gt;&amp;lt;U+520A&amp;gt; &amp;lt;U+9031&amp;gt;&amp;lt;U+520A&amp;gt;&amp;lt;U+671D&amp;gt;&amp;lt;U+65E5&amp;gt;                      022
+2 00002 2015&amp;lt;U+5E74&amp;gt;09&amp;lt;U+6708&amp;gt;25&amp;lt;U+65E5&amp;gt;         &amp;lt;U+9031&amp;gt;&amp;lt;U+520A&amp;gt; &amp;lt;U+9031&amp;gt;&amp;lt;U+520A&amp;gt;&amp;lt;U+671D&amp;gt;&amp;lt;U+65E5&amp;gt;                      018
+3 00003 2015&amp;lt;U+5E74&amp;gt;09&amp;lt;U+6708&amp;gt;21&amp;lt;U+65E5&amp;gt;         &amp;lt;U+671D&amp;gt;&amp;lt;U+520A&amp;gt;                3&amp;lt;U+7DCF&amp;gt;&amp;lt;U+5408&amp;gt;                      003
+
+    No.         &amp;lt;U+767A&amp;gt;&amp;lt;U+884C&amp;gt;&amp;lt;U+65E5&amp;gt; &amp;lt;U+671D&amp;gt;&amp;lt;U+5915&amp;gt;&amp;lt;U+520A&amp;gt;                 &amp;lt;U+9762&amp;gt;&amp;lt;U+540D&amp;gt; &amp;lt;U+30DA&amp;gt;&amp;lt;U+30FC&amp;gt;&amp;lt;U+30B8&amp;gt;
+1 00001 2015&amp;lt;U+5E74&amp;gt;09&amp;lt;U+6708&amp;gt;25&amp;lt;U+65E5&amp;gt;         &amp;lt;U+9031&amp;gt;&amp;lt;U+520A&amp;gt; &amp;lt;U+9031&amp;gt;&amp;lt;U+520A&amp;gt;&amp;lt;U+671D&amp;gt;&amp;lt;U+65E5&amp;gt;                      022
+2 00002 2015&amp;lt;U+5E74&amp;gt;09&amp;lt;U+6708&amp;gt;25&amp;lt;U+65E5&amp;gt;         &amp;lt;U+9031&amp;gt;&amp;lt;U+520A&amp;gt; &amp;lt;U+9031&amp;gt;&amp;lt;U+520A&amp;gt;&amp;lt;U+671D&amp;gt;&amp;lt;U+65E5&amp;gt;                      018
+3 00003 2015&amp;lt;U+5E74&amp;gt;09&amp;lt;U+6708&amp;gt;21&amp;lt;U+65E5&amp;gt;         &amp;lt;U+671D&amp;gt;&amp;lt;U+520A&amp;gt;                3&amp;lt;U+7DCF&amp;gt;&amp;lt;U+5408&amp;gt;                      003
 &lt;/pre&gt;
 &lt;p&gt;
 which looks terrible but does not actually indicate a problem. The information is encoded correctly, but due to a long-standing bug it is &lt;span class="underline"&gt;displayed&lt;/span&gt; incorrectly. You can check to see if the values are correct by converting the data.frame by (ab)using &lt;code&gt;print.listof&lt;/code&gt;, e.g.,
@@ -75,22 +62,19 @@ which looks terrible but does not actually indicate a problem. The information i
 
 &lt;pre class="example"&gt;
 No. :
-[1] "00001" "00002" "00003" "00004" "00005" "00006"
+[1] "00001" "00002" "00003"
 
 発行日 :
-[1] "2015年09月25日" "2015年09月25日" "2015年09月21日" "2015年09月21日" "2015年09月21日" "2015年09月21日"
+[1] "2015年09月25日" "2015年09月25日" "2015年09月21日"
 
 朝夕刊 :
-[1] "週刊" "週刊" "朝刊" "朝刊" "朝刊" "朝刊"
+[1] "週刊" "週刊" "朝刊"
 
 面名 :
-[1] "週刊朝日"     "週刊朝日"     "３総合"       "オピニオン２" "３総合"       "２総合"      
+[1] "週刊朝日" "週刊朝日" "３総合"  
 
 ページ :
-[1] "022" "018" "003" "008" "003" "002"
-
-文字数 :
-[1] "05786文字" "05422文字" "01066文字" "00449文字" "02222文字" "02326文字"
+[1] "022" "018" "003"
 &lt;/pre&gt;
 
 &lt;p&gt;
@@ -104,74 +88,57 @@ Those wishing for more details about this issue can read on.
 &lt;/div&gt;
 
 &lt;div id="outline-container-sec-2" class="outline-2"&gt;
-&lt;h2 id="sec-2"&gt;There are more encodings on this earth than dreamed of in your philosophy&lt;/h2&gt;
+&lt;h2 id="sec-2"&gt;What is the problem?&lt;/h2&gt;
 &lt;div class="outline-text-2" id="text-2"&gt;
 &lt;p&gt;
-I've been using R since 2006 or so, about a decade at the time of this writing. For the first two or three of those years I mostly ran OS X, and since then I've been running Linux. I have only occasionally run in to encoding problems when running R on those platforms, and any issues I did encounter were quickly resolved. Quite simply, text in R is not an issue on Mac and Linux.
+The problem is that the basic R functions for reading and writing data from and to files does no work in any reasonable way on Windows. If you are struggling with this you are not alone! There are numerous &lt;a href="http://stackoverflow.com/search?tab=votes&amp;amp;q=%255br%255d%2520%255bencoding%255d%2520windows"&gt;questions on stackoverflow&lt;/a&gt;, blog posts (e.g., &lt;a href="http://www.r-bloggers.com/r-and-foreign-characters/"&gt;this one&lt;/a&gt; by Rolf Fredheim, and &lt;a href="http://withr.me/configure-character-encoding-for-r-under-linux-and-windows/"&gt;another&lt;/a&gt; by Huidong Tian), and anguished &lt;a href="http://search.gmane.org/?query=encoding+windows+%2522utf-8%2522+%2522read%2522&amp;amp;author=&amp;amp;group=gmane.comp.lang.r.general&amp;amp;sort=date&amp;amp;DEFAULTOP=and&amp;amp;xP=Zencod%2509Zwindow%2509utf%25098%2509read&amp;amp;xFILTERS=Gcomp.lang.r.general---A"&gt;mailing list posts&lt;/a&gt;. Thinking of the person-hours wasted on this issue over the years almost brings a tear to my eye. 
 &lt;/p&gt;
 
 &lt;p&gt;
-Sadly, the R text encoding story on Windows is quite different. Since 2013 I've worked as a data analyst and consultant at Harvard University. In that capacity I've seen many students and researchers struggle with this issue, and the answers haven't always been clear to me, even after a decade of using R on a daily basis.
-&lt;/p&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-
-&lt;div id="outline-container-sec-3" class="outline-2"&gt;
-&lt;h2 id="sec-3"&gt;What is the problem?&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-3"&gt;
-&lt;p&gt;
-The problem is that the basic R functions for reading and writing data from and to files does no work in any reasonable way on Windows. Let's try it, using some simplified data from a project I worked on last year. For illustration I've created two files containing a mix of English letters, numbers, and Japanese characters. I saved one version with UTF-8 encoding, and another with SHIFT-JIS. On Linux we can read both files easily, provided only that we correctly specify the encoding if the file is not already encoded in UTF-8:
+Let's try it, using some simplified data from a project I worked on last year. For illustration I've created two files containing a mix of English letters, numbers, and Japanese characters. I saved one version with UTF-8 encoding, and another with SHIFT-JIS. On Linux we can read both files easily, provided only that we correctly specify the encoding if the file is not already encoded in UTF-8:
 &lt;/p&gt;
 
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;read.csv&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;"example_files/japanese_utf8.csv"&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 &lt;pre class="example"&gt;
-  No.         発行日 朝夕刊         面名 ページ    文字数
-1   1 2015年09月25日   週刊     週刊朝日     22 05786文字
-2   2 2015年09月25日   週刊     週刊朝日     18 05422文字
-3   3 2015年09月21日   朝刊       ３総合      3 01066文字
-4   4 2015年09月21日   朝刊 オピニオン２      8 00449文字
-5   5 2015年09月21日   朝刊       ３総合      3 02222文字
-6   6 2015年09月21日   朝刊       ２総合      2 02326文字
+  No.         発行日 朝夕刊     面名 ページ
+1   1 2015年09月25日   週刊 週刊朝日     22
+2   2 2015年09月25日   週刊 週刊朝日     18
+3   3 2015年09月21日   朝刊   ３総合      3
 &lt;/pre&gt;
 
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;read.csv&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;"example_files/japanese_shiftjis.csv"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; fileEncoding &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;"SHIFT-JIS"&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 &lt;pre class="example"&gt;
-  No.         発行日 朝夕刊         面名 ページ    文字数
-1   1 2015年09月25日   週刊     週刊朝日     22 05786文字
-2   2 2015年09月25日   週刊     週刊朝日     18 05422文字
-3   3 2015年09月21日   朝刊       ３総合      3 01066文字
-4   4 2015年09月21日   朝刊 オピニオン２      8 00449文字
-5   5 2015年09月21日   朝刊       ３総合      3 02222文字
-6   6 2015年09月21日   朝刊       ２総合      2 02326文字
+  No.         発行日 朝夕刊     面名 ページ
+1   1 2015年09月25日   週刊 週刊朝日     22
+2   2 2015年09月25日   週刊 週刊朝日     18
+3   3 2015年09月21日   朝刊   ３総合      3
 &lt;/pre&gt;
 
 &lt;p&gt;
-On Windows things are much more difficult:
+On Windows things are much more difficult. Using &lt;code&gt;read.csv&lt;/code&gt; with the default options does not work because &lt;code&gt;read.csv&lt;/code&gt; assumes that the encoding of the file matches the Windows locale settings:
 &lt;/p&gt;
 
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;read.csv&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;"example_files/japanese_utf8.csv"&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 &lt;pre class="example"&gt;
- No.         ç.ºè.Œæ.. æœ.å..å.Š             é..å.. ãƒšãƒ.ã..   æ..å..æ..
-1   1 2015å¹´09æœˆ25æ—¥    é€±åˆŠ       é€±åˆŠæœæ—¥        22 05786æ–‡å­—
-2   2 2015å¹´09æœˆ25æ—¥    é€±åˆŠ       é€±åˆŠæœæ—¥        18 05422æ–‡å­—
-3   3 2015å¹´09æœˆ21æ—¥    æœåˆŠ          ï¼“ç·åˆ         3 01066æ–‡å­—
-4   4 2015å¹´09æœˆ21æ—¥    æœåˆŠ ã‚ªãƒ”ãƒ‹ã‚ªãƒ³ï¼’         8 00449æ–‡å­—
-5   5 2015å¹´09æœˆ21æ—¥    æœåˆŠ          ï¼“ç·åˆ         3 02222æ–‡å­—
-6   6 2015å¹´09æœˆ21æ—¥    æœåˆŠ          ï¼’ç·åˆ         2 02326æ–‡å­—
+  No.         ç.ºè.Œæ.. æœ.å..å.Š       é..å.. ãƒšãƒ.ã..
+1   1 2015å¹´09æœˆ25æ—¥    é€±åˆŠ é€±åˆŠæœæ—¥        22
+2   2 2015å¹´09æœˆ25æ—¥    é€±åˆŠ é€±åˆŠæœæ—¥        18
+3   3 2015å¹´09æœˆ21æ—¥    æœåˆŠ    ï¼“ç·åˆ         3
 &lt;/pre&gt;
 
-
+&lt;p&gt;
+Trying to tell R that the file is encoded in UTF-8 not a general solution because &lt;code&gt;read.csv&lt;/code&gt; will then try to re-encode from UTF-8 to the native encoding, which may or may not work depending on the contents of the file. On my system trying to read a UTF-8 encoded file containing Japanese characters with the fileEncoding falls flat on its face:
+&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;read.csv&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;"example_files/japanese_utf8.csv"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; fileEncoding &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;"UTF-8"&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 &lt;pre class="example"&gt;
-read.csv("example_files/japanese_utf8.csv", fileEncoding = "UTF-8")
 [1] No. X  
 &amp;lt;0 rows&amp;gt; (or 0-length row.names)
 Warning messages:
@@ -181,17 +148,189 @@ Warning messages:
   incomplete final line found by readTableHeader on 'example_files/japanese_utf8.csv'
 &lt;/pre&gt;
 
+
 &lt;p&gt;
-Ouch. OK, so how does it work?
+Finally, we might try the &lt;code&gt;encoding&lt;/code&gt; argument rather than &lt;code&gt;fileEncoding&lt;/code&gt;. This simply marks the strings with the specified encoding:
+&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;read.csv&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;"example_files/japanese_utf8.csv"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; encoding &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;"UTF-8"&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;pre class="example"&gt;
+read.csv("example_files/japanese_utf8.csv", encoding = "UTF-8")
+  No.        X.U.767A..U.884C..U.65E5. X.U.671D..U.5915..U.520A.                X.U.9762..U.540D. X.U.30DA..U.30FC..U.30B8.
+1   1 2015&amp;lt;U+5E74&amp;gt;09&amp;lt;U+6708&amp;gt;25&amp;lt;U+65E5&amp;gt;          &amp;lt;U+9031&amp;gt;&amp;lt;U+520A&amp;gt; &amp;lt;U+9031&amp;gt;&amp;lt;U+520A&amp;gt;&amp;lt;U+671D&amp;gt;&amp;lt;U+65E5&amp;gt;                        22
+2   2 2015&amp;lt;U+5E74&amp;gt;09&amp;lt;U+6708&amp;gt;25&amp;lt;U+65E5&amp;gt;          &amp;lt;U+9031&amp;gt;&amp;lt;U+520A&amp;gt; &amp;lt;U+9031&amp;gt;&amp;lt;U+520A&amp;gt;&amp;lt;U+671D&amp;gt;&amp;lt;U+65E5&amp;gt;                        18
+3   3 2015&amp;lt;U+5E74&amp;gt;09&amp;lt;U+6708&amp;gt;21&amp;lt;U+65E5&amp;gt;          &amp;lt;U+671D&amp;gt;&amp;lt;U+520A&amp;gt;                3&amp;lt;U+7DCF&amp;gt;&amp;lt;U+5408&amp;gt;                         3
+&lt;/pre&gt;
+&lt;p&gt;
+This kind of works, though you wouldn't know it from the output. As mentioned above, there is a bug in the &lt;code&gt;print.data.frame&lt;/code&gt; function that prevents UTF-8 encoded text from displaying correctly. We can use another print method to see that the column values have been read in correctly:
+&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kp"&gt;print.listof&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;read.csv&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;"example_files/japanese_utf8.csv"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; encoding &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;"UTF-8"&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;pre class="example"&gt;
+No. :
+[1] 1 2 3
+
+X.U.767A..U.884C..U.65E5. :
+[1] "2015年09月25日" "2015年09月25日" "2015年09月21日"
+
+X.U.671D..U.5915..U.520A. :
+[1] "週刊" "週刊" "朝刊"
+
+X.U.9762..U.540D. :
+[1] "週刊朝日" "週刊朝日" "３総合"  
+
+X.U.30DA..U.30FC..U.30B8. :
+[1] 22 18  3
+&lt;/pre&gt;
+
+&lt;p&gt;
+Unfortunately there are two problems with this: first, the names of the columns have not been correctly encoded, and second, this will only work if your input data is in UTF-8 in the first place. Trying to apply this strategy to our SHIFT-JIS encoded file will not work at all:
+&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;pre class="example"&gt;
+No. :
+[1] 1 2 3
+
+X...s.ú :
+[1] "2015”N09ŒŽ25“ú" "2015”N09ŒŽ25“ú" "2015”N09ŒŽ21“ú"
+
+X....Š. :
+[1] "TŠ§" "TŠ§" "’©Š§"
+
+X.Ê.. :
+[1] "TŠ§’©“ú" "TŠ§’©“ú" "‚R‘‡"  
+
+ƒy..ƒW :
+[1] 22 18  3
+&lt;/pre&gt;
+
+&lt;p&gt;
+Ouch! Why is this so hard? Can we make it suck less?
 &lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-sec-4" class="outline-2"&gt;
-&lt;h2 id="sec-4"&gt;Encoding in R&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-4"&gt;
+&lt;div id="outline-container-sec-3" class="outline-2"&gt;
+&lt;h2 id="sec-3"&gt;Encoding in R&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-3"&gt;
 &lt;p&gt;
-Basically R gives you two (and only two!) ways of encoding strings. You can use the default encoding of your OS, or you can use UTF-8. On OS X and Linux these options are often the same, since the default OS encoding is usually UTF-8. On Windows there is no such luck. On my Windows 7 machine the default is "Windows codepage 1252". The problem with this is that many characters (such as Japanse) cannot be represented in codepage 1252. 
+Basically R gives you two ways of handling character encoding. You can use the default encoding of your OS, or you can use UTF-8&lt;sup&gt;&lt;a id="fnr.1" name="fnr.1" class="footref" href="http://people.fas.harvard.edu/~izahn/blog/posts/reading-data-with-non-native-encoding-in-r.html#fn.1"&gt;1&lt;/a&gt;&lt;/sup&gt;. On OS X and Linux these options are often the same, since the default OS encoding is usually UTF-8; this is a great advantage because just about everything can be represented in UTF-8. On Windows there is no such luck. On my Windows 7 machine the default is "Windows code page 1252"; many characters (such as Japanese) cannot be represented in code page 1252. If I want to work with Japanese text in R on Windows I have two options; change my locale to Japanese, or I can convert strings to UTF-8 and mark them as such.
 &lt;/p&gt;
+
+&lt;p&gt;
+In some ways just changing your locale to one that can accommodate the data you are working with is the simplest approach. Again, on Mac and Linux the locale usually specifies UTF-8 encoding, so no changes are needed; things should just work as you would expect them to. On windows we can change the locale to match the data we are working with using the &lt;code&gt;Sys.setlocale&lt;/code&gt; function. This sometimes works well; for example, we can read our UTF-8 and SHIFT-JIS encoded data on Windows as follows:
+&lt;/p&gt;
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;setlocale&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;"LC_ALL"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;"English_United States.932"&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+read.csv&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;"example_files/japanese_shiftjis.csv"&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+read.csv&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;"example_files/japanese_utf8.csv"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; fileEncoding &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;"UTF-8"&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;pre class="example"&gt;
+[1] "LC_COLLATE=English_United States.932;LC_CTYPE=English_United States.932;LC_MONETARY=English_United States.932;LC_NUMERIC=C;LC_TIME=English_United States.932"
+
+  No.         発行日 朝夕刊     面名 ページ
+1   1 2015年09月25日   週刊 週刊朝日     22
+2   2 2015年09月25日   週刊 週刊朝日     18
+3   3 2015年09月21日   朝刊   ３総合      3
+
+  No.         発行日 朝夕刊     面名 ページ
+1   1 2015年09月25日   週刊 週刊朝日     22
+2   2 2015年09月25日   週刊 週刊朝日     18
+3   3 2015年09月21日   朝刊   ３総合      3
+&lt;/pre&gt;
+
+&lt;p&gt;
+This works fine until we want to read some other kind of text in the same R session, and then we are right back to the same old problem. Another issue with this method is that it does not work in Rstudio unless the locale is set on startup; you cannot change the locale of a running session in Rstudio&lt;sup&gt;&lt;a id="fnr.2" name="fnr.2" class="footref" href="http://people.fas.harvard.edu/~izahn/blog/posts/reading-data-with-non-native-encoding-in-r.html#fn.2"&gt;2&lt;/a&gt;&lt;/sup&gt;.
+&lt;/p&gt;
+
+&lt;p&gt;
+Because the &lt;code&gt;Sys.setlocale&lt;/code&gt; method only works for a subset of languages in any given session, our best bet is to read store everything in UTF-8 (and make sure it is marked as such). It is not convenient to do this using the &lt;code&gt;read.table&lt;/code&gt; family of functions in R, but it is possible with some care:
+&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;x &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; read.csv&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;"example_files/japanese_shiftjis.csv"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; 
+	      encoding &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;"UTF-8"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; 
+	      check.names &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="kc"&gt;FALSE&lt;/span&gt; &lt;span class="c1"&gt;# otherwise R will mangle the names&lt;/span&gt;
+	      &lt;span class="p"&gt;)&lt;/span&gt;
+charcols &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="o"&gt;!&lt;/span&gt;&lt;span class="kp"&gt;sapply&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;x&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="kp"&gt;is.numeric&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+x&lt;span class="p"&gt;[&lt;/span&gt;charcols&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="kp"&gt;lapply&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;x&lt;span class="p"&gt;[&lt;/span&gt;charcols&lt;span class="p"&gt;],&lt;/span&gt; &lt;span class="kp"&gt;iconv&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; from &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;"SHIFT-JIS"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; to &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;"UTF-8"&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="kp"&gt;names&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;x&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="kp"&gt;iconv&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kp"&gt;names&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;x&lt;span class="p"&gt;),&lt;/span&gt; from &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;"SHIFT-JIS"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; to &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;"UTF-8"&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="kp"&gt;print.listof&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;x&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;pre class="example"&gt;
+No. :
+[1] 1 2 3
+
+発行日 :
+[1] "2015年09月25日" "2015年09月25日" "2015年09月21日"
+
+朝夕刊 :
+[1] "週刊" "週刊" "朝刊"
+
+面名 :
+[1] "週刊朝日" "週刊朝日" "３総合"  
+
+ページ :
+[1] 22 18  3
+&lt;/pre&gt;
+&lt;p&gt;
+OK it works, but honestly that too much work for something as simple as reading a .csv file into R. As suggested at the beginning of this post, a better strategy is to use the &lt;code&gt;`readr`&lt;/code&gt; package because it will do the conversion to UTF-8 for you:
+&lt;/p&gt;
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kp"&gt;print.listof&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;read_csv&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;"example_files/arabic_utf-8.csv"&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt; locale &lt;span class="o"&gt;=&lt;/span&gt; locale&lt;span class="p"&gt;(&lt;/span&gt;encoding &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;"UTF-8"&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+&lt;span class="kp"&gt;print.listof&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;read_csv&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;"example_files/japanese_utf8.csv"&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt; locale &lt;span class="o"&gt;=&lt;/span&gt; locale&lt;span class="p"&gt;(&lt;/span&gt;encoding &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;"UTF-8"&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+&lt;span class="kp"&gt;print.listof&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;read_csv&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;"example_files/japanese_utf8.csv"&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt; locale &lt;span class="o"&gt;=&lt;/span&gt; locale&lt;span class="p"&gt;(&lt;/span&gt;encoding &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;"SHIFT-JIS"&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;pre class="example"&gt;
+X5 :
+[1] "1895-01-02" "1895-01-07" "1895-01-16"
+X8 :
+[1] "اصلى" "اصلى" "اصلى"
+X12 :
+[1] "وقائع" "وقائع" "وقائع"
+
+No. :
+[1] "00001" "00002" "00003"
+発行日 :
+[1] "2015年09月25日" "2015年09月25日" "2015年09月21日"
+朝夕刊 :
+[1] "週刊" "週刊" "朝刊"
+面名 :
+[1] "週刊朝日" "週刊朝日" "３総合"  
+ページ :
+[1] "022" "018" "003"
+
+
+No. :
+[1] "00001" "00002" "00003"
+発行日 :
+[1] "2015年09月25日" "2015年09月25日" "2015年09月21日"
+朝夕刊 :
+[1] "週刊" "週刊" "朝刊"
+面名 :
+[1] "週刊朝日" "週刊朝日" "３総合"  
+ページ :
+[1] "022" "018" "003"
+&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id="footnotes"&gt;
+&lt;h2 class="footnotes"&gt;Footnotes: &lt;/h2&gt;
+&lt;div id="text-footnotes"&gt;
+
+&lt;div class="footdef"&gt;&lt;sup&gt;&lt;a id="fn.1" name="fn.1" class="footnum" href="http://people.fas.harvard.edu/~izahn/blog/posts/reading-data-with-non-native-encoding-in-r.html#fnr.1"&gt;1&lt;/a&gt;&lt;/sup&gt; &lt;p class="footpara"&gt;
+We can also mark strings as encoded in &lt;code&gt;latin1&lt;/code&gt;, but that is so rarely useful that I will not discuss it further.
+&lt;/p&gt;&lt;/div&gt;
+
+&lt;div class="footdef"&gt;&lt;sup&gt;&lt;a id="fn.2" name="fn.2" class="footnum" href="http://people.fas.harvard.edu/~izahn/blog/posts/reading-data-with-non-native-encoding-in-r.html#fnr.2"&gt;2&lt;/a&gt;&lt;/sup&gt; &lt;p class="footpara"&gt;
+See &lt;a href="https://support.rstudio.com/hc/en-us/articles/200532197-Character-Encoding"&gt;https://support.rstudio.com/hc/en-us/articles/200532197-Character-Encoding&lt;/a&gt;
+&lt;/p&gt;&lt;/div&gt;
+
+
 &lt;/div&gt;
 &lt;/div&gt;</description><category>Encoding</category><category>Files</category><category>R</category><category>SHIFT-JIS</category><category>UTF-8</category><guid>http://people.fas.harvard.edu/%7Eizahn/blog/posts/reading-data-with-non-native-encoding-in-r.html</guid><pubDate>Tue, 14 Jun 2016 17:57:09 GMT</pubDate></item></channel></rss>
