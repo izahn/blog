@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/" version="2.0"><channel><title>Bits and pieces of code, loosely tied together with prose (R)</title><link>http://people.fas.harvard.edu/%7Eizahn/blog/</link><description></description><atom:link rel="self" href="http://people.fas.harvard.edu/~izahn/blog/categories/cat_r.xml" type="application/rss+xml"></atom:link><language>en</language><lastBuildDate>Wed, 15 Jun 2016 17:53:25 GMT</lastBuildDate><generator>https://getnikola.com/</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Reading data with non-native encoding in R</title><link>http://people.fas.harvard.edu/%7Eizahn/blog/posts/reading-data-with-non-native-encoding-in-r.html</link><dc:creator>Ista Zahn</dc:creator><description>&lt;div id="outline-container-sec-1" class="outline-2"&gt;
-&lt;h2 id="sec-1"&gt;Importing files with non-native encoding in R on Windows&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-1"&gt;
+<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/"><channel><title>Ista's blog (R)</title><link>http://people.fas.harvard.edu/%7Eizahn/blog/</link><description></description><atom:link href="http://people.fas.harvard.edu/~izahn/blog/categories/cat_r.xml" rel="self" type="application/rss+xml"></atom:link><language>en</language><lastBuildDate>Wed, 15 Jun 2016 18:07:23 GMT</lastBuildDate><generator>https://getnikola.com/</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Escaping from character encoding hell in R on Windows</title><link>http://people.fas.harvard.edu/%7Eizahn/blog/posts/reading-data-with-non-native-encoding-in-r.html</link><dc:creator>Ista Zahn</dc:creator><description>&lt;p&gt;
+Note: the title of this post was inspired by &lt;a href="http://stackoverflow.com/questions/18789330/r-on-windows-character-encoding-hell"&gt;this question on stackoverflow&lt;/a&gt;.
+&lt;/p&gt;
+
 &lt;p&gt;
 This section gives the basic facts and recommendations for importing files with arbitrary encoding on Windows. The issues described here by and large to not apply on Mac or Linux; they are specific to running &lt;a href="http://people.fas.harvard.edu/~izahn/blog/r-project.org"&gt;R&lt;/a&gt; on Windows.
 &lt;/p&gt;
@@ -92,12 +93,10 @@ To recap:
 &lt;p&gt;
 Those wishing for more details about this issue can read on.
 &lt;/p&gt;
-&lt;/div&gt;
-&lt;/div&gt;
 
-&lt;div id="outline-container-sec-2" class="outline-2"&gt;
-&lt;h2 id="sec-2"&gt;What is the problem?&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-2"&gt;
+&lt;div id="outline-container-sec-1" class="outline-2"&gt;
+&lt;h2 id="sec-1"&gt;What is the problem?&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-1"&gt;
 &lt;p&gt;
 The problem is that the basic R functions for reading and writing data from and to files does no work in any reasonable way on Windows. If you are struggling with this you are not alone! There are numerous &lt;a href="http://stackoverflow.com/search?tab=votes&amp;amp;q=%255br%255d%2520%255bencoding%255d%2520windows"&gt;questions on stackoverflow&lt;/a&gt;, blog posts (e.g., &lt;a href="http://www.r-bloggers.com/r-and-foreign-characters/"&gt;this one&lt;/a&gt; by Rolf Fredheim, and &lt;a href="http://withr.me/configure-character-encoding-for-r-under-linux-and-windows/"&gt;another&lt;/a&gt; by Huidong Tian), and anguished &lt;a href="http://search.gmane.org/?query=encoding+windows+%2522utf-8%2522+%2522read%2522&amp;amp;author=&amp;amp;group=gmane.comp.lang.r.general&amp;amp;sort=date&amp;amp;DEFAULTOP=and&amp;amp;xP=Zencod%2509Zwindow%2509utf%25098%2509read&amp;amp;xFILTERS=Gcomp.lang.r.general---A"&gt;mailing list posts&lt;/a&gt;. Thinking of the person-hours wasted on this issue over the years almost brings a tear to my eye. 
 &lt;/p&gt;
@@ -222,9 +221,9 @@ Ouch! Why is this so hard? Can we make it suck less?
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-sec-3" class="outline-2"&gt;
-&lt;h2 id="sec-3"&gt;Encoding in R&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-3"&gt;
+&lt;div id="outline-container-sec-2" class="outline-2"&gt;
+&lt;h2 id="sec-2"&gt;Encoding in R&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-2"&gt;
 &lt;p&gt;
 Basically R gives you two ways of handling character encoding. You can use the default encoding of your OS, or you can use UTF-8&lt;sup&gt;&lt;a id="fnr.1" name="fnr.1" class="footref" href="http://people.fas.harvard.edu/~izahn/blog/posts/reading-data-with-non-native-encoding-in-r.html#fn.1"&gt;1&lt;/a&gt;&lt;/sup&gt;. On OS X and Linux these options are often the same, since the default OS encoding is usually UTF-8; this is a great advantage because just about everything can be represented in UTF-8. On Windows there is no such luck. On my Windows 7 machine the default is "Windows code page 1252"; many characters (such as Japanese) cannot be represented in code page 1252. If I want to work with Japanese text in R on Windows I have two options; change my locale to Japanese, or I can convert strings to UTF-8 and mark them as such.
 &lt;/p&gt;

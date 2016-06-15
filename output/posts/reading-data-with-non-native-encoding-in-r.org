@@ -1,5 +1,5 @@
 #+BEGIN_COMMENT
-.. title: Reading data with non-native encoding in R
+.. title: Escaping from character encoding hell in R on Windows
 .. slug: reading-data-with-non-native-encoding-in-r
 .. date: 2016-06-14 13:57:09 UTC-04:00
 .. tags: R,Encoding,Files,UTF-8,SHIFT-JIS
@@ -16,7 +16,7 @@
 #+PROPERTY: session *R*
 #+PROPERTY: exports both
 
-* Importing files with non-native encoding in R on Windows
+Note: the title of this post was inspired by [[http://stackoverflow.com/questions/18789330/r-on-windows-character-encoding-hell][this question on stackoverflow]].
 
 This section gives the basic facts and recommendations for importing files with arbitrary encoding on Windows. The issues described here by and large to not apply on Mac or Linux; they are specific to running [[http:r-project.org][R]] on Windows.
 
