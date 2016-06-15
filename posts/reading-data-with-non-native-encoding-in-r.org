@@ -15,6 +15,7 @@
 #+PROPERTY: results output
 #+PROPERTY: session *R*
 #+PROPERTY: exports both
+#+PROPERTY: tangle R_windows_encoding.R
 
 Note: the title of this post was inspired by [[http://stackoverflow.com/questions/18789330/r-on-windows-character-encoding-hell][this question on stackoverflow]].
 
@@ -306,6 +307,10 @@ No. :
 [1] "022" "018" "003"
 
 #+end_example
+
+* Files
+Here are the [[/blog/example_files.zip][example data files]] and [[/blog/R_windows_encoding.R][R code]] needed to run the examples in this post.
+
 * Footnotes
 
 [fn:2] See https://support.rstudio.com/hc/en-us/articles/200532197-Character-Encoding
