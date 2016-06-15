@@ -309,7 +309,7 @@ No. :
 #+end_example
 
 * Files
-Here are the [[/blog/example_files.zip][example data files]] and [[/blog/R_windows_encoding.R][R code]] needed to run the examples in this post.
+Here are the [[http://people.fas.harvard.edu/~izahn/blog/example_files.zip][example data files]] and [[http://people.fas.harvard.edu/~izahn/blog/R_windows_encoding.R][R code]] needed to run the examples in this post.
 
 * Footnotes
 
