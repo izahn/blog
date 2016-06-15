@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/"><channel><title>Bits and pieces of code, loosely tied together with prose (UTF-8)</title><link>http://people.fas.harvard.edu/%7Eizahn/blog/</link><description></description><atom:link rel="self" href="http://people.fas.harvard.edu/~izahn/blog/categories/utf-8.xml" type="application/rss+xml"></atom:link><language>en</language><lastBuildDate>Wed, 15 Jun 2016 17:41:15 GMT</lastBuildDate><generator>https://getnikola.com/</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Reading data with non-native encoding in R</title><link>http://people.fas.harvard.edu/%7Eizahn/blog/posts/reading-data-with-non-native-encoding-in-r.html</link><dc:creator>Ista Zahn</dc:creator><description>&lt;div id="outline-container-sec-1" class="outline-2"&gt;
+<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/"><channel><title>Bits and pieces of code, loosely tied together with prose (UTF-8)</title><link>http://people.fas.harvard.edu/%7Eizahn/blog/</link><description></description><atom:link type="application/rss+xml" rel="self" href="http://people.fas.harvard.edu/~izahn/blog/categories/utf-8.xml"></atom:link><language>en</language><lastBuildDate>Wed, 15 Jun 2016 17:51:23 GMT</lastBuildDate><generator>https://getnikola.com/</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Reading data with non-native encoding in R</title><link>http://people.fas.harvard.edu/%7Eizahn/blog/posts/reading-data-with-non-native-encoding-in-r.html</link><dc:creator>Ista Zahn</dc:creator><description>&lt;div id="outline-container-sec-1" class="outline-2"&gt;
 &lt;h2 id="sec-1"&gt;Importing files with non-native encoding in R on Windows&lt;/h2&gt;
 &lt;div class="outline-text-2" id="text-1"&gt;
 &lt;p&gt;
@@ -11,7 +11,7 @@ If you are on a deadline and just need to get the job done this section should b
 &lt;/p&gt;
 
 &lt;p&gt;
-To read a text file with non ASCII encoding into R you should a) determine the encoding and b) read it in such a way that the information is re-encoded into UTF-8, and c) ignore the bug in the &lt;code&gt;data.frame&lt;/code&gt; print method on Windows. Hopefully the encoding is specified in the documentation that accompanied your data. If not, you can guess the encoding using the &lt;code&gt;stri_read_raw&lt;/code&gt; and &lt;code&gt;stri_enc_detect&lt;/code&gt; functions in the &lt;code&gt;`stringi`&lt;/code&gt; package. You can ensure that the information is re-encoded to UTF-8 by using the &lt;code&gt;`readr`&lt;/code&gt; package.
+To read a text file with non ASCII encoding into R you should a) determine the encoding and b) read it in such a way that the information is re-encoded into UTF-8, and c) ignore the bug in the &lt;code&gt;data.frame&lt;/code&gt; print method on Windows. Hopefully the encoding is specified in the documentation that accompanied your data. If not, you can guess the encoding using the &lt;code&gt;stri_read_raw&lt;/code&gt; and &lt;code&gt;stri_enc_detect&lt;/code&gt; functions in the &lt;a href="http://www.gagolewski.com/software/stringi/"&gt;stringi&lt;/a&gt;  package. You can ensure that the information is re-encoded to UTF-8 by using the &lt;a href="https://github.com/hadley/readr"&gt;readr&lt;/a&gt; package.
 &lt;/p&gt;
 
 &lt;p&gt;
@@ -78,7 +78,7 @@ No. :
 &lt;/pre&gt;
 
 &lt;p&gt;
-To recap: regardless of platform (Windows, Mac Linux), use the &lt;code&gt;`readr`&lt;/code&gt; package to read data into R. This will re-encode the contents of the file to UTF-8 for you. Make sure you specify the encoding using the &lt;code&gt;locale&lt;/code&gt; argument as shown in the example above. Ignore the ugly &lt;code&gt;print.data.frame&lt;/code&gt; bug and use &lt;code&gt;print.listof&lt;/code&gt; to check that your data was imported correctly.
+To recap: regardless of platform (Windows, Mac Linux), use the &lt;a href="https://github.com/hadley/readr"&gt;readr&lt;/a&gt; package to read data into R. This will re-encode the contents of the file to UTF-8 for you. Make sure you specify the encoding using the &lt;code&gt;locale&lt;/code&gt; argument as shown in the example above. Ignore the ugly &lt;code&gt;print.data.frame&lt;/code&gt; bug and use &lt;code&gt;print.listof&lt;/code&gt; to check that your data was imported correctly.
 &lt;/p&gt;
 
 &lt;p&gt;
@@ -278,7 +278,7 @@ No. :
 [1] 22 18  3
 &lt;/pre&gt;
 &lt;p&gt;
-OK it works, but honestly that too much work for something as simple as reading a .csv file into R. As suggested at the beginning of this post, a better strategy is to use the &lt;code&gt;`readr`&lt;/code&gt; package because it will do the conversion to UTF-8 for you:
+OK it works, but honestly that too much work for something as simple as reading a .csv file into R. As suggested at the beginning of this post, a better strategy is to use the &lt;a href="https://github.com/hadley/readr"&gt;readr&lt;/a&gt; package because it will do the conversion to UTF-8 for you:
 &lt;/p&gt;
 
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kp"&gt;print.listof&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;read_csv&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;"example_files/arabic_utf-8.csv"&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt; locale &lt;span class="o"&gt;=&lt;/span&gt; locale&lt;span class="p"&gt;(&lt;/span&gt;encoding &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;"UTF-8"&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
