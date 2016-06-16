@@ -7,15 +7,15 @@
                         http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
  <url>
   <loc>http://people.fas.harvard.edu/%7Eizahn/2016/index.html</loc>
-  <lastmod>2016-06-16T16:32:00Z</lastmod>
+  <lastmod>2016-06-16T18:40:00Z</lastmod>
  </url>
  <url>
   <loc>http://people.fas.harvard.edu/%7Eizahn/archive.html</loc>
-  <lastmod>2016-06-16T16:14:00Z</lastmod>
+  <lastmod>2016-06-16T18:40:00Z</lastmod>
  </url>
  <url>
   <loc>http://people.fas.harvard.edu/%7Eizahn/blog/index.html</loc>
-  <lastmod>2016-06-16T16:32:00Z</lastmod>
+  <lastmod>2016-06-16T18:40:00Z</lastmod>
  </url>
  <url>
   <loc>http://people.fas.harvard.edu/%7Eizahn/categories/cat_r/index.html</loc>
@@ -59,6 +59,10 @@
  </url>
  <url>
   <loc>http://people.fas.harvard.edu/%7Eizahn/posts/reading-data-with-non-native-encoding-in-r/index.html</loc>
-  <lastmod>2016-06-16T16:32:00Z</lastmod>
+  <lastmod>2016-06-16T18:40:00Z</lastmod>
+ </url>
+ <url>
+  <loc>http://people.fas.harvard.edu/%7Eizahn/posts/test/index.html</loc>
+  <lastmod>2016-06-16T18:40:00Z</lastmod>
  </url>
 </urlset>
