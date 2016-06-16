@@ -339,7 +339,7 @@ Here are the <a href="http://people.fas.harvard.edu/~izahn/blog/example_files.zi
 <div id="text-footnotes">
 
 <div class="footdef"><sup><a id="fn.1" name="fn.1" class="footnum" href="#fnr.1">1</a></sup> <p class="footpara">
-We can also mark strings as encoded in <code>latin1</code>, but that is so rarely useful that I will not discuss it further.
+We can also mark strings as encoded in <code>latin1</code>, but that is not useful if you take my advice and store everything in UTF-8.
 </p></div>
 
 <div class="footdef"><sup><a id="fn.2" name="fn.2" class="footnum" href="#fnr.2">2</a></sup> <p class="footpara">

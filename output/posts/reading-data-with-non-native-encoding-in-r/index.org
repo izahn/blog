@@ -92,6 +92,8 @@ To recap:
 
 Those wishing for more details about this issue can read on.
 
+#+HTML: <!-- TEASER_END -->
+
 * What is the problem?
 
 The problem is that the basic R functions for reading and writing data from and to files does no work in any reasonable way on Windows. If you are struggling with this you are not alone! There are numerous [[http://stackoverflow.com/search?tab=votes&q=%255br%255d%2520%255bencoding%255d%2520windows][questions on stackoverflow]], blog posts (e.g., [[http://www.r-bloggers.com/r-and-foreign-characters/][this one]] by Rolf Fredheim, and [[http://withr.me/configure-character-encoding-for-r-under-linux-and-windows/][another]] by Huidong Tian), and anguished [[http://search.gmane.org/?query=encoding+windows+%2522utf-8%2522+%2522read%2522&author=&group=gmane.comp.lang.r.general&sort=date&DEFAULTOP=and&xP=Zencod%2509Zwindow%2509utf%25098%2509read&xFILTERS=Gcomp.lang.r.general---A][mailing list posts]]. Thinking of the person-hours wasted on this issue over the years almost brings a tear to my eye. 
