@@ -30,9 +30,9 @@ For example, I have two versions of a file containing numbers and Japanese chara
 #+BEGIN_SRC R
   library(readr)
   options(stringsAsFactors = FALSE)
-  read_csv("example_files/japanese_utf8.csv",
+  read_csv("japanese_utf8.csv",
            locale = locale(encoding = "UTF-8"))
-  read_csv("example_files/japanese_shiftjis.csv",
+  read_csv("japanese_shiftjis.csv",
            locale = locale(encoding = "SHIFT-JIS"))
 #+END_SRC
 
@@ -63,7 +63,7 @@ On Windows there is a bug in ~print.data.frame~ that causes ~data.frame~'s with 
 which looks terrible but does not actually indicate a problem. The information is encoded correctly, but due to a long-standing bug it is _displayed_ incorrectly. You can check to see if the values are correct by converting the data.frame by (ab)using ~print.listof~, e.g.,
 
 #+BEGIN_SRC R :eval no
-  print.listof(read_csv("example_files/japanese_shiftjis.csv",
+  print.listof(read_csv("japanese_shiftjis.csv",
                         locale = locale(encoding = "SHIFT-JIS")))
 #+END_SRC
 
@@ -101,7 +101,7 @@ The problem is that the basic R functions for reading and writing data from and 
 Let's try it, using some simplified data from a project I worked on last year. For illustration I've created two files containing a mix of English letters, numbers, and Japanese characters. I saved one version with UTF-8 encoding, and another with SHIFT-JIS. On Linux we can read both files easily, provided only that we correctly specify the encoding if the file is not already encoded in UTF-8:
 
 #+BEGIN_SRC R
-  read.csv("example_files/japanese_utf8.csv")
+  read.csv("japanese_utf8.csv")
 #+END_SRC
 
 #+RESULTS:
@@ -111,7 +111,7 @@ Let's try it, using some simplified data from a project I worked on last year. F
 : 3   3 2015年09月21日   朝刊   ３総合      3
 
 #+BEGIN_SRC R
-  read.csv("example_files/japanese_shiftjis.csv", fileEncoding = "SHIFT-JIS")
+  read.csv("japanese_shiftjis.csv", fileEncoding = "SHIFT-JIS")
 #+END_SRC
 
 #+RESULTS:
@@ -123,7 +123,7 @@ Let's try it, using some simplified data from a project I worked on last year. F
 On Windows things are much more difficult. Using ~read.csv~ with the default options does not work because ~read.csv~ assumes that the encoding of the file matches the Windows locale settings:
 
 #+BEGIN_SRC R :eval no
-  read.csv("example_files/japanese_utf8.csv")
+  read.csv("japanese_utf8.csv")
 #+END_SRC
 
 #+RESULTS:
@@ -137,7 +137,7 @@ On Windows things are much more difficult. Using ~read.csv~ with the default opt
 
 Trying to tell R that the file is encoded in UTF-8 not a general solution because ~read.csv~ will then try to re-encode from UTF-8 to the native encoding, which may or may not work depending on the contents of the file. On my system trying to read a UTF-8 encoded file containing Japanese characters with the fileEncoding falls flat on its face:
 #+BEGIN_SRC R :eal no
-  read.csv("example_files/japanese_utf8.csv", fileEncoding = "UTF-8")
+  read.csv("japanese_utf8.csv", fileEncoding = "UTF-8")
 #+END_SRC
 
 #+RESULTS:
@@ -146,20 +146,20 @@ Trying to tell R that the file is encoded in UTF-8 not a general solution becaus
 <0 rows> (or 0-length row.names)
 Warning messages:
 1: In read.table(file = file, header = header, sep = sep, quote = quote,  :
-  invalid input found on input connection 'example_files/japanese_utf8.csv'
+  invalid input found on input connection 'japanese_utf8.csv'
 2: In read.table(file = file, header = header, sep = sep, quote = quote,  :
-  incomplete final line found by readTableHeader on 'example_files/japanese_utf8.csv'
+  incomplete final line found by readTableHeader on 'japanese_utf8.csv'
 #+end_example
 
 
 Finally, we might try the ~encoding~ argument rather than ~fileEncoding~. This simply marks the strings with the specified encoding:
 #+BEGIN_SRC R :eal no
-  read.csv("example_files/japanese_utf8.csv", encoding = "UTF-8")
+  read.csv("japanese_utf8.csv", encoding = "UTF-8")
 #+END_SRC
 
 #+RESULTS:
 #+begin_example
-read.csv("example_files/japanese_utf8.csv", encoding = "UTF-8")
+read.csv("japanese_utf8.csv", encoding = "UTF-8")
   No.        X.U.767A..U.884C..U.65E5. X.U.671D..U.5915..U.520A.                X.U.9762..U.540D. X.U.30DA..U.30FC..U.30B8.
 1   1 2015<U+5E74>09<U+6708>25<U+65E5>          <U+9031><U+520A> <U+9031><U+520A><U+671D><U+65E5>                        22
 2   2 2015<U+5E74>09<U+6708>25<U+65E5>          <U+9031><U+520A> <U+9031><U+520A><U+671D><U+65E5>                        18
@@ -167,7 +167,7 @@ read.csv("example_files/japanese_utf8.csv", encoding = "UTF-8")
 #+end_example
 This kind of works, though you wouldn't know it from the output. As mentioned above, there is a bug in the ~print.data.frame~ function that prevents UTF-8 encoded text from displaying correctly. We can use another print method to see that the column values have been read in correctly:
 #+BEGIN_SRC R :eval no
-  print.listof(read.csv("example_files/japanese_utf8.csv", encoding = "UTF-8"))
+  print.listof(read.csv("japanese_utf8.csv", encoding = "UTF-8"))
 #+END_SRC
 
 #+begin_example
@@ -220,8 +220,8 @@ In some ways just changing your locale to one that can accommodate the data you 
 
 #+BEGIN_SRC R :eval no
   setlocale("LC_ALL", "English_United States.932")
-  read.csv("example_files/japanese_shiftjis.csv")
-  read.csv("example_files/japanese_utf8.csv", fileEncoding = "UTF-8")
+  read.csv("japanese_shiftjis.csv")
+  read.csv("japanese_utf8.csv", fileEncoding = "UTF-8")
 #+END_SRC
 
 #+begin_example
@@ -243,7 +243,7 @@ This works fine until we want to read some other kind of text in the same R sess
 
 Because the ~Sys.setlocale~ method only works for a subset of languages in any given session, our best bet is to read store everything in UTF-8 (and make sure it is marked as such). It is not convenient to do this using the ~read.table~ family of functions in R, but it is possible with some care:
 #+BEGIN_SRC R :eval no
-  x <- read.csv("example_files/japanese_shiftjis.csv", 
+  x <- read.csv("japanese_shiftjis.csv", 
                 encoding = "UTF-8", 
                 check.names = FALSE # otherwise R will mangle the names
                 )
@@ -272,9 +272,9 @@ No. :
 OK it works, but honestly that too much work for something as simple as reading a .csv file into R. As suggested at the beginning of this post, a better strategy is to use the [[https://github.com/hadley/readr][readr]] package because it will do the conversion to UTF-8 for you:
 
 #+BEGIN_SRC R :eval no
-  print.listof(read_csv("example_files/arabic_utf-8.csv"), locale = locale(encoding = "UTF-8"))
-  print.listof(read_csv("example_files/japanese_utf8.csv"), locale = locale(encoding = "UTF-8"))
-  print.listof(read_csv("example_files/japanese_utf8.csv"), locale = locale(encoding = "SHIFT-JIS"))
+  print.listof(read_csv("arabic_utf-8.csv"), locale = locale(encoding = "UTF-8"))
+  print.listof(read_csv("japanese_utf8.csv"), locale = locale(encoding = "UTF-8"))
+  print.listof(read_csv("japanese_utf8.csv"), locale = locale(encoding = "SHIFT-JIS"))
 #+END_SRC
 
 #+begin_example
@@ -311,7 +311,7 @@ No. :
 #+end_example
 
 * Files
-Here are the [[http://people.fas.harvard.edu/~izahn/blog/example_files.zip][example data files]] and [[http://people.fas.harvard.edu/~izahn/blog/R_windows_encoding.R][R code]] needed to run the examples in this post.
+Here are the [[http://people.fas.harvard.edu/~izahn/example_files/blog/encoding_hell.zip][example data files and code]] and needed to run the examples in this post.
 
 * Footnotes
 

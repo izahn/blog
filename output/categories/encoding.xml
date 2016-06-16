@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/" version="2.0"><channel><title>Ista Zahn (Encoding)</title><link>http://people.fas.harvard.edu/%7Eizahn/</link><description></description><atom:link type="application/rss+xml" href="http://people.fas.harvard.edu/~izahn/categories/encoding.xml" rel="self"></atom:link><language>en</language><lastBuildDate>Thu, 16 Jun 2016 15:30:57 GMT</lastBuildDate><generator>https://getnikola.com/</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Escaping from character encoding hell in R on Windows</title><link>http://people.fas.harvard.edu/%7Eizahn/posts/reading-data-with-non-native-encoding-in-r/index.html</link><dc:creator>Ista Zahn</dc:creator><description>&lt;p&gt;
+<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Ista Zahn (Encoding)</title><link>http://people.fas.harvard.edu/%7Eizahn/</link><description></description><atom:link rel="self" href="http://people.fas.harvard.edu/~izahn/categories/encoding.xml" type="application/rss+xml"></atom:link><language>en</language><lastBuildDate>Thu, 16 Jun 2016 16:32:57 GMT</lastBuildDate><generator>https://getnikola.com/</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Escaping from character encoding hell in R on Windows</title><link>http://people.fas.harvard.edu/%7Eizahn/posts/reading-data-with-non-native-encoding-in-r/index.html</link><dc:creator>Ista Zahn</dc:creator><description>&lt;p&gt;
 Note: the title of this post was inspired by &lt;a href="http://stackoverflow.com/questions/18789330/r-on-windows-character-encoding-hell"&gt;this question on stackoverflow&lt;/a&gt;.
 &lt;/p&gt;
 
@@ -21,9 +21,9 @@ For example, I have two versions of a file containing numbers and Japanese chara
 
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kn"&gt;library&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;readr&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;span class="kp"&gt;options&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;stringsAsFactors &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="kc"&gt;FALSE&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-read_csv&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;"example_files/japanese_utf8.csv"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+read_csv&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;"japanese_utf8.csv"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
 	 locale &lt;span class="o"&gt;=&lt;/span&gt; locale&lt;span class="p"&gt;(&lt;/span&gt;encoding &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;"UTF-8"&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
-read_csv&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;"example_files/japanese_shiftjis.csv"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+read_csv&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;"japanese_shiftjis.csv"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
 	 locale &lt;span class="o"&gt;=&lt;/span&gt; locale&lt;span class="p"&gt;(&lt;/span&gt;encoding &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;"SHIFT-JIS"&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
@@ -57,7 +57,7 @@ On Windows there is a bug in &lt;code&gt;print.data.frame&lt;/code&gt; that caus
 which looks terrible but does not actually indicate a problem. The information is encoded correctly, but due to a long-standing bug it is &lt;span class="underline"&gt;displayed&lt;/span&gt; incorrectly. You can check to see if the values are correct by converting the data.frame by (ab)using &lt;code&gt;print.listof&lt;/code&gt;, e.g.,
 &lt;/p&gt;
 
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kp"&gt;print.listof&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;read_csv&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;"example_files/japanese_shiftjis.csv"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kp"&gt;print.listof&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;read_csv&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;"japanese_shiftjis.csv"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
 		      locale &lt;span class="o"&gt;=&lt;/span&gt; locale&lt;span class="p"&gt;(&lt;/span&gt;encoding &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;"SHIFT-JIS"&lt;/span&gt;&lt;span class="p"&gt;)))&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
@@ -107,7 +107,7 @@ The problem is that the basic R functions for reading and writing data from and 
 Let's try it, using some simplified data from a project I worked on last year. For illustration I've created two files containing a mix of English letters, numbers, and Japanese characters. I saved one version with UTF-8 encoding, and another with SHIFT-JIS. On Linux we can read both files easily, provided only that we correctly specify the encoding if the file is not already encoded in UTF-8:
 &lt;/p&gt;
 
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;read.csv&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;"example_files/japanese_utf8.csv"&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;read.csv&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;"japanese_utf8.csv"&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 &lt;pre class="example"&gt;
@@ -117,7 +117,7 @@ Let's try it, using some simplified data from a project I worked on last year. F
 3   3 2015年09月21日   朝刊   ３総合      3
 &lt;/pre&gt;
 
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;read.csv&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;"example_files/japanese_shiftjis.csv"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; fileEncoding &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;"SHIFT-JIS"&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;read.csv&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;"japanese_shiftjis.csv"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; fileEncoding &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;"SHIFT-JIS"&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 &lt;pre class="example"&gt;
@@ -131,7 +131,7 @@ Let's try it, using some simplified data from a project I worked on last year. F
 On Windows things are much more difficult. Using &lt;code&gt;read.csv&lt;/code&gt; with the default options does not work because &lt;code&gt;read.csv&lt;/code&gt; assumes that the encoding of the file matches the Windows locale settings:
 &lt;/p&gt;
 
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;read.csv&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;"example_files/japanese_utf8.csv"&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;read.csv&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;"japanese_utf8.csv"&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 &lt;pre class="example"&gt;
@@ -144,7 +144,7 @@ On Windows things are much more difficult. Using &lt;code&gt;read.csv&lt;/code&g
 &lt;p&gt;
 Trying to tell R that the file is encoded in UTF-8 not a general solution because &lt;code&gt;read.csv&lt;/code&gt; will then try to re-encode from UTF-8 to the native encoding, which may or may not work depending on the contents of the file. On my system trying to read a UTF-8 encoded file containing Japanese characters with the fileEncoding falls flat on its face:
 &lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;read.csv&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;"example_files/japanese_utf8.csv"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; fileEncoding &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;"UTF-8"&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;read.csv&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;"japanese_utf8.csv"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; fileEncoding &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;"UTF-8"&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 &lt;pre class="example"&gt;
@@ -152,20 +152,20 @@ Trying to tell R that the file is encoded in UTF-8 not a general solution becaus
 &amp;lt;0 rows&amp;gt; (or 0-length row.names)
 Warning messages:
 1: In read.table(file = file, header = header, sep = sep, quote = quote,  :
-  invalid input found on input connection 'example_files/japanese_utf8.csv'
+  invalid input found on input connection 'japanese_utf8.csv'
 2: In read.table(file = file, header = header, sep = sep, quote = quote,  :
-  incomplete final line found by readTableHeader on 'example_files/japanese_utf8.csv'
+  incomplete final line found by readTableHeader on 'japanese_utf8.csv'
 &lt;/pre&gt;
 
 
 &lt;p&gt;
 Finally, we might try the &lt;code&gt;encoding&lt;/code&gt; argument rather than &lt;code&gt;fileEncoding&lt;/code&gt;. This simply marks the strings with the specified encoding:
 &lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;read.csv&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;"example_files/japanese_utf8.csv"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; encoding &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;"UTF-8"&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;read.csv&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;"japanese_utf8.csv"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; encoding &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;"UTF-8"&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 &lt;pre class="example"&gt;
-read.csv("example_files/japanese_utf8.csv", encoding = "UTF-8")
+read.csv("japanese_utf8.csv", encoding = "UTF-8")
   No.        X.U.767A..U.884C..U.65E5. X.U.671D..U.5915..U.520A.                X.U.9762..U.540D. X.U.30DA..U.30FC..U.30B8.
 1   1 2015&amp;lt;U+5E74&amp;gt;09&amp;lt;U+6708&amp;gt;25&amp;lt;U+65E5&amp;gt;          &amp;lt;U+9031&amp;gt;&amp;lt;U+520A&amp;gt; &amp;lt;U+9031&amp;gt;&amp;lt;U+520A&amp;gt;&amp;lt;U+671D&amp;gt;&amp;lt;U+65E5&amp;gt;                        22
 2   2 2015&amp;lt;U+5E74&amp;gt;09&amp;lt;U+6708&amp;gt;25&amp;lt;U+65E5&amp;gt;          &amp;lt;U+9031&amp;gt;&amp;lt;U+520A&amp;gt; &amp;lt;U+9031&amp;gt;&amp;lt;U+520A&amp;gt;&amp;lt;U+671D&amp;gt;&amp;lt;U+65E5&amp;gt;                        18
@@ -174,7 +174,7 @@ read.csv("example_files/japanese_utf8.csv", encoding = "UTF-8")
 &lt;p&gt;
 This kind of works, though you wouldn't know it from the output. As mentioned above, there is a bug in the &lt;code&gt;print.data.frame&lt;/code&gt; function that prevents UTF-8 encoded text from displaying correctly. We can use another print method to see that the column values have been read in correctly:
 &lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kp"&gt;print.listof&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;read.csv&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;"example_files/japanese_utf8.csv"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; encoding &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;"UTF-8"&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kp"&gt;print.listof&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;read.csv&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;"japanese_utf8.csv"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; encoding &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;"UTF-8"&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 &lt;pre class="example"&gt;
@@ -235,8 +235,8 @@ In some ways just changing your locale to one that can accommodate the data you 
 &lt;/p&gt;
 
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;setlocale&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;"LC_ALL"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;"English_United States.932"&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-read.csv&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;"example_files/japanese_shiftjis.csv"&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-read.csv&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;"example_files/japanese_utf8.csv"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; fileEncoding &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;"UTF-8"&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+read.csv&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;"japanese_shiftjis.csv"&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+read.csv&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;"japanese_utf8.csv"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; fileEncoding &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;"UTF-8"&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 &lt;pre class="example"&gt;
@@ -260,7 +260,7 @@ This works fine until we want to read some other kind of text in the same R sess
 &lt;p&gt;
 Because the &lt;code&gt;Sys.setlocale&lt;/code&gt; method only works for a subset of languages in any given session, our best bet is to read store everything in UTF-8 (and make sure it is marked as such). It is not convenient to do this using the &lt;code&gt;read.table&lt;/code&gt; family of functions in R, but it is possible with some care:
 &lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;x &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; read.csv&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;"example_files/japanese_shiftjis.csv"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; 
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;x &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; read.csv&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;"japanese_shiftjis.csv"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; 
 	      encoding &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;"UTF-8"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; 
 	      check.names &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="kc"&gt;FALSE&lt;/span&gt; &lt;span class="c1"&gt;# otherwise R will mangle the names&lt;/span&gt;
 	      &lt;span class="p"&gt;)&lt;/span&gt;
@@ -290,9 +290,9 @@ No. :
 OK it works, but honestly that too much work for something as simple as reading a .csv file into R. As suggested at the beginning of this post, a better strategy is to use the &lt;a href="https://github.com/hadley/readr"&gt;readr&lt;/a&gt; package because it will do the conversion to UTF-8 for you:
 &lt;/p&gt;
 
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kp"&gt;print.listof&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;read_csv&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;"example_files/arabic_utf-8.csv"&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt; locale &lt;span class="o"&gt;=&lt;/span&gt; locale&lt;span class="p"&gt;(&lt;/span&gt;encoding &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;"UTF-8"&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
-&lt;span class="kp"&gt;print.listof&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;read_csv&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;"example_files/japanese_utf8.csv"&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt; locale &lt;span class="o"&gt;=&lt;/span&gt; locale&lt;span class="p"&gt;(&lt;/span&gt;encoding &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;"UTF-8"&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
-&lt;span class="kp"&gt;print.listof&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;read_csv&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;"example_files/japanese_utf8.csv"&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt; locale &lt;span class="o"&gt;=&lt;/span&gt; locale&lt;span class="p"&gt;(&lt;/span&gt;encoding &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;"SHIFT-JIS"&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kp"&gt;print.listof&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;read_csv&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;"arabic_utf-8.csv"&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt; locale &lt;span class="o"&gt;=&lt;/span&gt; locale&lt;span class="p"&gt;(&lt;/span&gt;encoding &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;"UTF-8"&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+&lt;span class="kp"&gt;print.listof&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;read_csv&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;"japanese_utf8.csv"&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt; locale &lt;span class="o"&gt;=&lt;/span&gt; locale&lt;span class="p"&gt;(&lt;/span&gt;encoding &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;"UTF-8"&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+&lt;span class="kp"&gt;print.listof&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;read_csv&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;"japanese_utf8.csv"&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt; locale &lt;span class="o"&gt;=&lt;/span&gt; locale&lt;span class="p"&gt;(&lt;/span&gt;encoding &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;"SHIFT-JIS"&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 &lt;pre class="example"&gt;
@@ -333,7 +333,7 @@ No. :
 &lt;h2 id="sec-3"&gt;Files&lt;/h2&gt;
 &lt;div class="outline-text-2" id="text-3"&gt;
 &lt;p&gt;
-Here are the &lt;a href="http://people.fas.harvard.edu/~izahn/blog/example_files.zip"&gt;example data files&lt;/a&gt; and &lt;a href="http://people.fas.harvard.edu/~izahn/blog/R_windows_encoding.R"&gt;R code&lt;/a&gt; needed to run the examples in this post.
+Here are the &lt;a href="http://people.fas.harvard.edu/~izahn/example_files/blog/encoding_hell.zip"&gt;example data files and code&lt;/a&gt; and needed to run the examples in this post.
 &lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;

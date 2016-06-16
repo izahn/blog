@@ -122,9 +122,9 @@ For example, I have two versions of a file containing numbers and Japanese chara
 
 <div class="highlight"><pre><span></span><span class="kn">library</span><span class="p">(</span>readr<span class="p">)</span>
 <span class="kp">options</span><span class="p">(</span>stringsAsFactors <span class="o">=</span> <span class="kc">FALSE</span><span class="p">)</span>
-read_csv<span class="p">(</span><span class="s">"example_files/japanese_utf8.csv"</span><span class="p">,</span>
+read_csv<span class="p">(</span><span class="s">"japanese_utf8.csv"</span><span class="p">,</span>
 	 locale <span class="o">=</span> locale<span class="p">(</span>encoding <span class="o">=</span> <span class="s">"UTF-8"</span><span class="p">))</span>
-read_csv<span class="p">(</span><span class="s">"example_files/japanese_shiftjis.csv"</span><span class="p">,</span>
+read_csv<span class="p">(</span><span class="s">"japanese_shiftjis.csv"</span><span class="p">,</span>
 	 locale <span class="o">=</span> locale<span class="p">(</span>encoding <span class="o">=</span> <span class="s">"SHIFT-JIS"</span><span class="p">))</span>
 </pre></div>
 
@@ -158,7 +158,7 @@ On Windows there is a bug in <code>print.data.frame</code> that causes <code>dat
 which looks terrible but does not actually indicate a problem. The information is encoded correctly, but due to a long-standing bug it is <span class="underline">displayed</span> incorrectly. You can check to see if the values are correct by converting the data.frame by (ab)using <code>print.listof</code>, e.g.,
 </p>
 
-<div class="highlight"><pre><span></span><span class="kp">print.listof</span><span class="p">(</span>read_csv<span class="p">(</span><span class="s">"example_files/japanese_shiftjis.csv"</span><span class="p">,</span>
+<div class="highlight"><pre><span></span><span class="kp">print.listof</span><span class="p">(</span>read_csv<span class="p">(</span><span class="s">"japanese_shiftjis.csv"</span><span class="p">,</span>
 		      locale <span class="o">=</span> locale<span class="p">(</span>encoding <span class="o">=</span> <span class="s">"SHIFT-JIS"</span><span class="p">)))</span>
 </pre></div>
 
@@ -207,7 +207,7 @@ The problem is that the basic R functions for reading and writing data from and 
 Let's try it, using some simplified data from a project I worked on last year. For illustration I've created two files containing a mix of English letters, numbers, and Japanese characters. I saved one version with UTF-8 encoding, and another with SHIFT-JIS. On Linux we can read both files easily, provided only that we correctly specify the encoding if the file is not already encoded in UTF-8:
 </p>
 
-<div class="highlight"><pre><span></span>read.csv<span class="p">(</span><span class="s">"example_files/japanese_utf8.csv"</span><span class="p">)</span>
+<div class="highlight"><pre><span></span>read.csv<span class="p">(</span><span class="s">"japanese_utf8.csv"</span><span class="p">)</span>
 </pre></div>
 
 <pre class="example">
@@ -217,7 +217,7 @@ Let's try it, using some simplified data from a project I worked on last year. F
 3   3 2015年09月21日   朝刊   ３総合      3
 </pre>
 
-<div class="highlight"><pre><span></span>read.csv<span class="p">(</span><span class="s">"example_files/japanese_shiftjis.csv"</span><span class="p">,</span> fileEncoding <span class="o">=</span> <span class="s">"SHIFT-JIS"</span><span class="p">)</span>
+<div class="highlight"><pre><span></span>read.csv<span class="p">(</span><span class="s">"japanese_shiftjis.csv"</span><span class="p">,</span> fileEncoding <span class="o">=</span> <span class="s">"SHIFT-JIS"</span><span class="p">)</span>
 </pre></div>
 
 <pre class="example">
@@ -231,7 +231,7 @@ Let's try it, using some simplified data from a project I worked on last year. F
 On Windows things are much more difficult. Using <code>read.csv</code> with the default options does not work because <code>read.csv</code> assumes that the encoding of the file matches the Windows locale settings:
 </p>
 
-<div class="highlight"><pre><span></span>read.csv<span class="p">(</span><span class="s">"example_files/japanese_utf8.csv"</span><span class="p">)</span>
+<div class="highlight"><pre><span></span>read.csv<span class="p">(</span><span class="s">"japanese_utf8.csv"</span><span class="p">)</span>
 </pre></div>
 
 <pre class="example">
@@ -244,7 +244,7 @@ On Windows things are much more difficult. Using <code>read.csv</code> with the 
 <p>
 Trying to tell R that the file is encoded in UTF-8 not a general solution because <code>read.csv</code> will then try to re-encode from UTF-8 to the native encoding, which may or may not work depending on the contents of the file. On my system trying to read a UTF-8 encoded file containing Japanese characters with the fileEncoding falls flat on its face:
 </p>
-<div class="highlight"><pre><span></span>read.csv<span class="p">(</span><span class="s">"example_files/japanese_utf8.csv"</span><span class="p">,</span> fileEncoding <span class="o">=</span> <span class="s">"UTF-8"</span><span class="p">)</span>
+<div class="highlight"><pre><span></span>read.csv<span class="p">(</span><span class="s">"japanese_utf8.csv"</span><span class="p">,</span> fileEncoding <span class="o">=</span> <span class="s">"UTF-8"</span><span class="p">)</span>
 </pre></div>
 
 <pre class="example">
@@ -252,20 +252,20 @@ Trying to tell R that the file is encoded in UTF-8 not a general solution becaus
 &lt;0 rows&gt; (or 0-length row.names)
 Warning messages:
 1: In read.table(file = file, header = header, sep = sep, quote = quote,  :
-  invalid input found on input connection 'example_files/japanese_utf8.csv'
+  invalid input found on input connection 'japanese_utf8.csv'
 2: In read.table(file = file, header = header, sep = sep, quote = quote,  :
-  incomplete final line found by readTableHeader on 'example_files/japanese_utf8.csv'
+  incomplete final line found by readTableHeader on 'japanese_utf8.csv'
 </pre>
 
 
 <p>
 Finally, we might try the <code>encoding</code> argument rather than <code>fileEncoding</code>. This simply marks the strings with the specified encoding:
 </p>
-<div class="highlight"><pre><span></span>read.csv<span class="p">(</span><span class="s">"example_files/japanese_utf8.csv"</span><span class="p">,</span> encoding <span class="o">=</span> <span class="s">"UTF-8"</span><span class="p">)</span>
+<div class="highlight"><pre><span></span>read.csv<span class="p">(</span><span class="s">"japanese_utf8.csv"</span><span class="p">,</span> encoding <span class="o">=</span> <span class="s">"UTF-8"</span><span class="p">)</span>
 </pre></div>
 
 <pre class="example">
-read.csv("example_files/japanese_utf8.csv", encoding = "UTF-8")
+read.csv("japanese_utf8.csv", encoding = "UTF-8")
   No.        X.U.767A..U.884C..U.65E5. X.U.671D..U.5915..U.520A.                X.U.9762..U.540D. X.U.30DA..U.30FC..U.30B8.
 1   1 2015&lt;U+5E74&gt;09&lt;U+6708&gt;25&lt;U+65E5&gt;          &lt;U+9031&gt;&lt;U+520A&gt; &lt;U+9031&gt;&lt;U+520A&gt;&lt;U+671D&gt;&lt;U+65E5&gt;                        22
 2   2 2015&lt;U+5E74&gt;09&lt;U+6708&gt;25&lt;U+65E5&gt;          &lt;U+9031&gt;&lt;U+520A&gt; &lt;U+9031&gt;&lt;U+520A&gt;&lt;U+671D&gt;&lt;U+65E5&gt;                        18
@@ -274,7 +274,7 @@ read.csv("example_files/japanese_utf8.csv", encoding = "UTF-8")
 <p>
 This kind of works, though you wouldn't know it from the output. As mentioned above, there is a bug in the <code>print.data.frame</code> function that prevents UTF-8 encoded text from displaying correctly. We can use another print method to see that the column values have been read in correctly:
 </p>
-<div class="highlight"><pre><span></span><span class="kp">print.listof</span><span class="p">(</span>read.csv<span class="p">(</span><span class="s">"example_files/japanese_utf8.csv"</span><span class="p">,</span> encoding <span class="o">=</span> <span class="s">"UTF-8"</span><span class="p">))</span>
+<div class="highlight"><pre><span></span><span class="kp">print.listof</span><span class="p">(</span>read.csv<span class="p">(</span><span class="s">"japanese_utf8.csv"</span><span class="p">,</span> encoding <span class="o">=</span> <span class="s">"UTF-8"</span><span class="p">))</span>
 </pre></div>
 
 <pre class="example">
@@ -335,8 +335,8 @@ In some ways just changing your locale to one that can accommodate the data you 
 </p>
 
 <div class="highlight"><pre><span></span>setlocale<span class="p">(</span><span class="s">"LC_ALL"</span><span class="p">,</span> <span class="s">"English_United States.932"</span><span class="p">)</span>
-read.csv<span class="p">(</span><span class="s">"example_files/japanese_shiftjis.csv"</span><span class="p">)</span>
-read.csv<span class="p">(</span><span class="s">"example_files/japanese_utf8.csv"</span><span class="p">,</span> fileEncoding <span class="o">=</span> <span class="s">"UTF-8"</span><span class="p">)</span>
+read.csv<span class="p">(</span><span class="s">"japanese_shiftjis.csv"</span><span class="p">)</span>
+read.csv<span class="p">(</span><span class="s">"japanese_utf8.csv"</span><span class="p">,</span> fileEncoding <span class="o">=</span> <span class="s">"UTF-8"</span><span class="p">)</span>
 </pre></div>
 
 <pre class="example">
@@ -360,7 +360,7 @@ This works fine until we want to read some other kind of text in the same R sess
 <p>
 Because the <code>Sys.setlocale</code> method only works for a subset of languages in any given session, our best bet is to read store everything in UTF-8 (and make sure it is marked as such). It is not convenient to do this using the <code>read.table</code> family of functions in R, but it is possible with some care:
 </p>
-<div class="highlight"><pre><span></span>x <span class="o">&lt;-</span> read.csv<span class="p">(</span><span class="s">"example_files/japanese_shiftjis.csv"</span><span class="p">,</span> 
+<div class="highlight"><pre><span></span>x <span class="o">&lt;-</span> read.csv<span class="p">(</span><span class="s">"japanese_shiftjis.csv"</span><span class="p">,</span> 
 	      encoding <span class="o">=</span> <span class="s">"UTF-8"</span><span class="p">,</span> 
 	      check.names <span class="o">=</span> <span class="kc">FALSE</span> <span class="c1"># otherwise R will mangle the names</span>
 	      <span class="p">)</span>
@@ -390,9 +390,9 @@ No. :
 OK it works, but honestly that too much work for something as simple as reading a .csv file into R. As suggested at the beginning of this post, a better strategy is to use the <a href="https://github.com/hadley/readr">readr</a> package because it will do the conversion to UTF-8 for you:
 </p>
 
-<div class="highlight"><pre><span></span><span class="kp">print.listof</span><span class="p">(</span>read_csv<span class="p">(</span><span class="s">"example_files/arabic_utf-8.csv"</span><span class="p">),</span> locale <span class="o">=</span> locale<span class="p">(</span>encoding <span class="o">=</span> <span class="s">"UTF-8"</span><span class="p">))</span>
-<span class="kp">print.listof</span><span class="p">(</span>read_csv<span class="p">(</span><span class="s">"example_files/japanese_utf8.csv"</span><span class="p">),</span> locale <span class="o">=</span> locale<span class="p">(</span>encoding <span class="o">=</span> <span class="s">"UTF-8"</span><span class="p">))</span>
-<span class="kp">print.listof</span><span class="p">(</span>read_csv<span class="p">(</span><span class="s">"example_files/japanese_utf8.csv"</span><span class="p">),</span> locale <span class="o">=</span> locale<span class="p">(</span>encoding <span class="o">=</span> <span class="s">"SHIFT-JIS"</span><span class="p">))</span>
+<div class="highlight"><pre><span></span><span class="kp">print.listof</span><span class="p">(</span>read_csv<span class="p">(</span><span class="s">"arabic_utf-8.csv"</span><span class="p">),</span> locale <span class="o">=</span> locale<span class="p">(</span>encoding <span class="o">=</span> <span class="s">"UTF-8"</span><span class="p">))</span>
+<span class="kp">print.listof</span><span class="p">(</span>read_csv<span class="p">(</span><span class="s">"japanese_utf8.csv"</span><span class="p">),</span> locale <span class="o">=</span> locale<span class="p">(</span>encoding <span class="o">=</span> <span class="s">"UTF-8"</span><span class="p">))</span>
+<span class="kp">print.listof</span><span class="p">(</span>read_csv<span class="p">(</span><span class="s">"japanese_utf8.csv"</span><span class="p">),</span> locale <span class="o">=</span> locale<span class="p">(</span>encoding <span class="o">=</span> <span class="s">"SHIFT-JIS"</span><span class="p">))</span>
 </pre></div>
 
 <pre class="example">
@@ -433,7 +433,7 @@ No. :
 <h2 id="sec-3">Files</h2>
 <div class="outline-text-2" id="text-3">
 <p>
-Here are the <a href="http://people.fas.harvard.edu/~izahn/blog/example_files.zip">example data files</a> and <a href="http://people.fas.harvard.edu/~izahn/blog/R_windows_encoding.R">R code</a> needed to run the examples in this post.
+Here are the <a href="http://people.fas.harvard.edu/~izahn/example_files/blog/encoding_hell.zip">example data files and code</a> and needed to run the examples in this post.
 </p>
 </div>
 </div>
