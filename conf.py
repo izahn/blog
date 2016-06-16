@@ -175,10 +175,10 @@ POSTS = (
     ("posts/*.html", "posts", "post.tmpl"),
 )
 PAGES = (
-    ("stories/*.org", "stories", "story.tmpl"),
-    ("stories/*.rst", "stories", "story.tmpl"),
-    ("stories/*.txt", "stories", "story.tmpl"),
-    ("stories/*.html", "stories", "story.tmpl"),
+    ("pages/*.org", "pages", "page.tmpl"),
+    ("pages/*.rst", "pages", "page.tmpl"),
+    ("pages/*.txt", "pages", "page.tmpl"),
+    ("pages/*.html", "pages", "page.tmpl"),
 )
 
 
@@ -842,13 +842,13 @@ COMMENT_SYSTEM_ID = "http://dss.izahn.com:8880/"
 # the "noannotations" metadata.
 # ANNOTATIONS = False
 
-# Create index.html for page (story) folders?
+# Create index.html for page (page) folders?
 # WARNING: if a page would conflict with the index file (usually
-#          caused by setting slug to `index`), the STORY_INDEX
+#          caused by setting slug to `index`), the PAGE_INDEX
 #          will not be generated for that directory.
-# STORY_INDEX = False
-# Enable comments on story pages?
-# COMMENTS_IN_STORIES = False
+# PAGE_INDEX = False
+# Enable comments on page pages?
+# COMMENTS_IN_PAGES = False
 # Enable comments on picture gallery pages?
 # COMMENTS_IN_GALLERIES = False
 
