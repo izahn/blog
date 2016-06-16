@@ -315,4 +315,4 @@ Here are the [[http://people.fas.harvard.edu/~izahn/blog/example_files.zip][exam
 
 [fn:2] See https://support.rstudio.com/hc/en-us/articles/200532197-Character-Encoding
 
-[fn:1] We can also mark strings as encoded in =latin1=, but that is so rarely useful that I will not discuss it further.
+[fn:1] We can also mark strings as encoded in =latin1=, but that is not useful if you take my advice and store everything in UTF-8.
