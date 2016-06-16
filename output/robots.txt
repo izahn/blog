@@ -1,4 +1,4 @@
-Sitemap: http://people.fas.harvard.edu/~izahn/blog/sitemapindex.xml
+Sitemap: http://people.fas.harvard.edu/~izahn/sitemapindex.xml
 
 User-Agent: *
 Host: people.fas.harvard.edu

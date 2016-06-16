@@ -6,55 +6,55 @@
     xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
                         http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
  <url>
-  <loc>http://people.fas.harvard.edu/%7Eizahn/blog/2016/index.html</loc>
-  <lastmod>2016-06-15T22:39:00Z</lastmod>
+  <loc>http://people.fas.harvard.edu/%7Eizahn/2016/index.html</loc>
+  <lastmod>2016-06-16T13:25:00Z</lastmod>
  </url>
  <url>
-  <loc>http://people.fas.harvard.edu/%7Eizahn/blog/archive.html</loc>
-  <lastmod>2016-06-15T22:39:00Z</lastmod>
+  <loc>http://people.fas.harvard.edu/%7Eizahn/archive.html</loc>
+  <lastmod>2016-06-16T13:25:00Z</lastmod>
  </url>
  <url>
-  <loc>http://people.fas.harvard.edu/%7Eizahn/blog/categories/cat_r.html</loc>
-  <lastmod>2016-06-15T22:39:00Z</lastmod>
+  <loc>http://people.fas.harvard.edu/%7Eizahn/categories/cat_r.html</loc>
+  <lastmod>2016-06-16T13:25:00Z</lastmod>
  </url>
  <url>
-  <loc>http://people.fas.harvard.edu/%7Eizahn/blog/categories/encoding.html</loc>
-  <lastmod>2016-06-15T22:39:00Z</lastmod>
+  <loc>http://people.fas.harvard.edu/%7Eizahn/categories/encoding.html</loc>
+  <lastmod>2016-06-16T13:25:00Z</lastmod>
  </url>
  <url>
-  <loc>http://people.fas.harvard.edu/%7Eizahn/blog/categories/files.html</loc>
-  <lastmod>2016-06-15T22:39:00Z</lastmod>
+  <loc>http://people.fas.harvard.edu/%7Eizahn/categories/files.html</loc>
+  <lastmod>2016-06-16T13:25:00Z</lastmod>
  </url>
  <url>
-  <loc>http://people.fas.harvard.edu/%7Eizahn/blog/categories/index.html</loc>
-  <lastmod>2016-06-15T22:39:00Z</lastmod>
+  <loc>http://people.fas.harvard.edu/%7Eizahn/categories/index.html</loc>
+  <lastmod>2016-06-16T13:25:00Z</lastmod>
  </url>
  <url>
-  <loc>http://people.fas.harvard.edu/%7Eizahn/blog/categories/r.html</loc>
-  <lastmod>2016-06-15T22:39:00Z</lastmod>
+  <loc>http://people.fas.harvard.edu/%7Eizahn/categories/r.html</loc>
+  <lastmod>2016-06-16T13:25:00Z</lastmod>
  </url>
  <url>
-  <loc>http://people.fas.harvard.edu/%7Eizahn/blog/categories/shift-jis.html</loc>
-  <lastmod>2016-06-15T22:39:00Z</lastmod>
+  <loc>http://people.fas.harvard.edu/%7Eizahn/categories/shift-jis.html</loc>
+  <lastmod>2016-06-16T13:25:00Z</lastmod>
  </url>
  <url>
-  <loc>http://people.fas.harvard.edu/%7Eizahn/blog/categories/utf-8.html</loc>
-  <lastmod>2016-06-15T22:39:00Z</lastmod>
+  <loc>http://people.fas.harvard.edu/%7Eizahn/categories/utf-8.html</loc>
+  <lastmod>2016-06-16T13:25:00Z</lastmod>
  </url>
  <url>
-  <loc>http://people.fas.harvard.edu/%7Eizahn/blog/galleries/index.html</loc>
-  <lastmod>2016-06-15T22:39:00Z</lastmod>
+  <loc>http://people.fas.harvard.edu/%7Eizahn/galleries/index.html</loc>
+  <lastmod>2016-06-16T13:25:00Z</lastmod>
  </url>
  <url>
-  <loc>http://people.fas.harvard.edu/%7Eizahn/blog/index.html</loc>
-  <lastmod>2016-06-15T22:39:00Z</lastmod>
+  <loc>http://people.fas.harvard.edu/%7Eizahn/index.html</loc>
+  <lastmod>2016-06-16T13:25:00Z</lastmod>
  </url>
  <url>
-  <loc>http://people.fas.harvard.edu/%7Eizahn/blog/listings/index.html</loc>
-  <lastmod>2016-06-15T22:39:00Z</lastmod>
+  <loc>http://people.fas.harvard.edu/%7Eizahn/listings/index.html</loc>
+  <lastmod>2016-06-16T13:25:00Z</lastmod>
  </url>
  <url>
-  <loc>http://people.fas.harvard.edu/%7Eizahn/blog/posts/reading-data-with-non-native-encoding-in-r.html</loc>
-  <lastmod>2016-06-15T22:39:00Z</lastmod>
+  <loc>http://people.fas.harvard.edu/%7Eizahn/posts/reading-data-with-non-native-encoding-in-r.html</loc>
+  <lastmod>2016-06-16T13:25:00Z</lastmod>
  </url>
 </urlset>

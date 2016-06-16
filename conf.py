@@ -21,10 +21,10 @@ BLOG_AUTHOR = "Ista Zahn"  # (translatable)
 BLOG_TITLE = "Ista's blog"  # (translatable)
 # This is the main URL for your site. It will be used
 # in a prominent link. Don't forget the protocol (http/https)!
-SITE_URL = "http://people.fas.harvard.edu/~izahn/blog/"
+SITE_URL = "http://people.fas.harvard.edu/~izahn/"
 # This is the URL where Nikola's output will be deployed.
 # If not set, defaults to SITE_URL
-# BASE_URL = "http://people.fas.harvard.edu/~izahn/blog/"
+# BASE_URL = "http://people.fas.harvard.edu/~izahn/"
 BLOG_EMAIL = "istazahn@gmail.com"
 BLOG_DESCRIPTION = "Bits and bobs related to data science and programming"  # (translatable)
 
