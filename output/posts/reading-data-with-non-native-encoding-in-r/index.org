@@ -188,9 +188,9 @@ X.U.30DA..U.30FC..U.30B8. :
 
 #+end_example
 
-Unfortunately there are two problems with this: first, the names of the columns have not been correctly encoded, and second, this will only work if your input data is in UTF-8 in the first place. Trying to apply this strategy to our SHIFT-JIS encoded file will not work at all:
+Unfortunately there are two problems with this: first, the names of the columns have not been correctly encoded, and second, this will only work if your input data is in UTF-8 in the first place. Trying to apply this strategy to our SHIFT-JIS encoded file will not work at all because we _cannot_ mark strings with arbitrary encoding, only with UTF-8[fn:1]. Trying to mark the string as SHIFT-JIS will silently fail:
 #+BEGIN_SRC R :eval no
-
+  print.listof(read.csv("japanese_shiftjis.csv", encoding = "SHIFT-JIS"))
 #+END_SRC
 
 #+begin_example
@@ -274,7 +274,7 @@ OK it works, but honestly that too much work for something as simple as reading 
 #+BEGIN_SRC R :eval no
   print.listof(read_csv("arabic_utf-8.csv"), locale = locale(encoding = "UTF-8"))
   print.listof(read_csv("japanese_utf8.csv"), locale = locale(encoding = "UTF-8"))
-  print.listof(read_csv("japanese_utf8.csv"), locale = locale(encoding = "SHIFT-JIS"))
+  print.listof(read_csv("japanese_shiftjis.csv"), locale = locale(encoding = "SHIFT-JIS"))
 #+END_SRC
 
 #+begin_example

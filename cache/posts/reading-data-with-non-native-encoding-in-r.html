@@ -194,9 +194,9 @@ X.U.30DA..U.30FC..U.30B8. :
 </pre>
 
 <p>
-Unfortunately there are two problems with this: first, the names of the columns have not been correctly encoded, and second, this will only work if your input data is in UTF-8 in the first place. Trying to apply this strategy to our SHIFT-JIS encoded file will not work at all:
+Unfortunately there are two problems with this: first, the names of the columns have not been correctly encoded, and second, this will only work if your input data is in UTF-8 in the first place. Trying to apply this strategy to our SHIFT-JIS encoded file will not work at all because we <span class="underline">cannot</span> mark strings with arbitrary encoding, only with UTF-8<sup><a id="fnr.1" name="fnr.1" class="footref" href="#fn.1">1</a></sup>. Trying to mark the string as SHIFT-JIS will silently fail:
 </p>
-<div class="highlight"><pre><span></span>
+<div class="highlight"><pre><span></span><span class="kp">print.listof</span><span class="p">(</span>read.csv<span class="p">(</span><span class="s">&quot;japanese_shiftjis.csv&quot;</span><span class="p">,</span> encoding <span class="o">=</span> <span class="s">&quot;SHIFT-JIS&quot;</span><span class="p">))</span>
 </pre></div>
 
 <pre class="example">
@@ -226,7 +226,7 @@ Ouch! Why is this so hard? Can we make it suck less?
 <h2 id="sec-2">Encoding in R</h2>
 <div class="outline-text-2" id="text-2">
 <p>
-Basically R gives you two ways of handling character encoding. You can use the default encoding of your OS, or you can use UTF-8<sup><a id="fnr.1" name="fnr.1" class="footref" href="#fn.1">1</a></sup>. On OS X and Linux these options are often the same, since the default OS encoding is usually UTF-8; this is a great advantage because just about everything can be represented in UTF-8. On Windows there is no such luck. On my Windows 7 machine the default is "Windows code page 1252"; many characters (such as Japanese) cannot be represented in code page 1252. If I want to work with Japanese text in R on Windows I have two options; change my locale to Japanese, or I can convert strings to UTF-8 and mark them as such.
+Basically R gives you two ways of handling character encoding. You can use the default encoding of your OS, or you can use UTF-8<sup><a id="fnr.1.100" name="fnr.1.100" class="footref" href="#fn.1">1</a></sup>. On OS X and Linux these options are often the same, since the default OS encoding is usually UTF-8; this is a great advantage because just about everything can be represented in UTF-8. On Windows there is no such luck. On my Windows 7 machine the default is "Windows code page 1252"; many characters (such as Japanese) cannot be represented in code page 1252. If I want to work with Japanese text in R on Windows I have two options; change my locale to Japanese, or I can convert strings to UTF-8 and mark them as such.
 </p>
 
 <p>
@@ -291,7 +291,7 @@ OK it works, but honestly that too much work for something as simple as reading 
 
 <div class="highlight"><pre><span></span><span class="kp">print.listof</span><span class="p">(</span>read_csv<span class="p">(</span><span class="s">&quot;arabic_utf-8.csv&quot;</span><span class="p">),</span> locale <span class="o">=</span> locale<span class="p">(</span>encoding <span class="o">=</span> <span class="s">&quot;UTF-8&quot;</span><span class="p">))</span>
 <span class="kp">print.listof</span><span class="p">(</span>read_csv<span class="p">(</span><span class="s">&quot;japanese_utf8.csv&quot;</span><span class="p">),</span> locale <span class="o">=</span> locale<span class="p">(</span>encoding <span class="o">=</span> <span class="s">&quot;UTF-8&quot;</span><span class="p">))</span>
-<span class="kp">print.listof</span><span class="p">(</span>read_csv<span class="p">(</span><span class="s">&quot;japanese_utf8.csv&quot;</span><span class="p">),</span> locale <span class="o">=</span> locale<span class="p">(</span>encoding <span class="o">=</span> <span class="s">&quot;SHIFT-JIS&quot;</span><span class="p">))</span>
+<span class="kp">print.listof</span><span class="p">(</span>read_csv<span class="p">(</span><span class="s">&quot;japanese_shiftjis.csv&quot;</span><span class="p">),</span> locale <span class="o">=</span> locale<span class="p">(</span>encoding <span class="o">=</span> <span class="s">&quot;SHIFT-JIS&quot;</span><span class="p">))</span>
 </pre></div>
 
 <pre class="example">
