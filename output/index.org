@@ -9,7 +9,7 @@
 .. type: text
 #+END_COMMENT
 
-Ista Zahn is a [[http:dss.iq.harvard.edu][Data Science Specialist]] at [[http:iq.harvard.edu][The Institute for Quantitative Social Science]] at [[http:harvard.edu][Harvard University]]. This site serves mainly as his blog.
+Ista Zahn is a [[http://dss.iq.harvard.edu][Data Science Specialist]] at [[http://iq.harvard.edu][The Institute for Quantitative Social Science]] at [[http://harvard.edu][Harvard University]]. This site serves mainly as his blog.
 
 Ista holds a master's degree in social psychology from the University of Rochester. During graduate school he discovered a love of statistical programming, primarily using the R environment for statistical computing. Broadly speaking, Ista is interested in the ways in which technology can be used to turn raw data into information useful to human beings. His areas of expertise include data management, graphical displays, and regression modeling, and web technologies for statistical computing and teaching.
 
