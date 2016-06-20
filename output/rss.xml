@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<?xml-stylesheet type="text/xsl" href="assets/xml/rss.xsl" media="all"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>Ista Zahn</title><link>http://people.fas.harvard.edu/~izahn/</link><description>Bits and bobs related to data science and programming</description><atom:link rel="self" href="http://people.fas.harvard.edu/~izahn/rss.xml" type="application/rss+xml"></atom:link><language>en</language><lastBuildDate>Fri, 17 Jun 2016 18:15:24 GMT</lastBuildDate><generator>https://getnikola.com/</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Escaping from character encoding hell in R on Windows</title><link>http://people.fas.harvard.edu/~izahn/posts/reading-data-with-non-native-encoding-in-r/index.html</link><dc:creator>Ista Zahn</dc:creator><description>&lt;p&gt;
+<?xml-stylesheet type="text/xsl" href="assets/xml/rss.xsl" media="all"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>Ista Zahn</title><link>http://people.fas.harvard.edu/~izahn/</link><description>Bits and bobs related to data science and programming</description><atom:link href="http://people.fas.harvard.edu/~izahn/rss.xml" type="application/rss+xml" rel="self"></atom:link><language>en</language><lastBuildDate>Mon, 20 Jun 2016 15:29:57 GMT</lastBuildDate><generator>https://getnikola.com/</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Escaping from character encoding hell in R on Windows</title><link>http://people.fas.harvard.edu/~izahn/posts/reading-data-with-non-native-encoding-in-r/</link><dc:creator>Ista Zahn</dc:creator><description>&lt;p&gt;
 Note: the title of this post was inspired by &lt;a href="http://stackoverflow.com/questions/18789330/r-on-windows-character-encoding-hell"&gt;this question on stackoverflow&lt;/a&gt;.
 &lt;/p&gt;
 
@@ -195,7 +195,7 @@ X.U.30DA..U.30FC..U.30B8. :
 &lt;/pre&gt;
 
 &lt;p&gt;
-Unfortunately there are two problems with this: first, the names of the columns have not been correctly encoded, and second, this will only work if your input data is in UTF-8 in the first place. Trying to apply this strategy to our SHIFT-JIS encoded file will not work at all because we &lt;span class="underline"&gt;cannot&lt;/span&gt; mark strings with arbitrary encoding, only with UTF-8&lt;sup&gt;&lt;a id="fnr.1" name="fnr.1" class="footref" href="http://people.fas.harvard.edu/~izahn/posts/reading-data-with-non-native-encoding-in-r/index.html#fn.1"&gt;1&lt;/a&gt;&lt;/sup&gt;. Trying to mark the string as SHIFT-JIS will silently fail:
+Unfortunately there are two problems with this: first, the names of the columns have not been correctly encoded, and second, this will only work if your input data is in UTF-8 in the first place. Trying to apply this strategy to our SHIFT-JIS encoded file will not work at all because we &lt;span class="underline"&gt;cannot&lt;/span&gt; mark strings with arbitrary encoding, only with UTF-8&lt;sup&gt;&lt;a id="fnr.1" name="fnr.1" class="footref" href="http://people.fas.harvard.edu/~izahn/posts/reading-data-with-non-native-encoding-in-r/#fn.1"&gt;1&lt;/a&gt;&lt;/sup&gt;. Trying to mark the string as SHIFT-JIS will silently fail:
 &lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kp"&gt;print.listof&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;read.csv&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;"japanese_shiftjis.csv"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; encoding &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;"SHIFT-JIS"&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
@@ -227,7 +227,7 @@ Ouch! Why is this so hard? Can we make it suck less?
 &lt;h2 id="sec-2"&gt;Encoding in R&lt;/h2&gt;
 &lt;div class="outline-text-2" id="text-2"&gt;
 &lt;p&gt;
-Basically R gives you two ways of handling character encoding. You can use the default encoding of your OS, or you can use UTF-8&lt;sup&gt;&lt;a id="fnr.1.100" name="fnr.1.100" class="footref" href="http://people.fas.harvard.edu/~izahn/posts/reading-data-with-non-native-encoding-in-r/index.html#fn.1"&gt;1&lt;/a&gt;&lt;/sup&gt;. On OS X and Linux these options are often the same, since the default OS encoding is usually UTF-8; this is a great advantage because just about everything can be represented in UTF-8. On Windows there is no such luck. On my Windows 7 machine the default is "Windows code page 1252"; many characters (such as Japanese) cannot be represented in code page 1252. If I want to work with Japanese text in R on Windows I have two options; change my locale to Japanese, or I can convert strings to UTF-8 and mark them as such.
+Basically R gives you two ways of handling character encoding. You can use the default encoding of your OS, or you can use UTF-8&lt;sup&gt;&lt;a id="fnr.1.100" name="fnr.1.100" class="footref" href="http://people.fas.harvard.edu/~izahn/posts/reading-data-with-non-native-encoding-in-r/#fn.1"&gt;1&lt;/a&gt;&lt;/sup&gt;. On OS X and Linux these options are often the same, since the default OS encoding is usually UTF-8; this is a great advantage because just about everything can be represented in UTF-8. On Windows there is no such luck. On my Windows 7 machine the default is "Windows code page 1252"; many characters (such as Japanese) cannot be represented in code page 1252. If I want to work with Japanese text in R on Windows I have two options; change my locale to Japanese, or I can convert strings to UTF-8 and mark them as such.
 &lt;/p&gt;
 
 &lt;p&gt;
@@ -254,7 +254,7 @@ read.csv&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;"japanese_utf8
 &lt;/pre&gt;
 
 &lt;p&gt;
-This works fine until we want to read some other kind of text in the same R session, and then we are right back to the same old problem. Another issue with this method is that it does not work in Rstudio unless the locale is set on startup; you cannot change the locale of a running session in Rstudio&lt;sup&gt;&lt;a id="fnr.2" name="fnr.2" class="footref" href="http://people.fas.harvard.edu/~izahn/posts/reading-data-with-non-native-encoding-in-r/index.html#fn.2"&gt;2&lt;/a&gt;&lt;/sup&gt;.
+This works fine until we want to read some other kind of text in the same R session, and then we are right back to the same old problem. Another issue with this method is that it does not work in Rstudio unless the locale is set on startup; you cannot change the locale of a running session in Rstudio&lt;sup&gt;&lt;a id="fnr.2" name="fnr.2" class="footref" href="http://people.fas.harvard.edu/~izahn/posts/reading-data-with-non-native-encoding-in-r/#fn.2"&gt;2&lt;/a&gt;&lt;/sup&gt;.
 &lt;/p&gt;
 
 &lt;p&gt;
@@ -341,14 +341,14 @@ Here are the &lt;a href="http://people.fas.harvard.edu/~izahn/example_files/blog
 &lt;h2 class="footnotes"&gt;Footnotes: &lt;/h2&gt;
 &lt;div id="text-footnotes"&gt;
 
-&lt;div class="footdef"&gt;&lt;sup&gt;&lt;a id="fn.1" name="fn.1" class="footnum" href="http://people.fas.harvard.edu/~izahn/posts/reading-data-with-non-native-encoding-in-r/index.html#fnr.1"&gt;1&lt;/a&gt;&lt;/sup&gt; &lt;p class="footpara"&gt;
+&lt;div class="footdef"&gt;&lt;sup&gt;&lt;a id="fn.1" name="fn.1" class="footnum" href="http://people.fas.harvard.edu/~izahn/posts/reading-data-with-non-native-encoding-in-r/#fnr.1"&gt;1&lt;/a&gt;&lt;/sup&gt; &lt;p class="footpara"&gt;
 We can also mark strings as encoded in &lt;code&gt;latin1&lt;/code&gt;, but that is not useful if you take my advice and store everything in UTF-8.
 &lt;/p&gt;&lt;/div&gt;
 
-&lt;div class="footdef"&gt;&lt;sup&gt;&lt;a id="fn.2" name="fn.2" class="footnum" href="http://people.fas.harvard.edu/~izahn/posts/reading-data-with-non-native-encoding-in-r/index.html#fnr.2"&gt;2&lt;/a&gt;&lt;/sup&gt; &lt;p class="footpara"&gt;
+&lt;div class="footdef"&gt;&lt;sup&gt;&lt;a id="fn.2" name="fn.2" class="footnum" href="http://people.fas.harvard.edu/~izahn/posts/reading-data-with-non-native-encoding-in-r/#fnr.2"&gt;2&lt;/a&gt;&lt;/sup&gt; &lt;p class="footpara"&gt;
 See &lt;a href="https://support.rstudio.com/hc/en-us/articles/200532197-Character-Encoding"&gt;https://support.rstudio.com/hc/en-us/articles/200532197-Character-Encoding&lt;/a&gt;
 &lt;/p&gt;&lt;/div&gt;
 
 
 &lt;/div&gt;
-&lt;/div&gt;</description><category>Encoding</category><category>Files</category><category>R</category><category>SHIFT-JIS</category><category>UTF-8</category><guid>http://people.fas.harvard.edu/~izahn/posts/reading-data-with-non-native-encoding-in-r/index.html</guid><pubDate>Tue, 14 Jun 2016 17:57:09 GMT</pubDate></item></channel></rss>
+&lt;/div&gt;</description><category>Encoding</category><category>Files</category><category>R</category><category>SHIFT-JIS</category><category>UTF-8</category><guid>http://people.fas.harvard.edu/~izahn/posts/reading-data-with-non-native-encoding-in-r/</guid><pubDate>Tue, 14 Jun 2016 17:57:09 GMT</pubDate></item></channel></rss>

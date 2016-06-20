@@ -2,17 +2,17 @@
 <html prefix="og: http://ogp.me/ns# article: http://ogp.me/ns/article# " lang="en">
 <head>
 <meta charset="utf-8">
-<base href="http://people.fas.harvard.edu/~izahn/posts/reading-data-with-non-native-encoding-in-r/index.html">
+<base href="http://people.fas.harvard.edu/~izahn/posts/reading-data-with-non-native-encoding-in-r/">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Escaping from character encoding hell in R on Windows | Ista Zahn</title>
 <link href="../../assets/css/all-nocdn.css" rel="stylesheet" type="text/css">
 <meta content="#5670d4" name="theme-color">
 <link rel="alternate" type="application/rss+xml" title="RSS" href="../../rss.xml">
-<link rel="canonical" href="http://people.fas.harvard.edu/~izahn/posts/reading-data-with-non-native-encoding-in-r/index.html">
+<link rel="canonical" href="http://people.fas.harvard.edu/~izahn/posts/reading-data-with-non-native-encoding-in-r/">
 <!--[if lt IE 9]><script src="../../assets/js/html5.js"></script><![endif]--><meta name="author" content="Ista Zahn">
 <meta property="og:site_name" content="Ista Zahn">
 <meta property="og:title" content="Escaping from character encoding hell in R on Windows">
-<meta property="og:url" content="http://people.fas.harvard.edu/~izahn/posts/reading-data-with-non-native-encoding-in-r/index.html">
+<meta property="og:url" content="http://people.fas.harvard.edu/~izahn/posts/reading-data-with-non-native-encoding-in-r/">
 <meta property="og:description" content="Note: the title of this post was inspired by this question on stackoverflow.
 
 
@@ -49,13 +49,13 @@ This section gives the basic facts and recommendations for importing files with 
         <div class="collapse navbar-collapse" id="bs-navbar" aria-expanded="false">
             <ul class="nav navbar-nav">
 <li>
-<a href="../../blog">Blog</a>
+<a href="../../pages/about/">About me</a>
                 </li>
 <li>
-<a href="../../archive">Archive</a>
+<a href="../../archive/">Archive</a>
                 </li>
 <li>
-<a href="../../categories">Tags</a>
+<a href="../../categories/">Tags</a>
                 </li>
 <li>
 <a href="../../rss.xml">RSS feed</a>
@@ -80,16 +80,16 @@ This section gives the basic facts and recommendations for importing files with 
         <div class="row">
             
             
-<article class="post-text h-entry hentry postpage" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title" itemprop="headline name"><a href="#" class="u-url">Escaping from character encoding hell in R on Windows</a></h1>
+<article class="post-text h-entry hentry postpage" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title" itemprop="headline name"><a href="." class="u-url">Escaping from character encoding hell in R on Windows</a></h1>
 
         <div class="metadata">
             <p class="byline author vcard"><span class="byline-name fn">
                     Ista Zahn
             </span></p>
-            <p class="dateline"><a href="#" rel="bookmark"><time class="published dt-published" datetime="2016-06-14T13:57:09-04:00" itemprop="datePublished" title="2016-06-14 13:57">2016-06-14 13:57</time></a></p>
+            <p class="dateline"><a href="." rel="bookmark"><time class="published dt-published" datetime="2016-06-14T13:57:09-04:00" itemprop="datePublished" title="2016-06-14 13:57">2016-06-14 13:57</time></a></p>
                 <p class="commentline">
         
-        <a href="index.html#isso-thread">Comments</a>
+        <a href="#isso-thread">Comments</a>
 
 
             
@@ -295,7 +295,7 @@ X.U.30DA..U.30FC..U.30B8. :
 </pre>
 
 <p>
-Unfortunately there are two problems with this: first, the names of the columns have not been correctly encoded, and second, this will only work if your input data is in UTF-8 in the first place. Trying to apply this strategy to our SHIFT-JIS encoded file will not work at all because we <span class="underline">cannot</span> mark strings with arbitrary encoding, only with UTF-8<sup><a id="fnr.1" name="fnr.1" class="footref" href="index.html#fn.1">1</a></sup>. Trying to mark the string as SHIFT-JIS will silently fail:
+Unfortunately there are two problems with this: first, the names of the columns have not been correctly encoded, and second, this will only work if your input data is in UTF-8 in the first place. Trying to apply this strategy to our SHIFT-JIS encoded file will not work at all because we <span class="underline">cannot</span> mark strings with arbitrary encoding, only with UTF-8<sup><a id="fnr.1" name="fnr.1" class="footref" href="#fn.1">1</a></sup>. Trying to mark the string as SHIFT-JIS will silently fail:
 </p>
 <div class="highlight"><pre><span></span><span class="kp">print.listof</span><span class="p">(</span>read.csv<span class="p">(</span><span class="s">"japanese_shiftjis.csv"</span><span class="p">,</span> encoding <span class="o">=</span> <span class="s">"SHIFT-JIS"</span><span class="p">))</span>
 </pre></div>
@@ -327,7 +327,7 @@ Ouch! Why is this so hard? Can we make it suck less?
 <h2 id="sec-2">Encoding in R</h2>
 <div class="outline-text-2" id="text-2">
 <p>
-Basically R gives you two ways of handling character encoding. You can use the default encoding of your OS, or you can use UTF-8<sup><a id="fnr.1.100" name="fnr.1.100" class="footref" href="index.html#fn.1">1</a></sup>. On OS X and Linux these options are often the same, since the default OS encoding is usually UTF-8; this is a great advantage because just about everything can be represented in UTF-8. On Windows there is no such luck. On my Windows 7 machine the default is "Windows code page 1252"; many characters (such as Japanese) cannot be represented in code page 1252. If I want to work with Japanese text in R on Windows I have two options; change my locale to Japanese, or I can convert strings to UTF-8 and mark them as such.
+Basically R gives you two ways of handling character encoding. You can use the default encoding of your OS, or you can use UTF-8<sup><a id="fnr.1.100" name="fnr.1.100" class="footref" href="#fn.1">1</a></sup>. On OS X and Linux these options are often the same, since the default OS encoding is usually UTF-8; this is a great advantage because just about everything can be represented in UTF-8. On Windows there is no such luck. On my Windows 7 machine the default is "Windows code page 1252"; many characters (such as Japanese) cannot be represented in code page 1252. If I want to work with Japanese text in R on Windows I have two options; change my locale to Japanese, or I can convert strings to UTF-8 and mark them as such.
 </p>
 
 <p>
@@ -354,7 +354,7 @@ read.csv<span class="p">(</span><span class="s">"japanese_utf8.csv"</span><span 
 </pre>
 
 <p>
-This works fine until we want to read some other kind of text in the same R session, and then we are right back to the same old problem. Another issue with this method is that it does not work in Rstudio unless the locale is set on startup; you cannot change the locale of a running session in Rstudio<sup><a id="fnr.2" name="fnr.2" class="footref" href="index.html#fn.2">2</a></sup>.
+This works fine until we want to read some other kind of text in the same R session, and then we are right back to the same old problem. Another issue with this method is that it does not work in Rstudio unless the locale is set on startup; you cannot change the locale of a running session in Rstudio<sup><a id="fnr.2" name="fnr.2" class="footref" href="#fn.2">2</a></sup>.
 </p>
 
 <p>
@@ -442,13 +442,13 @@ Here are the <a href="http://people.fas.harvard.edu/~izahn/example_files/blog/en
 <div id="text-footnotes">
 
 <div class="footdef">
-<sup><a id="fn.1" name="fn.1" class="footnum" href="index.html#fnr.1">1</a></sup><p class="footpara">
+<sup><a id="fn.1" name="fn.1" class="footnum" href="#fnr.1">1</a></sup><p class="footpara">
 We can also mark strings as encoded in <code>latin1</code>, but that is not useful if you take my advice and store everything in UTF-8.
 </p>
 </div>
 
 <div class="footdef">
-<sup><a id="fn.2" name="fn.2" class="footnum" href="index.html#fnr.2">2</a></sup><p class="footpara">
+<sup><a id="fn.2" name="fn.2" class="footnum" href="#fnr.2">2</a></sup><p class="footpara">
 See <a href="https://support.rstudio.com/hc/en-us/articles/200532197-Character-Encoding">https://support.rstudio.com/hc/en-us/articles/200532197-Character-Encoding</a>
 </p>
 </div>
@@ -458,11 +458,11 @@ See <a href="https://support.rstudio.com/hc/en-us/articles/200532197-Character-E
 </div>
     </div>
     <aside class="postpromonav"><nav><ul itemprop="keywords" class="tags">
-<li><a class="tag p-category" href="../../categories/encoding/index.html" rel="tag">Encoding</a></li>
-            <li><a class="tag p-category" href="../../categories/files/index.html" rel="tag">Files</a></li>
-            <li><a class="tag p-category" href="../../categories/r/index.html" rel="tag">R</a></li>
-            <li><a class="tag p-category" href="../../categories/shift-jis/index.html" rel="tag">SHIFT-JIS</a></li>
-            <li><a class="tag p-category" href="../../categories/utf-8/index.html" rel="tag">UTF-8</a></li>
+<li><a class="tag p-category" href="../../categories/encoding/" rel="tag">Encoding</a></li>
+            <li><a class="tag p-category" href="../../categories/files/" rel="tag">Files</a></li>
+            <li><a class="tag p-category" href="../../categories/r/" rel="tag">R</a></li>
+            <li><a class="tag p-category" href="../../categories/shift-jis/" rel="tag">SHIFT-JIS</a></li>
+            <li><a class="tag p-category" href="../../categories/utf-8/" rel="tag">UTF-8</a></li>
         </ul></nav></aside><section class="comments hidden-print"><h2>Comments</h2>
         
         

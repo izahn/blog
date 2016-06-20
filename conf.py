@@ -130,9 +130,9 @@ TRANSLATIONS_PATTERN = "{path}.{lang}.{ext}"
 
 NAVIGATION_LINKS = {
     DEFAULT_LANG: (
-        ("/blog", "Blog"),
-        ("/archive", "Archive"),
-        ("/categories", "Tags"),
+        ("/pages/about/", "About me"),
+        ("/archive/", "Archive"),
+        ("/categories/", "Tags"),
         ("/rss.xml", "RSS feed"),
     ),
 }
@@ -176,10 +176,10 @@ POSTS = (
     ("posts/*.html", "posts", "post.tmpl"),
 )
 PAGES = (
-    ("pages/*.org", "", "story.tmpl"),
-    ("pages/*.rst", "", "story.tmpl"),
-    ("pages/*.txt", "", "story.tmpl"),
-    ("pages/*.html", "", "story.tmpl"),
+    ("pages/*.org", "pages", "story.tmpl"),
+    ("pages/*.rst", "pages", "story.tmpl"),
+    ("pages/*.txt", "pages", "story.tmpl"),
+    ("pages/*.html", "pages", "story.tmpl"),
 )
 
 
@@ -466,7 +466,7 @@ HIDDEN_AUTHORS = ['Guest']
 
 # Final location for the main blog page and sibling paginated pages is
 # output / TRANSLATION[lang] / INDEX_PATH / index-*.html
-INDEX_PATH = "blog"
+# INDEX_PATH = ""
 
 # Optional HTML that displayed on “main” blog index.html files.
 # May be used for a greeting. (translatable)
@@ -540,11 +540,11 @@ REDIRECTIONS = []
 # to `nikola deploy`.  If no arguments are specified, a preset
 # named `default` will be executed.  You can use as many presets
 # in a `nikola deploy` command as you like.
-DEPLOY_COMMANDS = {
-    'default': [
-        "unescape_tilde; git add .; git commit -m'cleanup tilde'; git push",
-    ]
-}
+# DEPLOY_COMMANDS = {
+#     'default': [
+#         "rsync -rav --delete output/ joe@my.site:/srv/www/site",
+#     ]
+# }
 
 # github_deploy configuration
 # For more details, read the manual:
@@ -843,13 +843,13 @@ COMMENT_SYSTEM_ID = "http://dss.izahn.com:8080/"
 # the "noannotations" metadata.
 # ANNOTATIONS = False
 
-# Create index.html for page (page) folders?
+# Create index.html for page (story) folders?
 # WARNING: if a page would conflict with the index file (usually
-#          caused by setting slug to `index`), the PAGE_INDEX
+#          caused by setting slug to `index`), the STORY_INDEX
 #          will not be generated for that directory.
-# PAGE_INDEX = False
-# Enable comments on page pages?
-# COMMENTS_IN_PAGES = False
+# STORY_INDEX = False
+# Enable comments on story pages?
+# COMMENTS_IN_STORIES = False
 # Enable comments on picture gallery pages?
 # COMMENTS_IN_GALLERIES = False
 
@@ -863,7 +863,7 @@ COMMENT_SYSTEM_ID = "http://dss.izahn.com:8080/"
 # (Uses the INDEX_FILE setting, so if that is, say, default.html,
 # it will instead /foo/default.html => /foo)
 # (Note: This was briefly STRIP_INDEX_HTML in v 5.4.3 and 5.4.4)
-STRIP_INDEXES = False
+STRIP_INDEXES = True
 
 # Should the sitemap list directories which only include other directories
 # and no files.
@@ -947,6 +947,8 @@ MARKDOWN_EXTENSIONS = ['fenced_code', 'codehilite', 'extra']
 # Extra options to pass to the pandoc comand.
 # by default, it's empty, is a list of strings, for example
 # ['-F', 'pandoc-citeproc', '--bibliography=/Users/foo/references.bib']
+# Pandoc does not demote headers by default.  To enable this, you can use, for example
+# ['--base-header-level=2']
 # PANDOC_OPTIONS = []
 
 # Social buttons. This is sample code for AddThis (which was the default for a
