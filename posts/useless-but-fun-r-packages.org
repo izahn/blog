@@ -18,6 +18,8 @@
 
 [[http://r-project.org][R]] is useful for many things. But, it is not only useful! There is plenty of fun to be had as well. In celebration of Summer I'm going to take a look at some useless (but fun!) R packages.
 
+#+HTML: <!-- TEASER_END -->
+
 * Fortune teller
 [[https://cran.r-project.org/web/packages/fortunes/index.html][fortunes]] is probably the best-known "just for fun" R package. It is maintained by Achim Zeileis and features contributions from such R luminaries as Peter Dalgaard, Uwe Ligges, Kevin Wright, and many others. The =fortunes= package been amusing bored statisticians and programmers since 2004. Since that time the =fortunes= package developers have been selecting amusing quotes from the [[https://stat.ethz.ch/mailman/listinfo/r-help][R-help mailing list]] and other sources and compiling them for your enjoyment. Let's take a look.
 

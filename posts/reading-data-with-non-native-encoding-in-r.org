@@ -25,6 +25,8 @@ This section gives the basic facts and recommendations for importing files with 
 
 To read a text file with non ASCII encoding into R you should a) determine the encoding and b) read it in such a way that the information is re-encoded into UTF-8, and c) ignore the bug in the ~data.frame~ print method on Windows. Hopefully the encoding is specified in the documentation that accompanied your data. If not, you can guess the encoding using the ~stri_read_raw~ and ~stri_enc_detect~ functions in the [[http://www.gagolewski.com/software/stringi/][stringi]]  package. You can ensure that the information is re-encoded to UTF-8 by using the [[https://github.com/hadley/readr][readr]] package.
 
+#+HTML: <!-- TEASER_END -->
+
 For example, I have two versions of a file containing numbers and Japanese characters: =japanese_utf8.csv= is encoded in UTF-8, and =japanese_shiftjis.csv= is encoded in SHIFT-JIS. We can read these files as follows on any platform (Windows, Linux, Mac):
 
 #+BEGIN_SRC R
@@ -92,7 +94,6 @@ To recap:
 
 Those wishing for more details about this issue can read on.
 
-#+HTML: <!-- TEASER_END -->
 
 * What is the problem?
 
