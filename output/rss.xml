@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<?xml-stylesheet type="text/xsl" href="assets/xml/rss.xsl" media="all"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>Ista Zahn</title><link>http://people.fas.harvard.edu/~izahn/</link><description>Bits and bobs related to data science and programming</description><atom:link type="application/rss+xml" href="http://people.fas.harvard.edu/~izahn/rss.xml" rel="self"></atom:link><language>en</language><lastBuildDate>Tue, 21 Jun 2016 18:01:39 GMT</lastBuildDate><generator>https://getnikola.com/</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Useless but fun R packages</title><link>http://people.fas.harvard.edu/~izahn/posts/useless-but-fun-r-packages/</link><dc:creator>Ista Zahn</dc:creator><description>&lt;p&gt;
+<?xml-stylesheet type="text/xsl" href="assets/xml/rss.xsl" media="all"?><rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/"><channel><title>Ista Zahn</title><link>http://people.fas.harvard.edu/~izahn/</link><description>Bits and bobs related to data science and programming</description><atom:link rel="self" href="http://people.fas.harvard.edu/~izahn/rss.xml" type="application/rss+xml"></atom:link><language>en</language><lastBuildDate>Tue, 21 Jun 2016 18:13:11 GMT</lastBuildDate><generator>https://getnikola.com/</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Useless but fun R packages</title><link>http://people.fas.harvard.edu/~izahn/posts/useless-but-fun-r-packages/</link><dc:creator>Ista Zahn</dc:creator><description>&lt;p&gt;
 &lt;a href="http://r-project.org"&gt;R&lt;/a&gt; is useful for many things. But, it is not only useful! There is plenty of fun to be had as well. In celebration of Summer I'm going to take a look at some useless (but fun!) R packages.
 &lt;/p&gt;
 
@@ -158,7 +158,9 @@ someone_say_my_fortune&lt;span class="p"&gt;()&lt;/span&gt;
 
 &lt;pre class="example"&gt;
  ------------- 
-Only with a very high signal to noise ratio (e.g., high true R^2) can torturing data lead to a confession to something other than what the analyst wants to hear.
+Only with a very high signal to noise ratio (e.g., high true R^2) can 
+torturing data lead to a confession to something other than what the 
+analyst wants to hear.
 Frank Harrell
 NA
 R-help
@@ -192,7 +194,9 @@ Because &lt;code&gt;fortune&lt;/code&gt; gives a random quote each time, and we 
 
 &lt;pre class="example"&gt;
  ----- 
-There's an informal tradition that those announcements [about R releases] contain at least one mistake, but apparently I forgot this time, so users have to make up their own....
+There's an informal tradition that those announcements [about R releases]
+contain at least one mistake, but apparently I forgot this time, so users 
+have to make up their own....
 Peter Dalgaard
 about an apparent non-bug report in his former R-announce message
 R-help

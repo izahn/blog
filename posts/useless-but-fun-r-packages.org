@@ -164,7 +164,9 @@ When I teach R I emphasize composability. That is, unlike some other statistics 
 #+begin_example
 
  ------------- 
-Only with a very high signal to noise ratio (e.g., high true R^2) can torturing data lead to a confession to something other than what the analyst wants to hear.
+Only with a very high signal to noise ratio (e.g., high true R^2) can 
+torturing data lead to a confession to something other than what the 
+analyst wants to hear.
 Frank Harrell
 NA
 R-help
@@ -200,7 +202,9 @@ Because ~fortune~ gives a random quote each time, and we randomly select animals
 #+begin_example
 
  ----- 
-There's an informal tradition that those announcements [about R releases] contain at least one mistake, but apparently I forgot this time, so users have to make up their own....
+There's an informal tradition that those announcements [about R releases]
+contain at least one mistake, but apparently I forgot this time, so users 
+have to make up their own....
 Peter Dalgaard
 about an apparent non-bug report in his former R-announce message
 R-help
