@@ -2,14 +2,224 @@
 .. title: Useless but fun R packages
 .. slug: useless-but-fun-r-packages
 .. date: 2016-06-20 20:44:13 UTC-04:00
-.. tags: private,draft
-.. category: 
+.. tags: R, fun
+.. category: R
 .. link: 
 .. description: 
 .. type: text
 #+END_COMMENT
 
-fortunes
-rfoaas
-cowsay
+#+PROPERTY: cache no
+#+PROPERTY: results output
+#+PROPERTY: session *R*
+#+PROPERTY: exports both
+#+PROPERTY: tangle ../files/example_files/useless_r_packages.R
 
+
+[[http://r-project.org][R]] is useful for many things. But, it is not only useful! There is plenty of fun to be had as well. In celebration of Summer I'm going to take a look at some useless (but fun!) R packages.
+
+* Fortune teller
+[[https://cran.r-project.org/web/packages/fortunes/index.html][fortunes]] is probably the best-known "just for fun" R package. It is maintained by Achim Zeileis and features contributions from such R luminaries as Peter Dalgaard, Uwe Ligges, Kevin Wright, and many others. The =fortunes= package been amusing bored statisticians and programmers since 2004. Since that time the =fortunes= package developers have been selecting amusing quotes from the [[https://stat.ethz.ch/mailman/listinfo/r-help][R-help mailing list]] and other sources and compiling them for your enjoyment. Let's take a look.
+
+#+BEGIN_SRC R
+  ## install.packages("fortunes") # if you don't already have it
+  library(fortunes)
+  fortune()
+#+END_SRC
+
+#+RESULTS:
+: 
+: When in doubt, keep adding slashes until it works.
+:    -- Joran Elias (on how to escape a backslash in R)
+:       Stackoverflow (March 2015)
+
+When called without arguments, the ~fortune~ function will select a random fortune. Calling ~fortune~ again will select another random quote:
+#+BEGIN_SRC R
+  fortune()
+#+END_SRC
+
+#+RESULTS:
+: 
+: RAM is cheap and thinking hurts.
+:    -- Uwe Ligges (about memory requirements in R)
+:       R-help (June 2007)
+
+If you want to specify a particular quote you can do so by number or by character search:
+#+BEGIN_SRC R
+  fortune(204)
+  fortune("memory")
+
+#+END_SRC
+
+#+RESULTS:
+: 
+: memory problems (not me. my pc!)
+:    -- Sara Mouro (subject line for an R-help request)
+:       R-help (January 2008)
+: 
+: RAM is cheap and thinking hurts.
+:    -- Uwe Ligges (about memory requirements in R)
+:       R-help (June 2007)
+
+That's about it. Well, there are some other options, see ~?fortune~ for the details.
+
+* Cow says what?
+If you are a Unix user of a certain age you have no doubt heard of the famous [[https://en.wikipedia.org/wiki/Cowsay][cowsay]] program. Now R users can join the fun with the [[https://github.com/sckott/cowsay][cowsay R package]] by Scott Chamberlain. Like the =fortunes= package, =cowsay= exports just one function; ~say~. Let's take a look:
+#+BEGIN_SRC R
+  ## install.packages("cowsay")
+  library(cowsay)
+  say("Hello world!")
+#+END_SRC
+
+#+RESULTS:
+
+#+begin_example
+ -------------- 
+Hello world! 
+ --------------
+    \
+      \
+        \
+            |\___/|
+          ==) ^Y^ (==
+            \  ^  /
+             )=*=(
+            /     \
+            |     |
+           /| | | |\
+           \| | |_|/\
+      jgs  //_// ___/
+               \_)
+#+end_example
+
+Cute, but I was led to believe there would be a cow involved! 
+
+#+BEGIN_SRC R
+  say("Moo may represent an idea, but only the cow knows.\n --Mason Cooley",
+      by = "cow")
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+ 
+ ----- 
+Moo may represent an idea, but only the cow knows.
+ --Mason Cooley 
+ ------ 
+    \   ^__^ 
+     \  (oo)\ ________ 
+        (__)\         )\ /\ 
+             ||------w|
+             ||      ||
+#+end_example
+
+There is no option to randomly select an animal, but we can achieve that ourselves easily enough.
+#+BEGIN_SRC R
+  someone_say_hello <- function() {
+    animal <- sample(names(animals), 1)
+    say(paste("Hello, I'm a ", animal, ".", collapse = ""), by = animal)
+    }
+  someone_say_hello()
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+
+ ----- 
+Hello, I'm a  bigcat . 
+ ------ 
+    \   
+     \
+                \`*-.
+                 )  _`-.
+                .  : `. .
+                : _   '  \
+                ; *` _.   `*-._
+                `-.-'          `-.
+                  ;       `       `.
+                  :.       .       \
+                  .\  .   :   .-'   .
+                  '  `+.;  ;  '      :
+                  :  '  |    ;       ;-.
+                  ; '   : :`-:     _.`* ;
+               .*' /  .*' ; .*`- +'  `*'
+     [bug]     `*-*   `*-*  `*-*'
+
+#+end_example
+
+* Putting it all together
+When I teach R I emphasize composability. That is, unlike some other statistics packages, R enables you to take the output from one function and pass in on to another. We can take advantage of the excellent composability R provides to do useful things like extract coefficients from a list of model fits and put them into a LaTeX table. Or we can use it to do useless things like making a cow tell us our fortune.
+
+#+BEGIN_SRC R
+  someone_say_my_fortune <- function(x) {
+    animal <- animal <- sample(names(animals), 1)
+    say(paste(fortune(), collapse = "\n"), by = animal)
+  }
+  someone_say_my_fortune()
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+
+ ------------- 
+Only with a very high signal to noise ratio (e.g., high true R^2) can torturing data lead to a confession to something other than what the analyst wants to hear.
+Frank Harrell
+NA
+R-help
+April 2010 
+ -------------- 
+              \   
+               \  
+                \
+_____________________                              _____________________
+`-._                 \           |\__/|           /                 _.-'
+    \                 \          |    |          /                 /
+     \                 `-_______/      \_______-'                 /
+      |                                                          |
+      |                                                          |
+      |                                                          |
+      /                                                          \
+     /_____________                                  _____________\
+                   `----._                    _.----'
+                          `--.            .--'
+                              `-.      .-'
+                                 \    / :F_P:
+                                  \  /
+                                   \/
+
+#+end_example
+
+Because ~fortune~ gives a random quote each time, and we randomly select animals each time, we will get a surprising new delight every time we call the ~someone_say_my_fortune~ function.
+#+BEGIN_SRC R
+  someone_say_my_fortune()
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+
+ ----- 
+There's an informal tradition that those announcements [about R releases] contain at least one mistake, but apparently I forgot this time, so users have to make up their own....
+Peter Dalgaard
+about an apparent non-bug report in his former R-announce message
+R-help
+December 2009 
+ ------ 
+    \   
+     \
+         _
+       _/ }
+      `>' \
+      `|   \
+       |   /'-.     .-.
+        \'     ';`--' .'
+         \'.    `'-./
+          '.`-..-;`
+            `;-..'
+            _| _|
+            /` /` [nosig]
+  
+#+end_example
+
+If you want to get really silly about it, you could call that function in your [[https://cran.r-project.org/doc/manuals/r-release/R-intro.html#Customizing-the-environment][.Rprofile]]. Or, if you are package author you could add some spice to your warning and error messages by having an ASCII art animal say them. Go forth and have fun!
+
+If you know of other useless (but fun!) R packages let me know in the comments. 

@@ -7,7 +7,7 @@
                         http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
  <sitemap>
   <loc>http://people.fas.harvard.edu/~izahn/categories/cat_r.xml</loc>
-  <lastmod>2016-06-21T13:27:00Z</lastmod>
+  <lastmod>2016-06-21T17:58:00Z</lastmod>
  </sitemap>
  <sitemap>
   <loc>http://people.fas.harvard.edu/~izahn/categories/encoding.xml</loc>
@@ -18,8 +18,12 @@
   <lastmod>2016-06-21T13:27:00Z</lastmod>
  </sitemap>
  <sitemap>
+  <loc>http://people.fas.harvard.edu/~izahn/categories/fun.xml</loc>
+  <lastmod>2016-06-21T17:58:00Z</lastmod>
+ </sitemap>
+ <sitemap>
   <loc>http://people.fas.harvard.edu/~izahn/categories/r.xml</loc>
-  <lastmod>2016-06-21T13:27:00Z</lastmod>
+  <lastmod>2016-06-21T17:58:00Z</lastmod>
  </sitemap>
  <sitemap>
   <loc>http://people.fas.harvard.edu/~izahn/categories/shift-jis.xml</loc>
@@ -35,10 +39,10 @@
  </sitemap>
  <sitemap>
   <loc>http://people.fas.harvard.edu/~izahn/rss.xml</loc>
-  <lastmod>2016-06-21T13:27:00Z</lastmod>
+  <lastmod>2016-06-21T17:58:00Z</lastmod>
  </sitemap>
  <sitemap>
   <loc>http://people.fas.harvard.edu/~izahn/sitemap.xml</loc>
-  <lastmod>2016-06-21T16:33:00Z</lastmod>
+  <lastmod>2016-06-21T17:58:00Z</lastmod>
  </sitemap>
 </sitemapindex>

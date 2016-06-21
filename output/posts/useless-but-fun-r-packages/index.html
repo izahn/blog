@@ -10,15 +10,19 @@
 <link rel="alternate" type="application/rss+xml" title="RSS" href="../../rss.xml">
 <link rel="canonical" href="http://people.fas.harvard.edu/~izahn/posts/useless-but-fun-r-packages/">
 <!--[if lt IE 9]><script src="../../assets/js/html5.js"></script><![endif]--><meta name="author" content="Ista Zahn">
-<meta name="robots" content="noindex">
+<link rel="prev" href="../reading-data-with-non-native-encoding-in-r/" title="Escaping from character encoding hell in R on Windows" type="text/html">
 <meta property="og:site_name" content="Ista Zahn">
 <meta property="og:title" content="Useless but fun R packages">
 <meta property="og:url" content="http://people.fas.harvard.edu/~izahn/posts/useless-but-fun-r-packages/">
-<meta property="og:description" content="fortunes
-rfoaas
-cowsay">
+<meta property="og:description" content="R is useful for many things. But, it is not only useful! There is plenty of fun to be had as well. In celebration of Summer I'm going to take a look at some useless (but fun!) R packages.
+
+
+
+Fortune t">
 <meta property="og:type" content="article">
 <meta property="article:published_time" content="2016-06-20T20:44:13-04:00">
+<meta property="article:tag" content="fun">
+<meta property="article:tag" content="R">
 </head>
 <body>
 <a href="#content" class="sr-only sr-only-focusable">Skip to main content</a>
@@ -95,12 +99,236 @@ cowsay">
 
     </header><div class="e-content entry-content" itemprop="articleBody text">
     <p>
-fortunes
-rfoaas
-cowsay
+<a href="http://r-project.org">R</a> is useful for many things. But, it is not only useful! There is plenty of fun to be had as well. In celebration of Summer I'm going to take a look at some useless (but fun!) R packages.
 </p>
+
+<div id="outline-container-sec-1" class="outline-2">
+<h2 id="sec-1">Fortune teller</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+<a href="https://cran.r-project.org/web/packages/fortunes/index.html">fortunes</a> is probably the best-known "just for fun" R package. It is maintained by Achim Zeileis and features contributions from such R luminaries as Peter Dalgaard, Uwe Ligges, Kevin Wright, and many others. The <code>fortunes</code> package been amusing bored statisticians and programmers since 2004. Since that time the <code>fortunes</code> package developers have been selecting amusing quotes from the <a href="https://stat.ethz.ch/mailman/listinfo/r-help">R-help mailing list</a> and other sources and compiling them for your enjoyment. Let's take a look.
+</p>
+
+<div class="highlight"><pre><span></span><span class="c1">## install.packages("fortunes") # if you don't already have it</span>
+<span class="kn">library</span><span class="p">(</span>fortunes<span class="p">)</span>
+fortune<span class="p">()</span>
+</pre></div>
+
+<pre class="example">
+When in doubt, keep adding slashes until it works.
+   -- Joran Elias (on how to escape a backslash in R)
+      Stackoverflow (March 2015)
+</pre>
+
+<p>
+When called without arguments, the <code>fortune</code> function will select a random fortune. Calling <code>fortune</code> again will select another random quote:
+</p>
+<div class="highlight"><pre><span></span>fortune<span class="p">()</span>
+</pre></div>
+
+<pre class="example">
+RAM is cheap and thinking hurts.
+   -- Uwe Ligges (about memory requirements in R)
+      R-help (June 2007)
+</pre>
+
+<p>
+If you want to specify a particular quote you can do so by number or by character search:
+</p>
+<div class="highlight"><pre><span></span>fortune<span class="p">(</span><span class="m">204</span><span class="p">)</span>
+fortune<span class="p">(</span><span class="s">"memory"</span><span class="p">)</span>
+</pre></div>
+
+<pre class="example">
+memory problems (not me. my pc!)
+   -- Sara Mouro (subject line for an R-help request)
+      R-help (January 2008)
+
+RAM is cheap and thinking hurts.
+   -- Uwe Ligges (about memory requirements in R)
+      R-help (June 2007)
+</pre>
+
+<p>
+That's about it. Well, there are some other options, see <code>?fortune</code> for the details.
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-2" class="outline-2">
+<h2 id="sec-2">Cow says what?</h2>
+<div class="outline-text-2" id="text-2">
+<p>
+If you are a Unix user of a certain age you have no doubt heard of the famous <a href="https://en.wikipedia.org/wiki/Cowsay">cowsay</a> program. Now R users can join the fun with the <a href="https://github.com/sckott/cowsay">cowsay R package</a> by Scott Chamberlain. Like the <code>fortunes</code> package, <code>cowsay</code> exports just one function; <code>say</code>. Let's take a look:
+</p>
+<div class="highlight"><pre><span></span><span class="c1">## install.packages("cowsay")</span>
+<span class="kn">library</span><span class="p">(</span>cowsay<span class="p">)</span>
+say<span class="p">(</span><span class="s">"Hello world!"</span><span class="p">)</span>
+</pre></div>
+
+<pre class="example">
+ -------------- 
+Hello world! 
+ --------------
+    \
+      \
+        \
+            |\___/|
+          ==) ^Y^ (==
+            \  ^  /
+             )=*=(
+            /     \
+            |     |
+           /| | | |\
+           \| | |_|/\
+      jgs  //_// ___/
+               \_)
+</pre>
+
+<p>
+Cute, but I was led to believe there would be a cow involved! 
+</p>
+
+<div class="highlight"><pre><span></span>say<span class="p">(</span><span class="s">"Moo may represent an idea, but only the cow knows.\n --Mason Cooley"</span><span class="p">,</span>
+    by <span class="o">=</span> <span class="s">"cow"</span><span class="p">)</span>
+</pre></div>
+
+<pre class="example">
+ ----- 
+Moo may represent an idea, but only the cow knows.
+ --Mason Cooley 
+ ------ 
+    \   ^__^ 
+     \  (oo)\ ________ 
+        (__)\         )\ /\ 
+             ||------w|
+             ||      ||
+</pre>
+
+<p>
+There is no option to randomly select an animal, but we can achieve that ourselves easily enough.
+</p>
+<div class="highlight"><pre><span></span>someone_say_hello <span class="o">&lt;-</span> <span class="kr">function</span><span class="p">()</span> <span class="p">{</span>
+  animal <span class="o">&lt;-</span> <span class="kp">sample</span><span class="p">(</span><span class="kp">names</span><span class="p">(</span>animals<span class="p">),</span> <span class="m">1</span><span class="p">)</span>
+  say<span class="p">(</span><span class="kp">paste</span><span class="p">(</span><span class="s">"Hello, I'm a "</span><span class="p">,</span> animal<span class="p">,</span> <span class="s">"."</span><span class="p">,</span> collapse <span class="o">=</span> <span class="s">""</span><span class="p">),</span> by <span class="o">=</span> animal<span class="p">)</span>
+  <span class="p">}</span>
+someone_say_hello<span class="p">()</span>
+</pre></div>
+
+<pre class="example">
+ ----- 
+Hello, I'm a  bigcat . 
+ ------ 
+    \   
+     \
+                \`*-.
+                 )  _`-.
+                .  : `. .
+                : _   '  \
+                ; *` _.   `*-._
+                `-.-'          `-.
+                  ;       `       `.
+                  :.       .       \
+                  .\  .   :   .-'   .
+                  '  `+.;  ;  '      :
+                  :  '  |    ;       ;-.
+                  ; '   : :`-:     _.`* ;
+               .*' /  .*' ; .*`- +'  `*'
+     [bug]     `*-*   `*-*  `*-*'
+</pre>
+</div>
+</div>
+
+<div id="outline-container-sec-3" class="outline-2">
+<h2 id="sec-3">Putting it all together</h2>
+<div class="outline-text-2" id="text-3">
+<p>
+When I teach R I emphasize composability. That is, unlike some other statistics packages, R enables you to take the output from one function and pass in on to another. We can take advantage of the excellent composability R provides to do useful things like extract coefficients from a list of model fits and put them into a LaTeX table. Or we can use it to do useless things like making a cow tell us our fortune.
+</p>
+
+<div class="highlight"><pre><span></span>someone_say_my_fortune <span class="o">&lt;-</span> <span class="kr">function</span><span class="p">(</span>x<span class="p">)</span> <span class="p">{</span>
+  animal <span class="o">&lt;-</span> animal <span class="o">&lt;-</span> <span class="kp">sample</span><span class="p">(</span><span class="kp">names</span><span class="p">(</span>animals<span class="p">),</span> <span class="m">1</span><span class="p">)</span>
+  say<span class="p">(</span><span class="kp">paste</span><span class="p">(</span>fortune<span class="p">(),</span> collapse <span class="o">=</span> <span class="s">"\n"</span><span class="p">),</span> by <span class="o">=</span> animal<span class="p">)</span>
+<span class="p">}</span>
+someone_say_my_fortune<span class="p">()</span>
+</pre></div>
+
+<pre class="example">
+ ------------- 
+Only with a very high signal to noise ratio (e.g., high true R^2) can torturing data lead to a confession to something other than what the analyst wants to hear.
+Frank Harrell
+NA
+R-help
+April 2010 
+ -------------- 
+              \   
+               \  
+                \
+_____________________                              _____________________
+`-._                 \           |\__/|           /                 _.-'
+    \                 \          |    |          /                 /
+     \                 `-_______/      \_______-'                 /
+      |                                                          |
+      |                                                          |
+      |                                                          |
+      /                                                          \
+     /_____________                                  _____________\
+                   `----._                    _.----'
+                          `--.            .--'
+                              `-.      .-'
+                                 \    / :F_P:
+                                  \  /
+                                   \/
+</pre>
+
+<p>
+Because <code>fortune</code> gives a random quote each time, and we randomly select animals each time, we will get a surprising new delight every time we call the <code>someone_say_my_fortune</code> function.
+</p>
+<div class="highlight"><pre><span></span>someone_say_my_fortune<span class="p">()</span>
+</pre></div>
+
+<pre class="example">
+ ----- 
+There's an informal tradition that those announcements [about R releases] contain at least one mistake, but apparently I forgot this time, so users have to make up their own....
+Peter Dalgaard
+about an apparent non-bug report in his former R-announce message
+R-help
+December 2009 
+ ------ 
+    \   
+     \
+         _
+       _/ }
+      `&gt;' \
+      `|   \
+       |   /'-.     .-.
+        \'     ';`--' .'
+         \'.    `'-./
+          '.`-..-;`
+            `;-..'
+            _| _|
+            /` /` [nosig]
+</pre>
+
+<p>
+If you want to get really silly about it, you could call that function in your <a href="https://cran.r-project.org/doc/manuals/r-release/R-intro.html#Customizing-the-environment">.Rprofile</a>. Or, if you are package author you could add some spice to your warning and error messages by having an ASCII art animal say them. Go forth and have fun!
+</p>
+
+<p>
+If you know of other useless (but fun!) R packages let me know in the comments. 
+</p>
+</div>
+</div>
     </div>
-    <aside class="postpromonav"><nav></nav></aside><section class="comments hidden-print"><h2>Comments</h2>
+    <aside class="postpromonav"><nav><ul itemprop="keywords" class="tags">
+<li><a class="tag p-category" href="../../categories/fun/" rel="tag">fun</a></li>
+            <li><a class="tag p-category" href="../../categories/r/" rel="tag">R</a></li>
+        </ul>
+<ul class="pager hidden-print">
+<li class="previous">
+                <a href="../reading-data-with-non-native-encoding-in-r/" rel="prev" title="Escaping from character encoding hell in R on Windows">Previous post</a>
+            </li>
+        </ul></nav></aside><section class="comments hidden-print"><h2>Comments</h2>
         
         
         <div data-title="Useless+but+fun+R+packages" id="isso-thread"></div>

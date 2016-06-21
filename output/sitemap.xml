@@ -15,11 +15,11 @@
  </url>
  <url>
   <loc>http://people.fas.harvard.edu/~izahn/archive.html</loc>
-  <lastmod>2016-06-21T16:33:00Z</lastmod>
+  <lastmod>2016-06-21T17:58:00Z</lastmod>
  </url>
  <url>
   <loc>http://people.fas.harvard.edu/~izahn/categories/</loc>
-  <lastmod>2016-06-21T11:05:00Z</lastmod>
+  <lastmod>2016-06-21T17:58:00Z</lastmod>
  </url>
  <url>
   <loc>http://people.fas.harvard.edu/~izahn/categories/cat_r/</loc>
@@ -32,6 +32,10 @@
  <url>
   <loc>http://people.fas.harvard.edu/~izahn/categories/files/</loc>
   <lastmod>2016-06-21T03:39:00Z</lastmod>
+ </url>
+ <url>
+  <loc>http://people.fas.harvard.edu/~izahn/categories/fun/</loc>
+  <lastmod>2016-06-21T17:58:00Z</lastmod>
  </url>
  <url>
   <loc>http://people.fas.harvard.edu/~izahn/categories/r/</loc>
@@ -59,6 +63,10 @@
  </url>
  <url>
   <loc>http://people.fas.harvard.edu/~izahn/posts/reading-data-with-non-native-encoding-in-r/</loc>
+  <lastmod>2016-06-21T11:05:00Z</lastmod>
+ </url>
+ <url>
+  <loc>http://people.fas.harvard.edu/~izahn/posts/useless-but-fun-r-packages/</loc>
   <lastmod>2016-06-21T11:05:00Z</lastmod>
  </url>
  <url>
