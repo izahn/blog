@@ -1,0 +1,15 @@
+#+BEGIN_COMMENT
+.. title: Useless but fun R packages
+.. slug: useless-but-fun-r-packages
+.. date: 2016-06-20 20:44:13 UTC-04:00
+.. tags: private,draft
+.. category: 
+.. link: 
+.. description: 
+.. type: text
+#+END_COMMENT
+
+fortunes
+rfoaas
+cowsay
+

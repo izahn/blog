@@ -98,13 +98,9 @@ To read a text file with non ASCII encoding into R you should a) determine the e
 For example, I have two versions of a file containing numbers and Japanese characters: <code>japanese_utf8.csv</code> is encoded in UTF-8, and <code>japanese_shiftjis.csv</code> is encoded in SHIFT-JIS. We can read these files as follows on any platform (Windows, Linux, Mac):
 </p>
 
-<div class="highlight"><pre><span></span><span class="kn">library</span><span class="p">(</span>readr<span class="p">)</span>
-<span class="kp">options</span><span class="p">(</span>stringsAsFactors <span class="o">=</span> <span class="kc">FALSE</span><span class="p">)</span>
-read_csv<span class="p">(</span><span class="s">"japanese_utf8.csv"</span><span class="p">,</span>
-	 locale <span class="o">=</span> locale<span class="p">(</span>encoding <span class="o">=</span> <span class="s">"UTF-8"</span><span class="p">))</span>
-read_csv<span class="p">(</span><span class="s">"japanese_shiftjis.csv"</span><span class="p">,</span>
-	 locale <span class="o">=</span> locale<span class="p">(</span>encoding <span class="o">=</span> <span class="s">"SHIFT-JIS"</span><span class="p">))</span>
-</pre></div>
+fish: Unknown command 'pygmentize -f html -g -l r'
+fish: pygmentize -f html -g -l r
+      ^
 
 <pre class="example">
     No.         発行日 朝夕刊     面名 ページ
@@ -136,9 +132,9 @@ On Windows there is a bug in <code>print.data.frame</code> that causes <code>dat
 which looks terrible but does not actually indicate a problem. The information is encoded correctly, but due to a long-standing bug it is <span class="underline">displayed</span> incorrectly. You can check to see if the values are correct by converting the data.frame by (ab)using <code>print.listof</code>, e.g.,
 </p>
 
-<div class="highlight"><pre><span></span><span class="kp">print.listof</span><span class="p">(</span>read_csv<span class="p">(</span><span class="s">"japanese_shiftjis.csv"</span><span class="p">,</span>
-		      locale <span class="o">=</span> locale<span class="p">(</span>encoding <span class="o">=</span> <span class="s">"SHIFT-JIS"</span><span class="p">)))</span>
-</pre></div>
+fish: Unknown command 'pygmentize -f html -g -l r'
+fish: pygmentize -f html -g -l r
+      ^
 
 <pre class="example">
 No. :
