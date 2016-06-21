@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>Ista Zahn (R)</title><link>http://people.fas.harvard.edu/~izahn/</link><description></description><atom:link href="http://people.fas.harvard.edu/~izahn/categories/cat_r.xml" type="application/rss+xml" rel="self"></atom:link><language>en</language><lastBuildDate>Tue, 21 Jun 2016 11:01:06 GMT</lastBuildDate><generator>https://getnikola.com/</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Escaping from character encoding hell in R on Windows</title><link>http://people.fas.harvard.edu/~izahn/posts/reading-data-with-non-native-encoding-in-r/</link><dc:creator>Ista Zahn</dc:creator><description>&lt;p&gt;
+<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/" version="2.0"><channel><title>Ista Zahn (R)</title><link>http://people.fas.harvard.edu/~izahn/</link><description></description><atom:link type="application/rss+xml" href="http://people.fas.harvard.edu/~izahn/categories/cat_r.xml" rel="self"></atom:link><language>en</language><lastBuildDate>Tue, 21 Jun 2016 13:27:45 GMT</lastBuildDate><generator>https://getnikola.com/</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Escaping from character encoding hell in R on Windows</title><link>http://people.fas.harvard.edu/~izahn/posts/reading-data-with-non-native-encoding-in-r/</link><dc:creator>Ista Zahn</dc:creator><description>&lt;p&gt;
 Note: the title of this post was inspired by &lt;a href="http://stackoverflow.com/questions/18789330/r-on-windows-character-encoding-hell"&gt;this question on stackoverflow&lt;/a&gt;.
 &lt;/p&gt;
 
@@ -19,9 +19,13 @@ To read a text file with non ASCII encoding into R you should a) determine the e
 For example, I have two versions of a file containing numbers and Japanese characters: &lt;code&gt;japanese_utf8.csv&lt;/code&gt; is encoded in UTF-8, and &lt;code&gt;japanese_shiftjis.csv&lt;/code&gt; is encoded in SHIFT-JIS. We can read these files as follows on any platform (Windows, Linux, Mac):
 &lt;/p&gt;
 
-fish: Unknown command 'pygmentize -f html -g -l r'
-fish: pygmentize -f html -g -l r
-      ^
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kn"&gt;library&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;readr&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="kp"&gt;options&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;stringsAsFactors &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="kc"&gt;FALSE&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+read_csv&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;"japanese_utf8.csv"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+	 locale &lt;span class="o"&gt;=&lt;/span&gt; locale&lt;span class="p"&gt;(&lt;/span&gt;encoding &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;"UTF-8"&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+read_csv&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;"japanese_shiftjis.csv"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+	 locale &lt;span class="o"&gt;=&lt;/span&gt; locale&lt;span class="p"&gt;(&lt;/span&gt;encoding &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;"SHIFT-JIS"&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
 
 &lt;pre class="example"&gt;
     No.         発行日 朝夕刊     面名 ページ
@@ -53,9 +57,9 @@ On Windows there is a bug in &lt;code&gt;print.data.frame&lt;/code&gt; that caus
 which looks terrible but does not actually indicate a problem. The information is encoded correctly, but due to a long-standing bug it is &lt;span class="underline"&gt;displayed&lt;/span&gt; incorrectly. You can check to see if the values are correct by converting the data.frame by (ab)using &lt;code&gt;print.listof&lt;/code&gt;, e.g.,
 &lt;/p&gt;
 
-fish: Unknown command 'pygmentize -f html -g -l r'
-fish: pygmentize -f html -g -l r
-      ^
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kp"&gt;print.listof&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;read_csv&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;"japanese_shiftjis.csv"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+		      locale &lt;span class="o"&gt;=&lt;/span&gt; locale&lt;span class="p"&gt;(&lt;/span&gt;encoding &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;"SHIFT-JIS"&lt;/span&gt;&lt;span class="p"&gt;)))&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
 
 &lt;pre class="example"&gt;
 No. :
@@ -103,9 +107,8 @@ The problem is that the basic R functions for reading and writing data from and 
 Let's try it, using some simplified data from a project I worked on last year. For illustration I've created two files containing a mix of English letters, numbers, and Japanese characters. I saved one version with UTF-8 encoding, and another with SHIFT-JIS. On Linux we can read both files easily, provided only that we correctly specify the encoding if the file is not already encoded in UTF-8:
 &lt;/p&gt;
 
-fish: Unknown command 'pygmentize -f html -g -l r'
-fish: pygmentize -f html -g -l r
-      ^
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;read.csv&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;"japanese_utf8.csv"&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
 
 &lt;pre class="example"&gt;
   No.         発行日 朝夕刊     面名 ページ
@@ -114,9 +117,8 @@ fish: pygmentize -f html -g -l r
 3   3 2015年09月21日   朝刊   ３総合      3
 &lt;/pre&gt;
 
-fish: Unknown command 'pygmentize -f html -g -l r'
-fish: pygmentize -f html -g -l r
-      ^
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;read.csv&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;"japanese_shiftjis.csv"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; fileEncoding &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;"SHIFT-JIS"&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
 
 &lt;pre class="example"&gt;
   No.         発行日 朝夕刊     面名 ページ
@@ -129,9 +131,8 @@ fish: pygmentize -f html -g -l r
 On Windows things are much more difficult. Using &lt;code&gt;read.csv&lt;/code&gt; with the default options does not work because &lt;code&gt;read.csv&lt;/code&gt; assumes that the encoding of the file matches the Windows locale settings:
 &lt;/p&gt;
 
-fish: Unknown command 'pygmentize -f html -g -l r'
-fish: pygmentize -f html -g -l r
-      ^
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;read.csv&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;"japanese_utf8.csv"&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
 
 &lt;pre class="example"&gt;
   No.         ç.ºè.Œæ.. æœ.å..å.Š       é..å.. ãƒšãƒ.ã..
@@ -143,9 +144,8 @@ fish: pygmentize -f html -g -l r
 &lt;p&gt;
 Trying to tell R that the file is encoded in UTF-8 not a general solution because &lt;code&gt;read.csv&lt;/code&gt; will then try to re-encode from UTF-8 to the native encoding, which may or may not work depending on the contents of the file. On my system trying to read a UTF-8 encoded file containing Japanese characters with the fileEncoding falls flat on its face:
 &lt;/p&gt;
-fish: Unknown command 'pygmentize -f html -g -l r'
-fish: pygmentize -f html -g -l r
-      ^
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;read.csv&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;"japanese_utf8.csv"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; fileEncoding &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;"UTF-8"&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
 
 &lt;pre class="example"&gt;
 [1] No. X  
@@ -161,9 +161,8 @@ Warning messages:
 &lt;p&gt;
 Finally, we might try the &lt;code&gt;encoding&lt;/code&gt; argument rather than &lt;code&gt;fileEncoding&lt;/code&gt;. This simply marks the strings with the specified encoding:
 &lt;/p&gt;
-fish: Unknown command 'pygmentize -f html -g -l r'
-fish: pygmentize -f html -g -l r
-      ^
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;read.csv&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;"japanese_utf8.csv"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; encoding &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;"UTF-8"&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
 
 &lt;pre class="example"&gt;
 read.csv("japanese_utf8.csv", encoding = "UTF-8")
@@ -175,9 +174,8 @@ read.csv("japanese_utf8.csv", encoding = "UTF-8")
 &lt;p&gt;
 This kind of works, though you wouldn't know it from the output. As mentioned above, there is a bug in the &lt;code&gt;print.data.frame&lt;/code&gt; function that prevents UTF-8 encoded text from displaying correctly. We can use another print method to see that the column values have been read in correctly:
 &lt;/p&gt;
-fish: Unknown command 'pygmentize -f html -g -l r'
-fish: pygmentize -f html -g -l r
-      ^
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kp"&gt;print.listof&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;read.csv&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;"japanese_utf8.csv"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; encoding &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;"UTF-8"&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
 
 &lt;pre class="example"&gt;
 No. :
@@ -199,9 +197,8 @@ X.U.30DA..U.30FC..U.30B8. :
 &lt;p&gt;
 Unfortunately there are two problems with this: first, the names of the columns have not been correctly encoded, and second, this will only work if your input data is in UTF-8 in the first place. Trying to apply this strategy to our SHIFT-JIS encoded file will not work at all because we &lt;span class="underline"&gt;cannot&lt;/span&gt; mark strings with arbitrary encoding, only with UTF-8&lt;sup&gt;&lt;a id="fnr.1" name="fnr.1" class="footref" href="http://people.fas.harvard.edu/~izahn/posts/reading-data-with-non-native-encoding-in-r/#fn.1"&gt;1&lt;/a&gt;&lt;/sup&gt;. Trying to mark the string as SHIFT-JIS will silently fail:
 &lt;/p&gt;
-fish: Unknown command 'pygmentize -f html -g -l r'
-fish: pygmentize -f html -g -l r
-      ^
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kp"&gt;print.listof&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;read.csv&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;"japanese_shiftjis.csv"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; encoding &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;"SHIFT-JIS"&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
 
 &lt;pre class="example"&gt;
 No. :
@@ -237,9 +234,10 @@ Basically R gives you two ways of handling character encoding. You can use the d
 In some ways just changing your locale to one that can accommodate the data you are working with is the simplest approach. Again, on Mac and Linux the locale usually specifies UTF-8 encoding, so no changes are needed; things should just work as you would expect them to. On windows we can change the locale to match the data we are working with using the &lt;code&gt;Sys.setlocale&lt;/code&gt; function. This sometimes works well; for example, we can read our UTF-8 and SHIFT-JIS encoded data on Windows as follows:
 &lt;/p&gt;
 
-fish: Unknown command 'pygmentize -f html -g -l r'
-fish: pygmentize -f html -g -l r
-      ^
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;setlocale&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;"LC_ALL"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;"English_United States.932"&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+read.csv&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;"japanese_shiftjis.csv"&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+read.csv&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;"japanese_utf8.csv"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; fileEncoding &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;"UTF-8"&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
 
 &lt;pre class="example"&gt;
 [1] "LC_COLLATE=English_United States.932;LC_CTYPE=English_United States.932;LC_MONETARY=English_United States.932;LC_NUMERIC=C;LC_TIME=English_United States.932"
@@ -262,9 +260,15 @@ This works fine until we want to read some other kind of text in the same R sess
 &lt;p&gt;
 Because the &lt;code&gt;Sys.setlocale&lt;/code&gt; method only works for a subset of languages in any given session, our best bet is to read store everything in UTF-8 (and make sure it is marked as such). It is not convenient to do this using the &lt;code&gt;read.table&lt;/code&gt; family of functions in R, but it is possible with some care:
 &lt;/p&gt;
-fish: Unknown command 'pygmentize -f html -g -l r'
-fish: pygmentize -f html -g -l r
-      ^
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;x &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; read.csv&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;"japanese_shiftjis.csv"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; 
+	      encoding &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;"UTF-8"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; 
+	      check.names &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="kc"&gt;FALSE&lt;/span&gt; &lt;span class="c1"&gt;# otherwise R will mangle the names&lt;/span&gt;
+	      &lt;span class="p"&gt;)&lt;/span&gt;
+charcols &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="o"&gt;!&lt;/span&gt;&lt;span class="kp"&gt;sapply&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;x&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="kp"&gt;is.numeric&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+x&lt;span class="p"&gt;[&lt;/span&gt;charcols&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="kp"&gt;lapply&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;x&lt;span class="p"&gt;[&lt;/span&gt;charcols&lt;span class="p"&gt;],&lt;/span&gt; &lt;span class="kp"&gt;iconv&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; from &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;"SHIFT-JIS"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; to &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;"UTF-8"&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="kp"&gt;names&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;x&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="kp"&gt;iconv&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kp"&gt;names&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;x&lt;span class="p"&gt;),&lt;/span&gt; from &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;"SHIFT-JIS"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; to &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;"UTF-8"&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="kp"&gt;print.listof&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;x&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
 
 &lt;pre class="example"&gt;
 No. :
@@ -286,9 +290,10 @@ No. :
 OK it works, but honestly that too much work for something as simple as reading a .csv file into R. As suggested at the beginning of this post, a better strategy is to use the &lt;a href="https://github.com/hadley/readr"&gt;readr&lt;/a&gt; package because it will do the conversion to UTF-8 for you:
 &lt;/p&gt;
 
-fish: Unknown command 'pygmentize -f html -g -l r'
-fish: pygmentize -f html -g -l r
-      ^
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kp"&gt;print.listof&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;read_csv&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;"arabic_utf-8.csv"&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt; locale &lt;span class="o"&gt;=&lt;/span&gt; locale&lt;span class="p"&gt;(&lt;/span&gt;encoding &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;"UTF-8"&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+&lt;span class="kp"&gt;print.listof&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;read_csv&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;"japanese_utf8.csv"&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt; locale &lt;span class="o"&gt;=&lt;/span&gt; locale&lt;span class="p"&gt;(&lt;/span&gt;encoding &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;"UTF-8"&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+&lt;span class="kp"&gt;print.listof&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;read_csv&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;"japanese_shiftjis.csv"&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt; locale &lt;span class="o"&gt;=&lt;/span&gt; locale&lt;span class="p"&gt;(&lt;/span&gt;encoding &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;"SHIFT-JIS"&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
 
 &lt;pre class="example"&gt;
 X5 :
