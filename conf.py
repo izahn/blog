@@ -795,7 +795,7 @@ LICENSE = """
 <a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">
 <img alt="Creative Commons License BY-NC-SA"
 style="border-width:0; margin-bottom:12px;"
-src="https://i.creativecommons.org/l/by-sa/4.0/88x31.png"></a>"""
+src="https://licensebuttons.net/l/by-sa/4.0/80x15.png"></a>"""
 
 # A small copyright notice for the page footer (in HTML).
 # (translatable)
