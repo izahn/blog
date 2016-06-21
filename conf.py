@@ -794,7 +794,7 @@ FEED_LINKS_APPEND_QUERY = False
 LICENSE = """
 <a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">
 <img alt="Creative Commons License BY-NC-SA"
-style="border-width:0; margin-bottom:12px;"
+style="border-width:0; margin-bottom:6px;"
 src="https://licensebuttons.net/l/by-sa/4.0/80x15.png"></a>"""
 
 # A small copyright notice for the page footer (in HTML).
