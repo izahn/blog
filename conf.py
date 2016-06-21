@@ -801,7 +801,7 @@ src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png"></a>"""
 # (translatable)
 CONTENT_FOOTER = """
 <p>
-Blogroll: <a href='http://www.r-bloggers.com/'>R-bloggers</a>
+Blogroll: - <a href='http://www.r-bloggers.com/'>R-bloggers</a> - <a href='http://dss.iq.harvard.edu/blog'> Data Science Services </a>
 </p>
 <p>
 Contents &copy; {date} <a href='mailto:{email}'>{author}</a>
