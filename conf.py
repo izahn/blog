@@ -528,7 +528,7 @@ FRONT_INDEX_HEADER = {
 # relative URL.
 #
 # If you don't need any of these, just set to []
-REDIRECTIONS = [('blog/index.html', '/index.html')]
+REDIRECTIONS = [('blog/index.html', '/~izahn/')]
 
 # Presets of commands to execute to deploy. Can be anything, for
 # example, you may use rsync:
