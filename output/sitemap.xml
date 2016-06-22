@@ -7,7 +7,7 @@
                         http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
  <url>
   <loc>http://people.fas.harvard.edu/~izahn/</loc>
-  <lastmod>2016-06-21T11:05:00Z</lastmod>
+  <lastmod>2016-06-22T03:36:00Z</lastmod>
  </url>
  <url>
   <loc>http://people.fas.harvard.edu/~izahn/2016/</loc>
@@ -16,6 +16,10 @@
  <url>
   <loc>http://people.fas.harvard.edu/~izahn/archive.html</loc>
   <lastmod>2016-06-21T17:58:00Z</lastmod>
+ </url>
+ <url>
+  <loc>http://people.fas.harvard.edu/~izahn/blog/</loc>
+  <lastmod>2016-06-22T03:36:00Z</lastmod>
  </url>
  <url>
   <loc>http://people.fas.harvard.edu/~izahn/categories/</loc>
