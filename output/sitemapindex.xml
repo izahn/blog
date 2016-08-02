@@ -6,8 +6,16 @@
     xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
                         http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
  <sitemap>
+  <loc>http://people.fas.harvard.edu/~izahn/categories/atom.xml</loc>
+  <lastmod>2016-08-02T02:20:00Z</lastmod>
+ </sitemap>
+ <sitemap>
   <loc>http://people.fas.harvard.edu/~izahn/categories/cat_r.xml</loc>
-  <lastmod>2016-06-21T18:13:00Z</lastmod>
+  <lastmod>2016-08-02T02:21:00Z</lastmod>
+ </sitemap>
+ <sitemap>
+  <loc>http://people.fas.harvard.edu/~izahn/categories/emacs.xml</loc>
+  <lastmod>2016-08-02T02:20:00Z</lastmod>
  </sitemap>
  <sitemap>
   <loc>http://people.fas.harvard.edu/~izahn/categories/encoding.xml</loc>
@@ -22,8 +30,24 @@
   <lastmod>2016-06-21T18:13:00Z</lastmod>
  </sitemap>
  <sitemap>
+  <loc>http://people.fas.harvard.edu/~izahn/categories/julia.xml</loc>
+  <lastmod>2016-08-02T02:20:00Z</lastmod>
+ </sitemap>
+ <sitemap>
+  <loc>http://people.fas.harvard.edu/~izahn/categories/jupyter.xml</loc>
+  <lastmod>2016-08-02T02:20:00Z</lastmod>
+ </sitemap>
+ <sitemap>
+  <loc>http://people.fas.harvard.edu/~izahn/categories/pdf.xml</loc>
+  <lastmod>2016-08-02T02:20:00Z</lastmod>
+ </sitemap>
+ <sitemap>
+  <loc>http://people.fas.harvard.edu/~izahn/categories/python.xml</loc>
+  <lastmod>2016-08-02T02:20:00Z</lastmod>
+ </sitemap>
+ <sitemap>
   <loc>http://people.fas.harvard.edu/~izahn/categories/r.xml</loc>
-  <lastmod>2016-06-21T18:13:00Z</lastmod>
+  <lastmod>2016-08-02T02:21:00Z</lastmod>
  </sitemap>
  <sitemap>
   <loc>http://people.fas.harvard.edu/~izahn/categories/shift-jis.xml</loc>
@@ -35,14 +59,14 @@
  </sitemap>
  <sitemap>
   <loc>http://people.fas.harvard.edu/~izahn/galleries/rss.xml</loc>
-  <lastmod>2016-06-21T16:33:00Z</lastmod>
+  <lastmod>2016-08-02T02:21:00Z</lastmod>
  </sitemap>
  <sitemap>
   <loc>http://people.fas.harvard.edu/~izahn/rss.xml</loc>
-  <lastmod>2016-06-21T18:13:00Z</lastmod>
+  <lastmod>2016-08-02T02:21:00Z</lastmod>
  </sitemap>
  <sitemap>
   <loc>http://people.fas.harvard.edu/~izahn/sitemap.xml</loc>
-  <lastmod>2016-06-22T03:36:00Z</lastmod>
+  <lastmod>2016-08-02T02:21:00Z</lastmod>
  </sitemap>
 </sitemapindex>

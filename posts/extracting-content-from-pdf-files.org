@@ -1,0 +1,14 @@
+#+BEGIN_COMMENT
+.. title: Extracting content from .pdf files
+.. slug: extracting-content-from-pdf-files
+.. date: 2016-07-27 18:13:28 UTC-04:00
+.. tags: R,pdf 
+.. category: R 
+.. link: 
+.. description: 
+.. type: text
+#+END_COMMENT
+
+One of the most common questions I get as a data science consultant involves extracting content from =.pdf= files. In the best-case scenario the content can be extracted to consistently formatted text files and parsed from there into a usable form. In the worst case the file will need to be run through an optical character recognition (OCR) program to extract the text.
+
+For years =pdftotext= from the [[https://poppler.freedesktop.org/][poppler]] project was my go-to answer for the easy case. 

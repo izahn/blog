@@ -1,0 +1,18 @@
+#+BEGIN_COMMENT
+.. title: Jupyter Beyond the Browser
+.. slug: jupyter-beyond-the-browser
+.. date: 2016-07-25 13:17:05 UTC-04:00
+.. tags: Jupyter,R,Python,Julia,Emacs,Atom 
+.. category: 
+.. link: 
+.. description: 
+.. type: text
+#+END_COMMENT
+
+[[http://jupyter.org][Jupyter]] (formerly known as ipython) is in the midst of some exciting new developments. Many people are familiar with Jupyter as an interactive notebook that runs in your browser, but there is more to the project than that.
+
+* What we have today
+** Atom editor support for Jupyter
+** Jupyter console
+** Emacs support for Jupyter
+* A vision for the future of Jupyter

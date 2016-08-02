@@ -7,15 +7,15 @@
                         http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
  <url>
   <loc>http://people.fas.harvard.edu/~izahn/</loc>
-  <lastmod>2016-06-22T03:36:00Z</lastmod>
+  <lastmod>2016-08-02T02:21:00Z</lastmod>
  </url>
  <url>
   <loc>http://people.fas.harvard.edu/~izahn/2016/</loc>
-  <lastmod>2016-06-21T03:33:00Z</lastmod>
+  <lastmod>2016-08-02T02:21:00Z</lastmod>
  </url>
  <url>
   <loc>http://people.fas.harvard.edu/~izahn/archive.html</loc>
-  <lastmod>2016-06-21T17:58:00Z</lastmod>
+  <lastmod>2016-08-02T02:21:00Z</lastmod>
  </url>
  <url>
   <loc>http://people.fas.harvard.edu/~izahn/blog/</loc>
@@ -23,11 +23,19 @@
  </url>
  <url>
   <loc>http://people.fas.harvard.edu/~izahn/categories/</loc>
-  <lastmod>2016-06-21T17:58:00Z</lastmod>
+  <lastmod>2016-08-02T02:21:00Z</lastmod>
+ </url>
+ <url>
+  <loc>http://people.fas.harvard.edu/~izahn/categories/atom/</loc>
+  <lastmod>2016-08-02T02:20:00Z</lastmod>
  </url>
  <url>
   <loc>http://people.fas.harvard.edu/~izahn/categories/cat_r/</loc>
-  <lastmod>2016-06-21T03:39:00Z</lastmod>
+  <lastmod>2016-08-02T02:21:00Z</lastmod>
+ </url>
+ <url>
+  <loc>http://people.fas.harvard.edu/~izahn/categories/emacs/</loc>
+  <lastmod>2016-08-02T02:20:00Z</lastmod>
  </url>
  <url>
   <loc>http://people.fas.harvard.edu/~izahn/categories/encoding/</loc>
@@ -42,8 +50,24 @@
   <lastmod>2016-06-21T17:58:00Z</lastmod>
  </url>
  <url>
+  <loc>http://people.fas.harvard.edu/~izahn/categories/julia/</loc>
+  <lastmod>2016-08-02T02:20:00Z</lastmod>
+ </url>
+ <url>
+  <loc>http://people.fas.harvard.edu/~izahn/categories/jupyter/</loc>
+  <lastmod>2016-08-02T02:20:00Z</lastmod>
+ </url>
+ <url>
+  <loc>http://people.fas.harvard.edu/~izahn/categories/pdf/</loc>
+  <lastmod>2016-08-02T02:20:00Z</lastmod>
+ </url>
+ <url>
+  <loc>http://people.fas.harvard.edu/~izahn/categories/python/</loc>
+  <lastmod>2016-08-02T02:20:00Z</lastmod>
+ </url>
+ <url>
   <loc>http://people.fas.harvard.edu/~izahn/categories/r/</loc>
-  <lastmod>2016-06-21T03:39:00Z</lastmod>
+  <lastmod>2016-08-02T02:21:00Z</lastmod>
  </url>
  <url>
   <loc>http://people.fas.harvard.edu/~izahn/categories/shift-jis/</loc>
@@ -55,7 +79,7 @@
  </url>
  <url>
   <loc>http://people.fas.harvard.edu/~izahn/galleries/</loc>
-  <lastmod>2016-06-21T11:05:00Z</lastmod>
+  <lastmod>2016-08-02T02:21:00Z</lastmod>
  </url>
  <url>
   <loc>http://people.fas.harvard.edu/~izahn/listings/</loc>
@@ -63,7 +87,15 @@
  </url>
  <url>
   <loc>http://people.fas.harvard.edu/~izahn/pages/about/</loc>
-  <lastmod>2016-06-21T03:39:00Z</lastmod>
+  <lastmod>2016-08-02T02:21:00Z</lastmod>
+ </url>
+ <url>
+  <loc>http://people.fas.harvard.edu/~izahn/posts/extracting-content-from-pdf-files/</loc>
+  <lastmod>2016-08-02T02:20:00Z</lastmod>
+ </url>
+ <url>
+  <loc>http://people.fas.harvard.edu/~izahn/posts/jupyter-beyond-the-browser/</loc>
+  <lastmod>2016-08-02T02:20:00Z</lastmod>
  </url>
  <url>
   <loc>http://people.fas.harvard.edu/~izahn/posts/reading-data-with-non-native-encoding-in-r/</loc>
@@ -71,7 +103,7 @@
  </url>
  <url>
   <loc>http://people.fas.harvard.edu/~izahn/posts/useless-but-fun-r-packages/</loc>
-  <lastmod>2016-06-21T11:05:00Z</lastmod>
+  <lastmod>2016-08-02T02:21:00Z</lastmod>
  </url>
  <url>
   <loc>http://people.fas.harvard.edu/~izahn/tipue_search.html</loc>

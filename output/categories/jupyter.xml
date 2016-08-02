@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Ista Zahn (Jupyter)</title><link>http://people.fas.harvard.edu/~izahn/</link><description></description><atom:link rel="self" href="http://people.fas.harvard.edu/~izahn/categories/jupyter.xml" type="application/rss+xml"></atom:link><language>en</language><lastBuildDate>Tue, 02 Aug 2016 02:20:27 GMT</lastBuildDate><generator>https://getnikola.com/</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Jupyter Beyond the Browser</title><link>http://people.fas.harvard.edu/~izahn/posts/jupyter-beyond-the-browser/</link><dc:creator>Ista Zahn</dc:creator><description>&lt;p&gt;
+&lt;a href="http://jupyter.org"&gt;Jupyter&lt;/a&gt; (formerly known as ipython) is in the midst of some exciting new developments. Many people are familiar with Jupyter as an interactive notebook that runs in your browser, but there is more to the project than that.
+&lt;/p&gt;
+
+&lt;div id="outline-container-sec-1" class="outline-2"&gt;
+&lt;h2 id="sec-1"&gt;What we have today&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-1"&gt;
+&lt;/div&gt;&lt;div id="outline-container-sec-1-1" class="outline-3"&gt;
+&lt;h3 id="sec-1-1"&gt;Atom editor support for Jupyter&lt;/h3&gt;
+&lt;/div&gt;
+&lt;div id="outline-container-sec-1-2" class="outline-3"&gt;
+&lt;h3 id="sec-1-2"&gt;Jupyter console&lt;/h3&gt;
+&lt;/div&gt;
+&lt;div id="outline-container-sec-1-3" class="outline-3"&gt;
+&lt;h3 id="sec-1-3"&gt;Emacs support for Jupyter&lt;/h3&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id="outline-container-sec-2" class="outline-2"&gt;
+&lt;h2 id="sec-2"&gt;A vision for the future of Jupyter&lt;/h2&gt;
+&lt;/div&gt;</description><category>Atom</category><category>Emacs</category><category>Julia</category><category>Jupyter</category><category>Python</category><category>R</category><guid>http://people.fas.harvard.edu/~izahn/posts/jupyter-beyond-the-browser/</guid><pubDate>Mon, 25 Jul 2016 17:17:05 GMT</pubDate></item></channel></rss>
