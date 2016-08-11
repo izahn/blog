@@ -15,7 +15,7 @@
  </url>
  <url>
   <loc>http://people.fas.harvard.edu/~izahn/archive.html</loc>
-  <lastmod>2016-08-11T19:27:00Z</lastmod>
+  <lastmod>2016-08-11T19:33:00Z</lastmod>
  </url>
  <url>
   <loc>http://people.fas.harvard.edu/~izahn/blog/</loc>
@@ -88,14 +88,6 @@
  <url>
   <loc>http://people.fas.harvard.edu/~izahn/pages/about/</loc>
   <lastmod>2016-08-02T02:21:00Z</lastmod>
- </url>
- <url>
-  <loc>http://people.fas.harvard.edu/~izahn/posts/extracting-content-from-pdf-files/</loc>
-  <lastmod>2016-08-02T02:20:00Z</lastmod>
- </url>
- <url>
-  <loc>http://people.fas.harvard.edu/~izahn/posts/jupyter-beyond-the-browser/</loc>
-  <lastmod>2016-08-02T02:20:00Z</lastmod>
  </url>
  <url>
   <loc>http://people.fas.harvard.edu/~izahn/posts/reading-data-with-non-native-encoding-in-r/</loc>

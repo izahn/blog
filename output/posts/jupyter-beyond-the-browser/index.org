@@ -2,7 +2,7 @@
 .. title: Jupyter Beyond the Browser
 .. slug: jupyter-beyond-the-browser
 .. date: 2016-07-25 13:17:05 UTC-04:00
-.. tags: Jupyter,R,Python,Julia,Emacs,Atom 
+.. tags: Jupyter,R,Python,Julia,Emacs,Atom,draft
 .. category: 
 .. link: 
 .. description: 
