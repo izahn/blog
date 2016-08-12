@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>Ista Zahn (R)</title><link>http://people.fas.harvard.edu/~izahn/</link><description></description><atom:link type="application/rss+xml" rel="self" href="http://people.fas.harvard.edu/~izahn/categories/cat_r.xml"></atom:link><language>en</language><lastBuildDate>Fri, 12 Aug 2016 21:12:07 GMT</lastBuildDate><generator>https://getnikola.com/</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Extracting content from .pdf files</title><link>http://people.fas.harvard.edu/~izahn/posts/extracting-content-from-pdf-files/</link><dc:creator>Ista Zahn</dc:creator><description>&lt;p&gt;
+<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/"><channel><title>Ista Zahn (R)</title><link>http://people.fas.harvard.edu/~izahn/</link><description></description><atom:link type="application/rss+xml" href="http://people.fas.harvard.edu/~izahn/categories/cat_r.xml" rel="self"></atom:link><language>en</language><lastBuildDate>Fri, 12 Aug 2016 21:19:58 GMT</lastBuildDate><generator>https://getnikola.com/</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Extracting content from .pdf files</title><link>http://people.fas.harvard.edu/~izahn/posts/extracting-content-from-pdf-files/</link><dc:creator>Ista Zahn</dc:creator><description>&lt;p&gt;
 One of common question I get as a &lt;a href="http://dss.iq.harvard.edu"&gt;data science consultant&lt;/a&gt; involves extracting content from &lt;code&gt;.pdf&lt;/code&gt; files. In the best-case scenario the content can be extracted to consistently formatted text files and parsed from there into a usable form. In the worst case the file will need to be run through an optical character recognition (OCR) program to extract the text.
 &lt;/p&gt;
 
@@ -122,7 +122,7 @@ ggplot&lt;span class="p"&gt;(&lt;/span&gt;mutate&lt;span class="p"&gt;(&lt;/span
 
 
 &lt;div class="figure"&gt;
-&lt;p&gt;&lt;img src="http://people.fas.harvard.edu/~izahn/posts/extracting-content-from-pdf-files/cod.png" alt="cod.png"&gt;
+&lt;p&gt;&lt;img src="http://people.fas.harvard.edu/~izahn/example_files/blog/pdf_extraction/cod.png" alt="cod.png"&gt;
 &lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;

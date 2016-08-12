@@ -125,7 +125,7 @@ Once the data has been liberated from the =.pdf= it can be used anyway we like--
 #+END_SRC
 
 #+RESULTS:
-[[file:cod.png]]
+[[http://people.fas.harvard.edu/~izahn/example_files/blog/pdf_extraction/cod.png]]
 
 * A more difficult example
 The example above was relatively easy, because the pdf contained information stored as text. For many older pdfs (especialy old scanned documents) the information will instead be stored as images. This makes life much more difficult, but with a little work the data can be liberated. This [[http://people.fas.harvard.edu/~izahn/example_files/blog/pdf_extraction/BLS_employment_costs_documentation.pdf][example pdf file]] contains a code-book for old employment data sets. Lets see if this information can be extracted into a machine-readable form.
