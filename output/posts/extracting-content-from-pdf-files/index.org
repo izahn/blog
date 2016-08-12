@@ -2,13 +2,228 @@
 .. title: Extracting content from .pdf files
 .. slug: extracting-content-from-pdf-files
 .. date: 2016-07-27 18:13:28 UTC-04:00
-.. tags: R,pdf,draft
+.. tags: R,pdf,OCR,draft
 .. category: R 
 .. link: 
 .. description: 
 .. type: text
 #+END_COMMENT
 
-One of the most common questions I get as a data science consultant involves extracting content from =.pdf= files. In the best-case scenario the content can be extracted to consistently formatted text files and parsed from there into a usable form. In the worst case the file will need to be run through an optical character recognition (OCR) program to extract the text.
+#+PROPERTY: cache no
+#+PROPERTY: results output
+#+PROPERTY: exports both
+#+PROPERTY: header-args:R session *R*
+#+PROPERTY: header-args:R tangle extract_text_from_pdf.R
+#+PROPERTY: header-args:sh session *shell*
+#+PROPERTY: header-args:sh tangle extract_text_from_pdf.sh
 
-For years =pdftotext= from the [[https://poppler.freedesktop.org/][poppler]] project was my go-to answer for the easy case. 
+
+One of common question I get as a [[http://dss.iq.harvard.edu][data science consultant]] involves extracting content from =.pdf= files. In the best-case scenario the content can be extracted to consistently formatted text files and parsed from there into a usable form. In the worst case the file will need to be run through an optical character recognition (OCR) program to extract the text.
+
+* Overview of available tools
+For years =pdftotext= from the [[https://poppler.freedesktop.org/][poppler]] project was my go-to answer for the easy case. This is still a good option, especially on Mac (using [[http://brew.sh][homebrew]]) or Linux where installation is easy. Windows users can install poppler binaries from [[http://blog.alivate.com.au/poppler-windows/][http://blog.alivate.com.au/poppler-windows/]] (make sure to [[http://www.computerhope.com/issues/ch000549.htm][add the =bin= directory to your =PATH=]]). More recently I've been using the excellent [[https://github.com/ropensci/pdftools][pdftools]] packge in [[http://r-project.org][R]] to more easily extract and manipulate text stored in =.pdf= files.
+
+In the more difficult case where the pdf contains images rather than text it is necessary to use optical character recognition (OCR) to recover the text. This can be achieved using point-and-click applications like [[http://www.paperfile.net/][freeOCR]], [[https://acrobat.adobe.com/us/en/acrobat.html][Adobe Acrobat]] or [[https://www.abbyy.com/][ABBYY]]. ABBYY even has a convenient [[http://ocrsdk.com/][cloud OCR service]] that can be easily accessed from R using the [[https://cran.rstudio.com/web/packages/abbyyR/index.html][abbyyR]] package. If you don't have a license for one of these expensive OCR solutions, or if you prefer something you easily can script from the command line, [[https://github.com/tesseract-ocr/tesseract][tesseract]] is a very good option.
+
+#+HTML: <!-- TEASER_END -->
+
+* An easy example
+In the case where the =pdf= contains text, extracting it is usually not too difficult. As an example, consider the =.pdf= file at [[http://www.cdc.gov/nchs/data/nvsr/nvsr65/nvsr65_05.pdf]]. Wouldn't it be nice to extract the data in those tables so we can visualize it in different ways?[fn:1] We can, using the =pdftotext= utility provided by the poppler project.
+
+#+BEGIN_SRC sh :results output verbatim
+  curl -o nvsr65_05.pdf http://www.cdc.gov/nchs/data/nvsr/nvsr65/nvsr65_05.pdf
+  pdftotext nvsr65_05.pdf nvsr65_05.txt
+  head nvsr65_05.txt
+#+END_SRC 
+
+#+RESULTS:
+#+begin_example
+National Vital
+Statistics Reports
+Volume 65, Number 5
+
+June 30, 2016
+
+Deaths: Leading Causes for 2014
+by Melonie Heron, Ph.D., Division of Vital Statistics
+
+Abstract
+#+end_example
+
+We can achieve a similar result in R using the =pdftools= package.
+
+#+BEGIN_SRC R :results output verbatim :session *R*
+  library(pdftools)
+  nvsr65_05 <- pdf_text("http://www.cdc.gov/nchs/data/nvsr/nvsr65/nvsr65_05.pdf")
+  head(strsplit(nvsr65_05[[1]], "\n")[[1]])
+#+END_SRC
+
+#+RESULTS:
+: [1] "National Vital"                                                                                                                          
+: [2] "Statistics Reports"                                                                                                                      
+: [3] "Volume 65, Number 5                                                                                                        June 30, 2016"
+: [4] "Deaths: Leading Causes for 2014"                                                                                                         
+: [5] "by Melonie Heron, Ph.D., Division of Vital Statistics"                                                                                   
+: [6] "Abstract                                                                 Introduction"
+
+Once the text has been liberated from the pdf we can parse it into a usable form and proceed from there. This is often tedious and delicate work, but with some care the data can usually be coerced into shape. For example, table G can be extracted using a few well crafted regular expressions.
+#+BEGIN_SRC R :session *R*
+  library(readr)
+  library(stringr)
+  library(dplyr)
+  table_data <- nvsr65_05[[14]] %>%
+    str_split(pattern = "\n") %>%
+    unlist() %>%
+    str_subset(pattern = "^[^…].*(\\. ){5}") %>%
+    str_c(collapse = "\n") %>%
+    read_table(col_names = FALSE) %>%
+    mutate(X2 = str_replace_all(X2, "(\\. )*", ""),
+           X5 = rep(c("Neonatal", "Postnatal"), each = 10)) %>%
+    set_names(value = c("rank", "cause_of_death", "deaths", "percent", "group"))
+  table_data
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+
+Attaching package: ‘dplyr’
+
+The following objects are masked from ‘package:stats’:
+
+    filter, lag
+
+The following objects are masked from ‘package:base’:
+
+    intersect, setdiff, setequal, union
+ Error in function_list[[k]](value) : could not find function "set_names"
+Error: object 'table_data' not found
+#+end_example
+
+Once the data has been liberated from the =.pdf= it can be used anyway we like--for example, we can convert the table to a graph to make it easier to compare the prevelance of different causes.
+#+BEGIN_SRC R :results output graphics :session *R* :file cod.png :width 800
+  library(ggplot2)
+  ggplot(mutate(table_data, cause_of_death = reorder(cause_of_death, deaths)),
+         aes(x = cause_of_death, y = percent)) +
+    geom_bar(aes(fill = deaths), stat="identity") +
+    facet_wrap(~group) +
+    coord_flip() +
+    theme_minimal()
+#+END_SRC
+
+#+RESULTS:
+[[file:cod.png]]
+
+* A more difficult example
+The example above was relatively easy, because the pdf contained information stored as text. For many older pdfs (especialy old scanned documents) the information will instead be stored as images. This makes life much more difficult, but with a little work the data can be liberated. As mentioned in [[*Overview of available tools][Overview of available tools]] there are several optinos to choose from. In this example I'm going to use [[https://github.com/tesseract-ocr/tesseract][tesseract]] because it is free and easily scriptable.
+
+The tesseract program cannot process pdf files directly, so the first step is to convert each page of the pdf to an image. This can be done using the =pdftocairo= utility (part of the [[https://poppler.freedesktop.org/][poppler]] project). The information I want is on pages 32 to 186, so I'll convert just those pages.
+#+BEGIN_SRC sh
+  cd ../files/example_files/blog/pdf_extraction
+  pdftocairo -png BLS_employment_costs_documentation.pdf -f 32 -l 186
+#+END_SRC 
+
+#+RESULTS:
+
+Once the pdf pages have been converted to an image format (=.png= in this example) they can be converted to text using =tesseract=. The quality of the conversion depends on lots of things, but mostly the quality of the original images. In this example the quality is variable and generally poor, but useful information can still be extracted.
+#+BEGIN_SRC sh 
+  cd ../files/example_files/blog/pdf_extraction
+  for imageFile in *.png
+     do
+     tesseract \
+     -c tessedit_char_whitelist="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789 :/()-" \
+                       $imageFile $imageFile
+     done
+#+END_SRC
+
+#+RESULTS:
+
+Now that we have freed the information from the confines of the =.pdf= file we will usualy want to re-assemble the information extracted from each page and clean things up. I'm using R for this, though many of my colleagues prefer python for this sort of thing.
+#+BEGIN_SRC R :session *R*
+  text_data <- list.files("../files/example_files/blog/pdf_extraction",
+                          pattern = "\\.txt$",
+                          full.names = TRUE) %>%
+    lapply(FUN = read_lines) %>%
+    lapply(FUN = str_subset, pattern = "(^DATA DESCRIPTION:)|(^SOURCE:)|(^SIZE:)|(^TYPE:)") %>%
+    lapply(FUN = str_split_fixed, pattern = ": *", n = 2) %>%
+    lapply(FUN = function(x) {
+      dtmp <- data.frame(as.list(x[, 2]), stringsAsFactors = FALSE)
+      names(dtmp) <- x[, 1]
+      return(dtmp)
+    }) %>%
+    bind_rows()
+  head(text_data)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+                                        DATA DESCRIPTION
+1  Schedule (Sele5:1i2 x-1)yuxgm:glzzezy-    g m:   - nu
+2                            SchedulejSelem-leyugqberm  
+3                                                   <NA>
+4                               City Size Classification
+5 Original Standgrjiqdqstrial Classificatigg- (SIC) pcde
+6        Original Egtabhshcpegt Size Classification u - 
+                     SOURCE                        SIZE        TYPE
+1 iEEC/DCC Qqntrol File - m  CHARACTERm): 5 BYTE(S) : 5 Character I
+2                      <NA>    CHARACTERGL: 5 BYTE(5) : : Character
+3     EEC/DCC Contr-ol File     CHARACTERGH 2 BYTE(S) :   Character
+4      EEC/DCC Controi File I CHARACTERS) : 1 BYTE(S) : i Character
+5      EEC/DOC Control File                        <NA>        <NA>
+6      EEC/DOC Control File                        <NA> 0 Character
+#+end_example
+
+It is cleary that many characters were not recognized correctly. However, there is enough imformation to be useful, especially if we spend a little more effort cleaning things up. The [[https://github.com/ropensci/hunspell#readme][hunspell]] package in R can be useful if you know the recovered information should be dictionary words.
+#+BEGIN_SRC R :session *R*
+  library(hunspell)
+  text_data[is.na(text_data)] <- ""
+  text_data$TYPE <- str_to_lower(text_data$TYPE)
+  text_data$TYPE <- str_replace_all(text_data$TYPE, "(^| ).( |$)", "")
+  type_bad_words <- hunspell(str_c(text_data$TYPE, collapse = " "))[[1]]
+  type_replacement_words <- sapply(hunspell_suggest(type_bad_words), function(x) x[[1]])
+  type_bad_words <- str_c("(^|\\W)",type_bad_words, "(\\W|$)", sep = "")
+  type_replacement_words <- str_c("\\1", type_replacement_words, "\\2")
+
+  for(i in 1:length(type_bad_words)) {
+    text_data$TYPE <- str_replace_all(text_data$TYPE,
+                                      type_bad_words[i],
+                                      type_replacement_words[i])
+  }
+
+  text_data$TYPE <- str_replace_all(text_data$TYPE, " +", " ")
+  text_data$TYPE <- str_trim(text_data$TYPE, side = 'both')
+#+END_SRC
+
+#+RESULTS:
+
+Even after all that there are still some errors, but we've managed to correctly retrieve the type information for the majority of the variables in this dictionary.
+#+BEGIN_SRC R :session *R*
+  count(text_data, TYPE, sort = TRUE)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+# A tibble: 10 x 2
+             TYPE     n
+            <chr> <int>
+1       character    65
+2   fixed decimal    42
+3                    41
+4      charioteer     1
+5      chm-gage:-     1
+6  fixed decimal)     1
+7  fixed-decimal:     1
+8   fixed deem-ll     1
+9     hexadecimal     1
+10     tee-rater-     1
+#+end_example
+
+* Concluding remarks
+I covered a lot of ground in this post, from graphical OCR programs to spell checking packages in R. The take-away messages as I seem them are:
+1) The [[https://github.com/ropensci/hunspell#readme][pdftools]] package is great news for R users who need to work with =.pdf= files. It makes it easy to extract and manipulate pdf content and metadata no matter what operating system you use, all from within R.
+2) The [[https://github.com/tesseract-ocr/tesseract][tesseract]] OCR program is very capable, but don't expect miracles. If the original image quality is poor you can expect to spend a lot of time cleaning up the resulting text.
+
+* Footnotes
+
+[fn:1] I'm sure these data are available somewhere in more convenient form, but a) I couldn't find them and b) I needed an example pdf with interesting content.
+
+
