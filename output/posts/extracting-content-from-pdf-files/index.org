@@ -1,7 +1,7 @@
 #+BEGIN_COMMENT
 .. title: Extracting content from .pdf files
 .. slug: extracting-content-from-pdf-files
-.. date: 2016-07-27 18:13:28 UTC-04:00
+.. date: 2016-08-12 18:13:28 UTC-04:00
 .. tags: R,pdf,OCR
 .. category: R 
 .. link: 
