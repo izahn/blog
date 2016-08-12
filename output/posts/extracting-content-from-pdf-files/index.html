@@ -162,6 +162,7 @@ Once the text has been liberated from the pdf we can parse it into a usable form
 </p>
 <div class="highlight"><pre><span></span><span class="kn">library</span><span class="p">(</span>readr<span class="p">)</span>
 <span class="kn">library</span><span class="p">(</span>stringr<span class="p">)</span>
+<span class="kn">library</span><span class="p">(</span>magrittr<span class="p">)</span>
 <span class="kn">library</span><span class="p">(</span>dplyr<span class="p">)</span>
 table_data <span class="o">&lt;-</span> nvsr65_05<span class="p">[[</span><span class="m">14</span><span class="p">]]</span> <span class="o">%&gt;%</span>
   str_split<span class="p">(</span>pattern <span class="o">=</span> <span class="s">"\n"</span><span class="p">)</span> <span class="o">%&gt;%</span>
@@ -176,17 +177,31 @@ table_data
 </pre></div>
 
 <pre class="example">
-Attaching package: ‘dplyr’
-
-The following objects are masked from ‘package:stats’:
-
-    filter, lag
-
-The following objects are masked from ‘package:base’:
-
-    intersect, setdiff, setequal, union
- Error in function_list[[k]](value) : could not find function "set_names"
-Error: object 'table_data' not found
+# A tibble: 20 x 5
+    rank
+   &lt;int&gt;
+1      1
+2      2
+3      3
+4      4
+5      5
+6      6
+7      7
+8      8
+9      9
+10    10
+11     1
+12     2
+13     3
+14     4
+15     5
+16     6
+17     7
+18     8
+19     9
+20    10
+# ... with 4 more variables: cause_of_death &lt;chr&gt;, deaths &lt;dbl&gt;, percent &lt;dbl&gt;,
+#   group &lt;chr&gt;
 </pre>
 
 <p>
@@ -212,11 +227,11 @@ ggplot<span class="p">(</span>mutate<span class="p">(</span>table_data<span clas
 <h2 id="sec-3">A more difficult example</h2>
 <div class="outline-text-2" id="text-3">
 <p>
-The example above was relatively easy, because the pdf contained information stored as text. For many older pdfs (especialy old scanned documents) the information will instead be stored as images. This makes life much more difficult, but with a little work the data can be liberated. As mentioned in <a href="#sec-1">Overview of available tools</a> there are several optinos to choose from. In this example I'm going to use <a href="https://github.com/tesseract-ocr/tesseract">tesseract</a> because it is free and easily scriptable.
+The example above was relatively easy, because the pdf contained information stored as text. For many older pdfs (especialy old scanned documents) the information will instead be stored as images. This makes life much more difficult, but with a little work the data can be liberated. This <a href="http://people.fas.harvard.edu/~izahn/example_files/blog/pdf_extraction/BLS_employment_costs_documentation.pdf">example pdf file</a> contains a code-book for old employment data sets. Lets see if this information can be extracted into a machine-readable form.
 </p>
 
 <p>
-The tesseract program cannot process pdf files directly, so the first step is to convert each page of the pdf to an image. This can be done using the <code>pdftocairo</code> utility (part of the <a href="https://poppler.freedesktop.org/">poppler</a> project). The information I want is on pages 32 to 186, so I'll convert just those pages.
+As mentioned in <a href="#sec-1">Overview of available tools</a> there are several optinos to choose from. In this example I'm going to use <a href="https://github.com/tesseract-ocr/tesseract">tesseract</a> because it is free and easily script-able. The tesseract program cannot process pdf files directly, so the first step is to convert each page of the pdf to an image. This can be done using the <code>pdftocairo</code> utility (part of the <a href="https://poppler.freedesktop.org/">poppler</a> project). The information I want is on pages 32 to 186, so I'll convert just those pages.
 </p>
 <div class="highlight"><pre><span></span><span class="nb">cd</span> ../files/example_files/blog/pdf_extraction
 pdftocairo -png BLS_employment_costs_documentation.pdf -f <span class="m">32</span> -l 186

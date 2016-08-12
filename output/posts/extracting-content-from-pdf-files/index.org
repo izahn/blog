@@ -70,6 +70,7 @@ Once the text has been liberated from the pdf we can parse it into a usable form
 #+BEGIN_SRC R :session *R*
   library(readr)
   library(stringr)
+  library(magrittr)
   library(dplyr)
   table_data <- nvsr65_05[[14]] %>%
     str_split(pattern = "\n") %>%
@@ -85,18 +86,31 @@ Once the text has been liberated from the pdf we can parse it into a usable form
 
 #+RESULTS:
 #+begin_example
-
-Attaching package: ‘dplyr’
-
-The following objects are masked from ‘package:stats’:
-
-    filter, lag
-
-The following objects are masked from ‘package:base’:
-
-    intersect, setdiff, setequal, union
- Error in function_list[[k]](value) : could not find function "set_names"
-Error: object 'table_data' not found
+# A tibble: 20 x 5
+    rank
+   <int>
+1      1
+2      2
+3      3
+4      4
+5      5
+6      6
+7      7
+8      8
+9      9
+10    10
+11     1
+12     2
+13     3
+14     4
+15     5
+16     6
+17     7
+18     8
+19     9
+20    10
+# ... with 4 more variables: cause_of_death <chr>, deaths <dbl>, percent <dbl>,
+#   group <chr>
 #+end_example
 
 Once the data has been liberated from the =.pdf= it can be used anyway we like--for example, we can convert the table to a graph to make it easier to compare the prevelance of different causes.
@@ -114,9 +128,9 @@ Once the data has been liberated from the =.pdf= it can be used anyway we like--
 [[file:cod.png]]
 
 * A more difficult example
-The example above was relatively easy, because the pdf contained information stored as text. For many older pdfs (especialy old scanned documents) the information will instead be stored as images. This makes life much more difficult, but with a little work the data can be liberated. As mentioned in [[*Overview of available tools][Overview of available tools]] there are several optinos to choose from. In this example I'm going to use [[https://github.com/tesseract-ocr/tesseract][tesseract]] because it is free and easily scriptable.
+The example above was relatively easy, because the pdf contained information stored as text. For many older pdfs (especialy old scanned documents) the information will instead be stored as images. This makes life much more difficult, but with a little work the data can be liberated. This [[http://people.fas.harvard.edu/~izahn/example_files/blog/pdf_extraction/BLS_employment_costs_documentation.pdf][example pdf file]] contains a code-book for old employment data sets. Lets see if this information can be extracted into a machine-readable form.
 
-The tesseract program cannot process pdf files directly, so the first step is to convert each page of the pdf to an image. This can be done using the =pdftocairo= utility (part of the [[https://poppler.freedesktop.org/][poppler]] project). The information I want is on pages 32 to 186, so I'll convert just those pages.
+As mentioned in [[*Overview of available tools][Overview of available tools]] there are several optinos to choose from. In this example I'm going to use [[https://github.com/tesseract-ocr/tesseract][tesseract]] because it is free and easily script-able. The tesseract program cannot process pdf files directly, so the first step is to convert each page of the pdf to an image. This can be done using the =pdftocairo= utility (part of the [[https://poppler.freedesktop.org/][poppler]] project). The information I want is on pages 32 to 186, so I'll convert just those pages.
 #+BEGIN_SRC sh
   cd ../files/example_files/blog/pdf_extraction
   pdftocairo -png BLS_employment_costs_documentation.pdf -f 32 -l 186

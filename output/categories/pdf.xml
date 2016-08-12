@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Ista Zahn (pdf)</title><link>http://people.fas.harvard.edu/~izahn/</link><description></description><atom:link href="http://people.fas.harvard.edu/~izahn/categories/pdf.xml" rel="self" type="application/rss+xml"></atom:link><language>en</language><lastBuildDate>Fri, 12 Aug 2016 20:38:53 GMT</lastBuildDate><generator>https://getnikola.com/</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Extracting content from .pdf files</title><link>http://people.fas.harvard.edu/~izahn/posts/extracting-content-from-pdf-files/</link><dc:creator>Ista Zahn</dc:creator><description>&lt;p&gt;
+<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>Ista Zahn (pdf)</title><link>http://people.fas.harvard.edu/~izahn/</link><description></description><atom:link type="application/rss+xml" rel="self" href="http://people.fas.harvard.edu/~izahn/categories/pdf.xml"></atom:link><language>en</language><lastBuildDate>Fri, 12 Aug 2016 21:12:07 GMT</lastBuildDate><generator>https://getnikola.com/</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Extracting content from .pdf files</title><link>http://people.fas.harvard.edu/~izahn/posts/extracting-content-from-pdf-files/</link><dc:creator>Ista Zahn</dc:creator><description>&lt;p&gt;
 One of common question I get as a &lt;a href="http://dss.iq.harvard.edu"&gt;data science consultant&lt;/a&gt; involves extracting content from &lt;code&gt;.pdf&lt;/code&gt; files. In the best-case scenario the content can be extracted to consistently formatted text files and parsed from there into a usable form. In the worst case the file will need to be run through an optical character recognition (OCR) program to extract the text.
 &lt;/p&gt;
 
@@ -66,6 +66,7 @@ Once the text has been liberated from the pdf we can parse it into a usable form
 &lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kn"&gt;library&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;readr&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;span class="kn"&gt;library&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;stringr&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="kn"&gt;library&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;magrittr&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;span class="kn"&gt;library&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;dplyr&lt;span class="p"&gt;)&lt;/span&gt;
 table_data &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; nvsr65_05&lt;span class="p"&gt;[[&lt;/span&gt;&lt;span class="m"&gt;14&lt;/span&gt;&lt;span class="p"&gt;]]&lt;/span&gt; &lt;span class="o"&gt;%&amp;gt;%&lt;/span&gt;
   str_split&lt;span class="p"&gt;(&lt;/span&gt;pattern &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;"\n"&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;%&amp;gt;%&lt;/span&gt;
@@ -80,17 +81,31 @@ table_data
 &lt;/pre&gt;&lt;/div&gt;
 
 &lt;pre class="example"&gt;
-Attaching package: ‘dplyr’
-
-The following objects are masked from ‘package:stats’:
-
-    filter, lag
-
-The following objects are masked from ‘package:base’:
-
-    intersect, setdiff, setequal, union
- Error in function_list[[k]](value) : could not find function "set_names"
-Error: object 'table_data' not found
+# A tibble: 20 x 5
+    rank
+   &amp;lt;int&amp;gt;
+1      1
+2      2
+3      3
+4      4
+5      5
+6      6
+7      7
+8      8
+9      9
+10    10
+11     1
+12     2
+13     3
+14     4
+15     5
+16     6
+17     7
+18     8
+19     9
+20    10
+# ... with 4 more variables: cause_of_death &amp;lt;chr&amp;gt;, deaths &amp;lt;dbl&amp;gt;, percent &amp;lt;dbl&amp;gt;,
+#   group &amp;lt;chr&amp;gt;
 &lt;/pre&gt;
 
 &lt;p&gt;
@@ -117,11 +132,11 @@ ggplot&lt;span class="p"&gt;(&lt;/span&gt;mutate&lt;span class="p"&gt;(&lt;/span
 &lt;h2 id="sec-3"&gt;A more difficult example&lt;/h2&gt;
 &lt;div class="outline-text-2" id="text-3"&gt;
 &lt;p&gt;
-The example above was relatively easy, because the pdf contained information stored as text. For many older pdfs (especialy old scanned documents) the information will instead be stored as images. This makes life much more difficult, but with a little work the data can be liberated. As mentioned in &lt;a href="http://people.fas.harvard.edu/~izahn/posts/extracting-content-from-pdf-files/#sec-1"&gt;Overview of available tools&lt;/a&gt; there are several optinos to choose from. In this example I'm going to use &lt;a href="https://github.com/tesseract-ocr/tesseract"&gt;tesseract&lt;/a&gt; because it is free and easily scriptable.
+The example above was relatively easy, because the pdf contained information stored as text. For many older pdfs (especialy old scanned documents) the information will instead be stored as images. This makes life much more difficult, but with a little work the data can be liberated. This &lt;a href="http://people.fas.harvard.edu/~izahn/example_files/blog/pdf_extraction/BLS_employment_costs_documentation.pdf"&gt;example pdf file&lt;/a&gt; contains a code-book for old employment data sets. Lets see if this information can be extracted into a machine-readable form.
 &lt;/p&gt;
 
 &lt;p&gt;
-The tesseract program cannot process pdf files directly, so the first step is to convert each page of the pdf to an image. This can be done using the &lt;code&gt;pdftocairo&lt;/code&gt; utility (part of the &lt;a href="https://poppler.freedesktop.org/"&gt;poppler&lt;/a&gt; project). The information I want is on pages 32 to 186, so I'll convert just those pages.
+As mentioned in &lt;a href="http://people.fas.harvard.edu/~izahn/posts/extracting-content-from-pdf-files/#sec-1"&gt;Overview of available tools&lt;/a&gt; there are several optinos to choose from. In this example I'm going to use &lt;a href="https://github.com/tesseract-ocr/tesseract"&gt;tesseract&lt;/a&gt; because it is free and easily script-able. The tesseract program cannot process pdf files directly, so the first step is to convert each page of the pdf to an image. This can be done using the &lt;code&gt;pdftocairo&lt;/code&gt; utility (part of the &lt;a href="https://poppler.freedesktop.org/"&gt;poppler&lt;/a&gt; project). The information I want is on pages 32 to 186, so I'll convert just those pages.
 &lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="nb"&gt;cd&lt;/span&gt; ../files/example_files/blog/pdf_extraction
 pdftocairo -png BLS_employment_costs_documentation.pdf -f &lt;span class="m"&gt;32&lt;/span&gt; -l 186
