@@ -15,7 +15,7 @@
  </url>
  <url>
   <loc>http://people.fas.harvard.edu/~izahn/archive.html</loc>
-  <lastmod>2016-08-11T19:33:00Z</lastmod>
+  <lastmod>2016-08-12T20:38:00Z</lastmod>
  </url>
  <url>
   <loc>http://people.fas.harvard.edu/~izahn/blog/</loc>
@@ -23,7 +23,7 @@
  </url>
  <url>
   <loc>http://people.fas.harvard.edu/~izahn/categories/</loc>
-  <lastmod>2016-08-02T02:21:00Z</lastmod>
+  <lastmod>2016-08-12T20:38:00Z</lastmod>
  </url>
  <url>
   <loc>http://people.fas.harvard.edu/~izahn/categories/atom/</loc>
@@ -58,6 +58,10 @@
   <lastmod>2016-08-02T02:20:00Z</lastmod>
  </url>
  <url>
+  <loc>http://people.fas.harvard.edu/~izahn/categories/ocr/</loc>
+  <lastmod>2016-08-12T20:38:00Z</lastmod>
+ </url>
+ <url>
   <loc>http://people.fas.harvard.edu/~izahn/categories/pdf/</loc>
   <lastmod>2016-08-02T02:20:00Z</lastmod>
  </url>
@@ -88,6 +92,10 @@
  <url>
   <loc>http://people.fas.harvard.edu/~izahn/pages/about/</loc>
   <lastmod>2016-08-02T02:21:00Z</lastmod>
+ </url>
+ <url>
+  <loc>http://people.fas.harvard.edu/~izahn/posts/extracting-content-from-pdf-files/</loc>
+  <lastmod>2016-08-02T02:20:00Z</lastmod>
  </url>
  <url>
   <loc>http://people.fas.harvard.edu/~izahn/posts/reading-data-with-non-native-encoding-in-r/</loc>

@@ -1,5 +1,250 @@
 <?xml version="1.0" encoding="utf-8"?>
-<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/"><channel><title>Ista Zahn (R)</title><link>http://people.fas.harvard.edu/~izahn/</link><description></description><atom:link href="http://people.fas.harvard.edu/~izahn/categories/cat_r.xml" rel="self" type="application/rss+xml"></atom:link><language>en</language><lastBuildDate>Thu, 11 Aug 2016 19:33:12 GMT</lastBuildDate><generator>https://getnikola.com/</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Useless but fun R packages</title><link>http://people.fas.harvard.edu/~izahn/posts/useless-but-fun-r-packages/</link><dc:creator>Ista Zahn</dc:creator><description>&lt;p&gt;
+<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Ista Zahn (R)</title><link>http://people.fas.harvard.edu/~izahn/</link><description></description><atom:link href="http://people.fas.harvard.edu/~izahn/categories/cat_r.xml" rel="self" type="application/rss+xml"></atom:link><language>en</language><lastBuildDate>Fri, 12 Aug 2016 20:38:53 GMT</lastBuildDate><generator>https://getnikola.com/</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Extracting content from .pdf files</title><link>http://people.fas.harvard.edu/~izahn/posts/extracting-content-from-pdf-files/</link><dc:creator>Ista Zahn</dc:creator><description>&lt;p&gt;
+One of common question I get as a &lt;a href="http://dss.iq.harvard.edu"&gt;data science consultant&lt;/a&gt; involves extracting content from &lt;code&gt;.pdf&lt;/code&gt; files. In the best-case scenario the content can be extracted to consistently formatted text files and parsed from there into a usable form. In the worst case the file will need to be run through an optical character recognition (OCR) program to extract the text.
+&lt;/p&gt;
+
+&lt;div id="outline-container-sec-1" class="outline-2"&gt;
+&lt;h2 id="sec-1"&gt;Overview of available tools&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-1"&gt;
+&lt;p&gt;
+For years &lt;code&gt;pdftotext&lt;/code&gt; from the &lt;a href="https://poppler.freedesktop.org/"&gt;poppler&lt;/a&gt; project was my go-to answer for the easy case. This is still a good option, especially on Mac (using &lt;a href="http://brew.sh"&gt;homebrew&lt;/a&gt;) or Linux where installation is easy. Windows users can install poppler binaries from &lt;a href="http://blog.alivate.com.au/poppler-windows/"&gt;&lt;/a&gt;&lt;a href="http://blog.alivate.com.au/poppler-windows/"&gt;http://blog.alivate.com.au/poppler-windows/&lt;/a&gt; (make sure to &lt;a href="http://www.computerhope.com/issues/ch000549.htm"&gt;add the &lt;code&gt;bin&lt;/code&gt; directory to your &lt;code&gt;PATH&lt;/code&gt;&lt;/a&gt;). More recently I've been using the excellent &lt;a href="https://github.com/ropensci/pdftools"&gt;pdftools&lt;/a&gt; packge in &lt;a href="http://r-project.org"&gt;R&lt;/a&gt; to more easily extract and manipulate text stored in &lt;code&gt;.pdf&lt;/code&gt; files.
+&lt;/p&gt;
+
+&lt;p&gt;
+In the more difficult case where the pdf contains images rather than text it is necessary to use optical character recognition (OCR) to recover the text. This can be achieved using point-and-click applications like &lt;a href="http://www.paperfile.net/"&gt;freeOCR&lt;/a&gt;, &lt;a href="https://acrobat.adobe.com/us/en/acrobat.html"&gt;Adobe Acrobat&lt;/a&gt; or &lt;a href="https://www.abbyy.com/"&gt;ABBYY&lt;/a&gt;. ABBYY even has a convenient &lt;a href="http://ocrsdk.com/"&gt;cloud OCR service&lt;/a&gt; that can be easily accessed from R using the &lt;a href="https://cran.rstudio.com/web/packages/abbyyR/index.html"&gt;abbyyR&lt;/a&gt; package. If you don't have a license for one of these expensive OCR solutions, or if you prefer something you easily can script from the command line, &lt;a href="https://github.com/tesseract-ocr/tesseract"&gt;tesseract&lt;/a&gt; is a very good option.
+&lt;/p&gt;
+
+&lt;!-- TEASER_END --&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div id="outline-container-sec-2" class="outline-2"&gt;
+&lt;h2 id="sec-2"&gt;An easy example&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-2"&gt;
+&lt;p&gt;
+In the case where the &lt;code&gt;pdf&lt;/code&gt; contains text, extracting it is usually not too difficult. As an example, consider the &lt;code&gt;.pdf&lt;/code&gt; file at &lt;a href="http://www.cdc.gov/nchs/data/nvsr/nvsr65/nvsr65_05.pdf"&gt;http://www.cdc.gov/nchs/data/nvsr/nvsr65/nvsr65_05.pdf&lt;/a&gt;. Wouldn't it be nice to extract the data in those tables so we can visualize it in different ways?&lt;sup&gt;&lt;a id="fnr.1" name="fnr.1" class="footref" href="http://people.fas.harvard.edu/~izahn/posts/extracting-content-from-pdf-files/#fn.1"&gt;1&lt;/a&gt;&lt;/sup&gt; We can, using the &lt;code&gt;pdftotext&lt;/code&gt; utility provided by the poppler project.
+&lt;/p&gt;
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;curl -o nvsr65_05.pdf http://www.cdc.gov/nchs/data/nvsr/nvsr65/nvsr65_05.pdf
+pdftotext nvsr65_05.pdf nvsr65_05.txt
+head nvsr65_05.txt
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;pre class="example"&gt;
+National Vital
+Statistics Reports
+Volume 65, Number 5
+
+June 30, 2016
+
+Deaths: Leading Causes for 2014
+by Melonie Heron, Ph.D., Division of Vital Statistics
+
+Abstract
+&lt;/pre&gt;
+
+&lt;p&gt;
+We can achieve a similar result in R using the &lt;code&gt;pdftools&lt;/code&gt; package.
+&lt;/p&gt;
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kn"&gt;library&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;pdftools&lt;span class="p"&gt;)&lt;/span&gt;
+nvsr65_05 &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; pdf_text&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;"http://www.cdc.gov/nchs/data/nvsr/nvsr65/nvsr65_05.pdf"&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="kp"&gt;head&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kp"&gt;strsplit&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;nvsr65_05&lt;span class="p"&gt;[[&lt;/span&gt;&lt;span class="m"&gt;1&lt;/span&gt;&lt;span class="p"&gt;]],&lt;/span&gt; &lt;span class="s"&gt;"\n"&lt;/span&gt;&lt;span class="p"&gt;)[[&lt;/span&gt;&lt;span class="m"&gt;1&lt;/span&gt;&lt;span class="p"&gt;]])&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;pre class="example"&gt;
+[1] "National Vital"                                                                                                                          
+[2] "Statistics Reports"                                                                                                                      
+[3] "Volume 65, Number 5                                                                                                        June 30, 2016"
+[4] "Deaths: Leading Causes for 2014"                                                                                                         
+[5] "by Melonie Heron, Ph.D., Division of Vital Statistics"                                                                                   
+[6] "Abstract                                                                 Introduction"
+&lt;/pre&gt;
+
+&lt;p&gt;
+Once the text has been liberated from the pdf we can parse it into a usable form and proceed from there. This is often tedious and delicate work, but with some care the data can usually be coerced into shape. For example, table G can be extracted using a few well crafted regular expressions.
+&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kn"&gt;library&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;readr&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="kn"&gt;library&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;stringr&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="kn"&gt;library&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;dplyr&lt;span class="p"&gt;)&lt;/span&gt;
+table_data &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; nvsr65_05&lt;span class="p"&gt;[[&lt;/span&gt;&lt;span class="m"&gt;14&lt;/span&gt;&lt;span class="p"&gt;]]&lt;/span&gt; &lt;span class="o"&gt;%&amp;gt;%&lt;/span&gt;
+  str_split&lt;span class="p"&gt;(&lt;/span&gt;pattern &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;"\n"&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;%&amp;gt;%&lt;/span&gt;
+  &lt;span class="kp"&gt;unlist&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="o"&gt;%&amp;gt;%&lt;/span&gt;
+  str_subset&lt;span class="p"&gt;(&lt;/span&gt;pattern &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;"^[^…].*(\\. ){5}"&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;%&amp;gt;%&lt;/span&gt;
+  str_c&lt;span class="p"&gt;(&lt;/span&gt;collapse &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;"\n"&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;%&amp;gt;%&lt;/span&gt;
+  read_table&lt;span class="p"&gt;(&lt;/span&gt;col_names &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="kc"&gt;FALSE&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;%&amp;gt;%&lt;/span&gt;
+  mutate&lt;span class="p"&gt;(&lt;/span&gt;X2 &lt;span class="o"&gt;=&lt;/span&gt; str_replace_all&lt;span class="p"&gt;(&lt;/span&gt;X2&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;"(\\. )*"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;""&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt;
+	 X5 &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="kp"&gt;rep&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kt"&gt;c&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;"Neonatal"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;"Postnatal"&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt; each &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="m"&gt;10&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt; &lt;span class="o"&gt;%&amp;gt;%&lt;/span&gt;
+  set_names&lt;span class="p"&gt;(&lt;/span&gt;value &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="kt"&gt;c&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;"rank"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;"cause_of_death"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;"deaths"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;"percent"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;"group"&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+table_data
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;pre class="example"&gt;
+Attaching package: ‘dplyr’
+
+The following objects are masked from ‘package:stats’:
+
+    filter, lag
+
+The following objects are masked from ‘package:base’:
+
+    intersect, setdiff, setequal, union
+ Error in function_list[[k]](value) : could not find function "set_names"
+Error: object 'table_data' not found
+&lt;/pre&gt;
+
+&lt;p&gt;
+Once the data has been liberated from the &lt;code&gt;.pdf&lt;/code&gt; it can be used anyway we like–for example, we can convert the table to a graph to make it easier to compare the prevelance of different causes.
+&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kn"&gt;library&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;ggplot2&lt;span class="p"&gt;)&lt;/span&gt;
+ggplot&lt;span class="p"&gt;(&lt;/span&gt;mutate&lt;span class="p"&gt;(&lt;/span&gt;table_data&lt;span class="p"&gt;,&lt;/span&gt; cause_of_death &lt;span class="o"&gt;=&lt;/span&gt; reorder&lt;span class="p"&gt;(&lt;/span&gt;cause_of_death&lt;span class="p"&gt;,&lt;/span&gt; deaths&lt;span class="p"&gt;)),&lt;/span&gt;
+       aes&lt;span class="p"&gt;(&lt;/span&gt;x &lt;span class="o"&gt;=&lt;/span&gt; cause_of_death&lt;span class="p"&gt;,&lt;/span&gt; y &lt;span class="o"&gt;=&lt;/span&gt; percent&lt;span class="p"&gt;))&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt;
+  geom_bar&lt;span class="p"&gt;(&lt;/span&gt;aes&lt;span class="p"&gt;(&lt;/span&gt;fill &lt;span class="o"&gt;=&lt;/span&gt; deaths&lt;span class="p"&gt;),&lt;/span&gt; stat&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;"identity"&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt;
+  facet_wrap&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;~&lt;/span&gt;group&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt;
+  coord_flip&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt;
+  theme_minimal&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;div class="figure"&gt;
+&lt;p&gt;&lt;img src="http://people.fas.harvard.edu/~izahn/posts/extracting-content-from-pdf-files/cod.png" alt="cod.png"&gt;
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div id="outline-container-sec-3" class="outline-2"&gt;
+&lt;h2 id="sec-3"&gt;A more difficult example&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-3"&gt;
+&lt;p&gt;
+The example above was relatively easy, because the pdf contained information stored as text. For many older pdfs (especialy old scanned documents) the information will instead be stored as images. This makes life much more difficult, but with a little work the data can be liberated. As mentioned in &lt;a href="http://people.fas.harvard.edu/~izahn/posts/extracting-content-from-pdf-files/#sec-1"&gt;Overview of available tools&lt;/a&gt; there are several optinos to choose from. In this example I'm going to use &lt;a href="https://github.com/tesseract-ocr/tesseract"&gt;tesseract&lt;/a&gt; because it is free and easily scriptable.
+&lt;/p&gt;
+
+&lt;p&gt;
+The tesseract program cannot process pdf files directly, so the first step is to convert each page of the pdf to an image. This can be done using the &lt;code&gt;pdftocairo&lt;/code&gt; utility (part of the &lt;a href="https://poppler.freedesktop.org/"&gt;poppler&lt;/a&gt; project). The information I want is on pages 32 to 186, so I'll convert just those pages.
+&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="nb"&gt;cd&lt;/span&gt; ../files/example_files/blog/pdf_extraction
+pdftocairo -png BLS_employment_costs_documentation.pdf -f &lt;span class="m"&gt;32&lt;/span&gt; -l 186
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;
+Once the pdf pages have been converted to an image format (&lt;code&gt;.png&lt;/code&gt; in this example) they can be converted to text using &lt;code&gt;tesseract&lt;/code&gt;. The quality of the conversion depends on lots of things, but mostly the quality of the original images. In this example the quality is variable and generally poor, but useful information can still be extracted.
+&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="nb"&gt;cd&lt;/span&gt; ../files/example_files/blog/pdf_extraction
+&lt;span class="k"&gt;for&lt;/span&gt; imageFile in *.png
+   &lt;span class="k"&gt;do&lt;/span&gt;
+   tesseract &lt;span class="se"&gt;\&lt;/span&gt;
+   -c &lt;span class="nv"&gt;tessedit_char_whitelist&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789 :/()-"&lt;/span&gt; &lt;span class="se"&gt;\&lt;/span&gt;
+		     &lt;span class="nv"&gt;$imageFile&lt;/span&gt; &lt;span class="nv"&gt;$imageFile&lt;/span&gt;
+   &lt;span class="k"&gt;done&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;
+Now that we have freed the information from the confines of the &lt;code&gt;.pdf&lt;/code&gt; file we will usualy want to re-assemble the information extracted from each page and clean things up. I'm using R for this, though many of my colleagues prefer python for this sort of thing.
+&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;text_data &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="kp"&gt;list.files&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;"../files/example_files/blog/pdf_extraction"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+			pattern &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;"\\.txt$"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+			full.names &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="kc"&gt;TRUE&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;%&amp;gt;%&lt;/span&gt;
+  &lt;span class="kp"&gt;lapply&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;FUN &lt;span class="o"&gt;=&lt;/span&gt; read_lines&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;%&amp;gt;%&lt;/span&gt;
+  &lt;span class="kp"&gt;lapply&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;FUN &lt;span class="o"&gt;=&lt;/span&gt; str_subset&lt;span class="p"&gt;,&lt;/span&gt; pattern &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;"(^DATA DESCRIPTION:)|(^SOURCE:)|(^SIZE:)|(^TYPE:)"&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;%&amp;gt;%&lt;/span&gt;
+  &lt;span class="kp"&gt;lapply&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;FUN &lt;span class="o"&gt;=&lt;/span&gt; str_split_fixed&lt;span class="p"&gt;,&lt;/span&gt; pattern &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;": *"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; n &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="m"&gt;2&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;%&amp;gt;%&lt;/span&gt;
+  &lt;span class="kp"&gt;lapply&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;FUN &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="kr"&gt;function&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;x&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+    dtmp &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="kt"&gt;data.frame&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kp"&gt;as.list&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;x&lt;span class="p"&gt;[,&lt;/span&gt; &lt;span class="m"&gt;2&lt;/span&gt;&lt;span class="p"&gt;]),&lt;/span&gt; stringsAsFactors &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="kc"&gt;FALSE&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="kp"&gt;names&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;dtmp&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; x&lt;span class="p"&gt;[,&lt;/span&gt; &lt;span class="m"&gt;1&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+    &lt;span class="kr"&gt;return&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;dtmp&lt;span class="p"&gt;)&lt;/span&gt;
+  &lt;span class="p"&gt;})&lt;/span&gt; &lt;span class="o"&gt;%&amp;gt;%&lt;/span&gt;
+  bind_rows&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;span class="kp"&gt;head&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;text_data&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;pre class="example"&gt;
+                                        DATA DESCRIPTION
+1  Schedule (Sele5:1i2 x-1)yuxgm:glzzezy-    g m:   - nu
+2                            SchedulejSelem-leyugqberm  
+3                                                   &amp;lt;NA&amp;gt;
+4                               City Size Classification
+5 Original Standgrjiqdqstrial Classificatigg- (SIC) pcde
+6        Original Egtabhshcpegt Size Classification u - 
+                     SOURCE                        SIZE        TYPE
+1 iEEC/DCC Qqntrol File - m  CHARACTERm): 5 BYTE(S) : 5 Character I
+2                      &amp;lt;NA&amp;gt;    CHARACTERGL: 5 BYTE(5) : : Character
+3     EEC/DCC Contr-ol File     CHARACTERGH 2 BYTE(S) :   Character
+4      EEC/DCC Controi File I CHARACTERS) : 1 BYTE(S) : i Character
+5      EEC/DOC Control File                        &amp;lt;NA&amp;gt;        &amp;lt;NA&amp;gt;
+6      EEC/DOC Control File                        &amp;lt;NA&amp;gt; 0 Character
+&lt;/pre&gt;
+
+&lt;p&gt;
+It is cleary that many characters were not recognized correctly. However, there is enough imformation to be useful, especially if we spend a little more effort cleaning things up. The &lt;a href="https://github.com/ropensci/hunspell#readme"&gt;hunspell&lt;/a&gt; package in R can be useful if you know the recovered information should be dictionary words.
+&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kn"&gt;library&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;hunspell&lt;span class="p"&gt;)&lt;/span&gt;
+text_data&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="kp"&gt;is.na&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;text_data&lt;span class="p"&gt;)]&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="s"&gt;""&lt;/span&gt;
+text_data&lt;span class="o"&gt;$&lt;/span&gt;TYPE &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; str_to_lower&lt;span class="p"&gt;(&lt;/span&gt;text_data&lt;span class="o"&gt;$&lt;/span&gt;TYPE&lt;span class="p"&gt;)&lt;/span&gt;
+text_data&lt;span class="o"&gt;$&lt;/span&gt;TYPE &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; str_replace_all&lt;span class="p"&gt;(&lt;/span&gt;text_data&lt;span class="o"&gt;$&lt;/span&gt;TYPE&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;"(^| ).( |$)"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;""&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+type_bad_words &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; hunspell&lt;span class="p"&gt;(&lt;/span&gt;str_c&lt;span class="p"&gt;(&lt;/span&gt;text_data&lt;span class="o"&gt;$&lt;/span&gt;TYPE&lt;span class="p"&gt;,&lt;/span&gt; collapse &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;" "&lt;/span&gt;&lt;span class="p"&gt;))[[&lt;/span&gt;&lt;span class="m"&gt;1&lt;/span&gt;&lt;span class="p"&gt;]]&lt;/span&gt;
+type_replacement_words &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="kp"&gt;sapply&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;hunspell_suggest&lt;span class="p"&gt;(&lt;/span&gt;type_bad_words&lt;span class="p"&gt;),&lt;/span&gt; &lt;span class="kr"&gt;function&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;x&lt;span class="p"&gt;)&lt;/span&gt; x&lt;span class="p"&gt;[[&lt;/span&gt;&lt;span class="m"&gt;1&lt;/span&gt;&lt;span class="p"&gt;]])&lt;/span&gt;
+type_bad_words &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; str_c&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;"(^|\\W)"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;type_bad_words&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;"(\\W|$)"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; sep &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;""&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+type_replacement_words &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; str_c&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;"\\1"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; type_replacement_words&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;"\\2"&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+
+&lt;span class="kr"&gt;for&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;i &lt;span class="kr"&gt;in&lt;/span&gt; &lt;span class="m"&gt;1&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="kp"&gt;length&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;type_bad_words&lt;span class="p"&gt;))&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+  text_data&lt;span class="o"&gt;$&lt;/span&gt;TYPE &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; str_replace_all&lt;span class="p"&gt;(&lt;/span&gt;text_data&lt;span class="o"&gt;$&lt;/span&gt;TYPE&lt;span class="p"&gt;,&lt;/span&gt;
+				    type_bad_words&lt;span class="p"&gt;[&lt;/span&gt;i&lt;span class="p"&gt;],&lt;/span&gt;
+				    type_replacement_words&lt;span class="p"&gt;[&lt;/span&gt;i&lt;span class="p"&gt;])&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+
+text_data&lt;span class="o"&gt;$&lt;/span&gt;TYPE &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; str_replace_all&lt;span class="p"&gt;(&lt;/span&gt;text_data&lt;span class="o"&gt;$&lt;/span&gt;TYPE&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;" +"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;" "&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+text_data&lt;span class="o"&gt;$&lt;/span&gt;TYPE &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; str_trim&lt;span class="p"&gt;(&lt;/span&gt;text_data&lt;span class="o"&gt;$&lt;/span&gt;TYPE&lt;span class="p"&gt;,&lt;/span&gt; side &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;'both'&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;
+Even after all that there are still some errors, but we've managed to correctly retrieve the type information for the majority of the variables in this dictionary.
+&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;count&lt;span class="p"&gt;(&lt;/span&gt;text_data&lt;span class="p"&gt;,&lt;/span&gt; TYPE&lt;span class="p"&gt;,&lt;/span&gt; sort &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="kc"&gt;TRUE&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;pre class="example"&gt;
+# A tibble: 10 x 2
+             TYPE     n
+            &amp;lt;chr&amp;gt; &amp;lt;int&amp;gt;
+1       character    65
+2   fixed decimal    42
+3                    41
+4      charioteer     1
+5      chm-gage:-     1
+6  fixed decimal)     1
+7  fixed-decimal:     1
+8   fixed deem-ll     1
+9     hexadecimal     1
+10     tee-rater-     1
+&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div id="outline-container-sec-4" class="outline-2"&gt;
+&lt;h2 id="sec-4"&gt;Concluding remarks&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-4"&gt;
+&lt;p&gt;
+I covered a lot of ground in this post, from graphical OCR programs to spell checking packages in R. The take-away messages as I seem them are:
+&lt;/p&gt;
+&lt;ol class="org-ol"&gt;
+&lt;li&gt;The &lt;a href="https://github.com/ropensci/hunspell#readme"&gt;pdftools&lt;/a&gt; package is great news for R users who need to work with &lt;code&gt;.pdf&lt;/code&gt; files. It makes it easy to extract and manipulate pdf content and metadata no matter what operating system you use, all from within R.
+&lt;/li&gt;
+&lt;li&gt;The &lt;a href="https://github.com/tesseract-ocr/tesseract"&gt;tesseract&lt;/a&gt; OCR program is very capable, but don't expect miracles. If the original image quality is poor you can expect to spend a lot of time cleaning up the resulting text.
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id="footnotes"&gt;
+&lt;h2 class="footnotes"&gt;Footnotes: &lt;/h2&gt;
+&lt;div id="text-footnotes"&gt;
+
+&lt;div class="footdef"&gt;&lt;sup&gt;&lt;a id="fn.1" name="fn.1" class="footnum" href="http://people.fas.harvard.edu/~izahn/posts/extracting-content-from-pdf-files/#fnr.1"&gt;1&lt;/a&gt;&lt;/sup&gt; &lt;p class="footpara"&gt;
+I'm sure these data are available somewhere in more convenient form, but a) I couldn't find them and b) I needed an example pdf with interesting content.
+&lt;/p&gt;&lt;/div&gt;
+
+
+&lt;/div&gt;
+&lt;/div&gt;</description><category>OCR</category><category>pdf</category><category>R</category><guid>http://people.fas.harvard.edu/~izahn/posts/extracting-content-from-pdf-files/</guid><pubDate>Wed, 27 Jul 2016 22:13:28 GMT</pubDate></item><item><title>Useless but fun R packages</title><link>http://people.fas.harvard.edu/~izahn/posts/useless-but-fun-r-packages/</link><dc:creator>Ista Zahn</dc:creator><description>&lt;p&gt;
 &lt;a href="http://r-project.org"&gt;R&lt;/a&gt; is useful for many things. But, it is not only useful! There is plenty of fun to be had as well. In celebration of Summer I'm going to take a look at some useless (but fun!) R packages.
 &lt;/p&gt;
 

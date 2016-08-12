@@ -10,7 +10,7 @@
 <meta content="#5670d4" name="theme-color">
 <link rel="alternate" type="application/rss+xml" title="RSS" href="rss.xml">
 <link rel="canonical" href="http://people.fas.harvard.edu/~izahn/">
-<!--[if lt IE 9]><script src="assets/js/html5.js"></script><![endif]--><link rel="prefetch" href="posts/useless-but-fun-r-packages/" type="text/html">
+<!--[if lt IE 9]><script src="assets/js/html5.js"></script><![endif]--><link rel="prefetch" href="posts/extracting-content-from-pdf-files/" type="text/html">
 </head>
 <body>
 <a href="#content" class="sr-only sr-only-focusable">Skip to main content</a>
@@ -63,7 +63,42 @@
 
     
 <div class="postindex">
-    <article class="h-entry post-text"><header><h1 class="p-name entry-title"><a href="posts/useless-but-fun-r-packages/" class="u-url">Useless but fun R packages</a></h1>
+    <article class="h-entry post-text"><header><h1 class="p-name entry-title"><a href="posts/extracting-content-from-pdf-files/" class="u-url">Extracting content from .pdf files</a></h1>
+        <div class="metadata">
+            <p class="byline author vcard"><span class="byline-name fn">
+                Ista Zahn
+            </span></p>
+            <p class="dateline"><a href="posts/extracting-content-from-pdf-files/" rel="bookmark"><time class="published dt-published" datetime="2016-07-27T18:13:28-04:00" title="2016-07-27 18:13">2016-07-27 18:13</time></a></p>
+                <p class="commentline">
+        
+        <a href="posts/extracting-content-from-pdf-files/#isso-thread">Comments</a>
+
+
+        </p>
+</div>
+    </header><div class="p-summary entry-summary">
+    <div>
+<p>
+One of common question I get as a <a href="http://dss.iq.harvard.edu">data science consultant</a> involves extracting content from <code>.pdf</code> files. In the best-case scenario the content can be extracted to consistently formatted text files and parsed from there into a usable form. In the worst case the file will need to be run through an optical character recognition (OCR) program to extract the text.
+</p>
+
+<div id="outline-container-sec-1" class="outline-2">
+<h2 id="sec-1">Overview of available tools</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+For years <code>pdftotext</code> from the <a href="https://poppler.freedesktop.org/">poppler</a> project was my go-to answer for the easy case. This is still a good option, especially on Mac (using <a href="http://brew.sh">homebrew</a>) or Linux where installation is easy. Windows users can install poppler binaries from <a href="http://blog.alivate.com.au/poppler-windows/"></a><a href="http://blog.alivate.com.au/poppler-windows/">http://blog.alivate.com.au/poppler-windows/</a> (make sure to <a href="http://www.computerhope.com/issues/ch000549.htm">add the <code>bin</code> directory to your <code>PATH</code></a>). More recently I've been using the excellent <a href="https://github.com/ropensci/pdftools">pdftools</a> packge in <a href="http://r-project.org">R</a> to more easily extract and manipulate text stored in <code>.pdf</code> files.
+</p>
+
+<p>
+In the more difficult case where the pdf contains images rather than text it is necessary to use optical character recognition (OCR) to recover the text. This can be achieved using point-and-click applications like <a href="http://www.paperfile.net/">freeOCR</a>, <a href="https://acrobat.adobe.com/us/en/acrobat.html">Adobe Acrobat</a> or <a href="https://www.abbyy.com/">ABBYY</a>. ABBYY even has a convenient <a href="http://ocrsdk.com/">cloud OCR service</a> that can be easily accessed from R using the <a href="https://cran.rstudio.com/web/packages/abbyyR/index.html">abbyyR</a> package. If you don't have a license for one of these expensive OCR solutions, or if you prefer something you easily can script from the command line, <a href="https://github.com/tesseract-ocr/tesseract">tesseract</a> is a very good option.
+</p>
+
+<p class="more"><a href="posts/extracting-content-from-pdf-files/">Read more…</a></p>
+</div>
+</div>
+</div>
+    </div>
+    </article><article class="h-entry post-text"><header><h1 class="p-name entry-title"><a href="posts/useless-but-fun-r-packages/" class="u-url">Useless but fun R packages</a></h1>
         <div class="metadata">
             <p class="byline author vcard"><span class="byline-name fn">
                 Ista Zahn
