@@ -1,0 +1,61 @@
+#+BEGIN_COMMENT
+.. title: Resources for learning R
+.. slug: resources-for-learning-r
+.. date: 2016-12-07 14:02:26 UTC-05:00
+.. tags: R,tutorials,resources,learning
+.. category: 
+.. link: 
+.. description: 
+.. type: text
+#+END_COMMENT
+
+A list of resources for learning R in preparation for [[https://courses.harvard.edu/detail?q=id:d_colgsas_2016_2_203546_001&returnUrl=search%253Fq%253Dcs%252520109%2526sort%253Dcourse_title%252520asc%2526start%253D0%2526rows%253D25][CS109]] this Spring.
+
+A wealth of R resources are available, and I'm sure I've missed some really good ones. If you have a favorite tutorial or resource that is not listed here, please [[mailto:izahn@g.harvard.edu][email me]] or submit a bug report or pull request to [[http://github.com/izahn/blog]].
+
+* Tutorials
+
+** Interactive
+
+There are some great efforts to provide interactive self-paced R tutorials in your browser or in R itself.
+
+- https://www.datacamp.com/ :: Interactive R tutorials with feedback, right in your web browser!
+- http://swirlstats.com/students.html :: Interactive R tutorials with feedback in R.
+- http://dss.iq.harvard.edu/workshop-materials#widget-1 :: Interactive R tutorials in your web browser. Includes a =ggplot= tutorial.
+
+
+** Static
+
+Many R tutorials have been collected at [[https://www.r-project.org/other-docs.html]]. The list of contributed documentation at https://cran.r-project.org/other-docs.html is a great place to start.
+
+There are several excellent tutorials not listed on r-project.org. Some of these are listed below.
+
+- http://www.statmethods.net/ :: "Quick-R" aims to get you up and running in R quickly.
+- http://personality-project.org/r/r.guide.html :: Notes on "Using R for psychological research". 
+- http://r4ds.had.co.nz/ :: "R for Data Science" by R luminary Hadley Wickham. Includes a =ggplot= tutorial.
+- http://rmarkdown.rstudio.com/lesson-1.html :: A comprehensive RMarkdown tutorial.
+
+* Reference cards
+
+[[https://www.rstudio.com/][RStudio]] maintains a collection of high-quality cheat sheets at [[https://www.rstudio.com/resources/cheatsheets/]] (these are also accessible from the =Help -> cheat-sheets= menu in the [[https://www.rstudio.com/products/rstudio/#Desktop][RStudio IDE]]). Additional resources are listed below.
+
+- http://mathesaurus.sourceforge.net/r-numpy.html :: A numpy cheat sheet for R users, but it works just as well the other way around.
+- http://www.math.umaine.edu/~hiebeler/comp/matlabR.pdf :: An R cheat sheet for MATLAB users.
+- http://mathesaurus.sourceforge.net/matlab-python-xref.pdf :: Another R cheat sheet for MATLAB or Python users.
+
+* R package discovery
+
+The [[http://cran.r-project.org][Comprehensive R Archive Network (CRAN)]] is the main R package repository. The web interface is not very sophisticated, so I recommend using the resources listed below instead.
+
+- https://cran.r-project.org/web/views/ :: R Task Views are curated lists of R packages and functions organized by topic.
+- http://r-pkg.org :: METACRAN is a friendly, search-able web interface to CRAN.
+- http://rdocumentation.org :: A search-able interactive interface to R and R package documentation.
+
+* Blogs, forums and mailing lists
+
+R related blogs are aggregated at [[http://r-bloggers.com]]. 
+
+[[http://stackoverflow.com]] is by far the most popular help forum for R. Use the =[r]= tag or navigate directly to [[http://stackoverflow.com/questions/tagged/r]].
+
+Although the [[https://www.r-project.org/mail.html][R mailing lists]] have been losing traffic to stackoverflow there are still plenty of people (including me) responding to questions. You can subscribe to the main R-help mailing list at [[https://stat.ethz.ch/mailman/listinfo/r-help]].
+

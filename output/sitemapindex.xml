@@ -11,7 +11,7 @@
  </sitemap>
  <sitemap>
   <loc>http://people.fas.harvard.edu/~izahn/categories/cat_r.xml</loc>
-  <lastmod>2016-08-12T20:38:00Z</lastmod>
+  <lastmod>2016-12-07T20:24:00Z</lastmod>
  </sitemap>
  <sitemap>
   <loc>http://people.fas.harvard.edu/~izahn/categories/emacs.xml</loc>
@@ -19,15 +19,15 @@
  </sitemap>
  <sitemap>
   <loc>http://people.fas.harvard.edu/~izahn/categories/encoding.xml</loc>
-  <lastmod>2016-06-21T18:01:00Z</lastmod>
+  <lastmod>2016-12-07T20:24:00Z</lastmod>
  </sitemap>
  <sitemap>
   <loc>http://people.fas.harvard.edu/~izahn/categories/files.xml</loc>
-  <lastmod>2016-06-21T18:01:00Z</lastmod>
+  <lastmod>2016-12-07T20:24:00Z</lastmod>
  </sitemap>
  <sitemap>
   <loc>http://people.fas.harvard.edu/~izahn/categories/fun.xml</loc>
-  <lastmod>2016-06-21T18:13:00Z</lastmod>
+  <lastmod>2016-12-07T20:24:00Z</lastmod>
  </sitemap>
  <sitemap>
   <loc>http://people.fas.harvard.edu/~izahn/categories/julia.xml</loc>
@@ -38,12 +38,16 @@
   <lastmod>2016-08-02T02:20:00Z</lastmod>
  </sitemap>
  <sitemap>
+  <loc>http://people.fas.harvard.edu/~izahn/categories/learning.xml</loc>
+  <lastmod>2016-12-07T20:24:00Z</lastmod>
+ </sitemap>
+ <sitemap>
   <loc>http://people.fas.harvard.edu/~izahn/categories/ocr.xml</loc>
-  <lastmod>2016-08-12T20:38:00Z</lastmod>
+  <lastmod>2016-12-07T20:24:00Z</lastmod>
  </sitemap>
  <sitemap>
   <loc>http://people.fas.harvard.edu/~izahn/categories/pdf.xml</loc>
-  <lastmod>2016-08-12T20:38:00Z</lastmod>
+  <lastmod>2016-12-07T20:24:00Z</lastmod>
  </sitemap>
  <sitemap>
   <loc>http://people.fas.harvard.edu/~izahn/categories/python.xml</loc>
@@ -51,26 +55,34 @@
  </sitemap>
  <sitemap>
   <loc>http://people.fas.harvard.edu/~izahn/categories/r.xml</loc>
-  <lastmod>2016-08-12T20:38:00Z</lastmod>
+  <lastmod>2016-12-07T20:24:00Z</lastmod>
+ </sitemap>
+ <sitemap>
+  <loc>http://people.fas.harvard.edu/~izahn/categories/resources.xml</loc>
+  <lastmod>2016-12-07T20:24:00Z</lastmod>
  </sitemap>
  <sitemap>
   <loc>http://people.fas.harvard.edu/~izahn/categories/shift-jis.xml</loc>
-  <lastmod>2016-06-21T18:01:00Z</lastmod>
+  <lastmod>2016-12-07T20:24:00Z</lastmod>
+ </sitemap>
+ <sitemap>
+  <loc>http://people.fas.harvard.edu/~izahn/categories/tutorials.xml</loc>
+  <lastmod>2016-12-07T20:24:00Z</lastmod>
  </sitemap>
  <sitemap>
   <loc>http://people.fas.harvard.edu/~izahn/categories/utf-8.xml</loc>
-  <lastmod>2016-06-21T18:01:00Z</lastmod>
+  <lastmod>2016-12-07T20:24:00Z</lastmod>
  </sitemap>
  <sitemap>
   <loc>http://people.fas.harvard.edu/~izahn/galleries/rss.xml</loc>
-  <lastmod>2016-08-11T19:27:00Z</lastmod>
+  <lastmod>2016-12-07T20:24:00Z</lastmod>
  </sitemap>
  <sitemap>
   <loc>http://people.fas.harvard.edu/~izahn/rss.xml</loc>
-  <lastmod>2016-08-12T20:38:00Z</lastmod>
+  <lastmod>2016-12-07T20:24:00Z</lastmod>
  </sitemap>
  <sitemap>
   <loc>http://people.fas.harvard.edu/~izahn/sitemap.xml</loc>
-  <lastmod>2016-08-12T20:38:00Z</lastmod>
+  <lastmod>2016-12-07T20:24:00Z</lastmod>
  </sitemap>
 </sitemapindex>

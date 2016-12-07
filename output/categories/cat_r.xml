@@ -1,5 +1,583 @@
 <?xml version="1.0" encoding="utf-8"?>
-<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Ista Zahn (R)</title><link>http://people.fas.harvard.edu/~izahn/</link><description></description><atom:link type="application/rss+xml" href="http://people.fas.harvard.edu/~izahn/categories/cat_r.xml" rel="self"></atom:link><language>en</language><lastBuildDate>Fri, 12 Aug 2016 23:38:27 GMT</lastBuildDate><generator>https://getnikola.com/</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Extracting content from .pdf files</title><link>http://people.fas.harvard.edu/~izahn/posts/extracting-content-from-pdf-files/</link><dc:creator>Ista Zahn</dc:creator><description>&lt;p&gt;
+<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Ista Zahn (R)</title><link>http://people.fas.harvard.edu/~izahn/</link><description></description><atom:link href="http://people.fas.harvard.edu/~izahn/categories/cat_r.xml" rel="self" type="application/rss+xml"></atom:link><language>en</language><lastBuildDate>Wed, 07 Dec 2016 20:24:49 GMT</lastBuildDate><generator>https://getnikola.com/</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Coming to terms with the pace of change in R</title><link>http://people.fas.harvard.edu/~izahn/posts/coming-to-terms-with-the-pace-of-change-in-r/</link><dc:creator>Ista Zahn</dc:creator><description>&lt;div id="outline-container-sec-1" class="outline-2"&gt;
+&lt;h2 id="sec-1"&gt;Is it you or have I become old and cranky?&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-1"&gt;
+&lt;p&gt;
+I've been using R and mostly enjoying it since 2006. Lately I've been having some misgivings about the direction R as a community is headed. Some of these misgivings no doubt stem from reluctance to learn new ways of doing things after investing so much time mastering the old ways, but underneath my old-man crankiness I believe there are real and important challenges facing the R community. R has grown considerably since I started using it a decade ago, and this has mostly been a good thing as new packages implement new and better functionality. Recently, popular contributed packages have been replacing core R functionality with new approaches, leading to a fragmentation of the user base and increasing cognitive load by requiring analysts to choose a package (or set of packages) before they even write the first line of code.
+&lt;/p&gt;
+
+&lt;!-- TEASER_END --&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div id="outline-container-sec-2" class="outline-2"&gt;
+&lt;h2 id="sec-2"&gt;R is "a large, coherent, integrated collection of intermediate tools for data analysis"&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-2"&gt;
+&lt;p&gt;
+The quote is taken from the official R manual &lt;a href="https://cran.r-project.org/doc/manuals/R-intro.html#Introduction-and-preliminaries"&gt;An Introduction to R&lt;/a&gt;. The "coherent" and "integrated" claims have always been questionable in some areas, but this situation is getting far worse as contributed packages re-invent basic R features and replace classic R idioms with new ones. Let me show you what I'm talking about.
+&lt;/p&gt;
+&lt;/div&gt;
+
+&lt;div id="outline-container-sec-2-1" class="outline-3"&gt;
+&lt;h3 id="sec-2-1"&gt;Is there a coherent integrated "group by" in R?&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-2-1"&gt;
+&lt;p&gt;
+Suppose I want to aggregate a data set by calculating group sizes, means, and standard deviations. There are many ways to do it in base R, and none are quite satisfactory.
+&lt;/p&gt;
+
+&lt;p&gt;
+First up is the &lt;code&gt;tapply&lt;/code&gt; function. It works well for simple aggregation, but won't help us here because it can only handle a single &lt;code&gt;x&lt;/code&gt; variable, and it produces confusing return values if &lt;code&gt;FUN&lt;/code&gt; returns a vector of length greater than one. That is to say, it works fine for calculating a single summary statistic by group
+&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kp"&gt;tapply&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;mtcars&lt;span class="o"&gt;$&lt;/span&gt;wt&lt;span class="p"&gt;,&lt;/span&gt; mtcars&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="kt"&gt;c&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;"am"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;"cyl"&lt;/span&gt;&lt;span class="p"&gt;)],&lt;/span&gt;
+       FUN &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="kp"&gt;mean&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;pre class="example"&gt;
+   cyl
+am        4       6        8
+  0 2.93500 3.38875 4.104083
+  1 2.04225 2.75500 3.370000
+&lt;/pre&gt;
+
+&lt;p&gt;
+but anything more complicated quickly becomes a mess
+&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kp"&gt;tapply&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;mtcars&lt;span class="o"&gt;$&lt;/span&gt;wt&lt;span class="p"&gt;,&lt;/span&gt; mtcars&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="kt"&gt;c&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;"am"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;"cyl"&lt;/span&gt;&lt;span class="p"&gt;)],&lt;/span&gt;
+	FUN &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="kr"&gt;function&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;x&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="kt"&gt;c&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;n &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="kp"&gt;length&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;x&lt;span class="p"&gt;),&lt;/span&gt; mean &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="kp"&gt;mean&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;x&lt;span class="p"&gt;),&lt;/span&gt; sd &lt;span class="o"&gt;=&lt;/span&gt; sd&lt;span class="p"&gt;(&lt;/span&gt;x&lt;span class="p"&gt;)))&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;pre class="example"&gt;
+   cyl
+am  4         6         8        
+  0 Numeric,3 Numeric,3 Numeric,3
+  1 Numeric,3 Numeric,3 Numeric,3
+&lt;/pre&gt;
+
+&lt;p&gt;
+Next we might consider the &lt;code&gt;ave&lt;/code&gt; function, but a quick look at the documentation suggests it won't be any better than &lt;code&gt;tapply&lt;/code&gt;. OK, let's try something else. Maybe &lt;code&gt;aggregate&lt;/code&gt; will help us.
+&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;aggregate&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kp"&gt;cbind&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;mpg&lt;span class="p"&gt;,&lt;/span&gt; hp&lt;span class="p"&gt;,&lt;/span&gt; wt&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;~&lt;/span&gt; am &lt;span class="o"&gt;+&lt;/span&gt; cyl&lt;span class="p"&gt;,&lt;/span&gt;
+	  data &lt;span class="o"&gt;=&lt;/span&gt; mtcars&lt;span class="p"&gt;,&lt;/span&gt;
+	  FUN &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="kr"&gt;function&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;x&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="kt"&gt;c&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;n &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="kp"&gt;length&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;x&lt;span class="p"&gt;),&lt;/span&gt; mean &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="kp"&gt;mean&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;x&lt;span class="p"&gt;),&lt;/span&gt; sd &lt;span class="o"&gt;=&lt;/span&gt; sd&lt;span class="p"&gt;(&lt;/span&gt;x&lt;span class="p"&gt;)))&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;pre class="example"&gt;
+  am cyl      mpg.n   mpg.mean     mpg.sd      hp.n   hp.mean     hp.sd       wt.n    wt.mean      wt.sd
+1  0   4  3.0000000 22.9000000  1.4525839   3.00000  84.66667  19.65536  3.0000000  2.9350000  0.4075230
+2  1   4  8.0000000 28.0750000  4.4838599   8.00000  81.87500  22.65542  8.0000000  2.0422500  0.4093485
+3  0   6  4.0000000 19.1250000  1.6317169   4.00000 115.25000   9.17878  4.0000000  3.3887500  0.1162164
+4  1   6  3.0000000 20.5666667  0.7505553   3.00000 131.66667  37.52777  3.0000000  2.7550000  0.1281601
+5  0   8 12.0000000 15.0500000  2.7743959  12.00000 194.16667  33.35984 12.0000000  4.1040833  0.7683069
+6  1   8  2.0000000 15.4000000  0.5656854   2.00000 299.50000  50.20458  2.0000000  3.3700000  0.2828427
+&lt;/pre&gt;
+
+&lt;p&gt;
+&lt;code&gt;aggregate&lt;/code&gt; appears to be closer to what we want than &lt;code&gt;tapply&lt;/code&gt;, but it still either requires post-processing to remove the redundant group size column, or multiple calls to produce the desired result, e.g.,
+&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kp"&gt;merge&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;aggregate&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kp"&gt;cbind&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;n &lt;span class="o"&gt;=&lt;/span&gt; mpg&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;~&lt;/span&gt; am &lt;span class="o"&gt;+&lt;/span&gt;cyl&lt;span class="p"&gt;,&lt;/span&gt;
+		data &lt;span class="o"&gt;=&lt;/span&gt; mtcars&lt;span class="p"&gt;,&lt;/span&gt;
+		FUN &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="kp"&gt;length&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt;
+      aggregate&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kp"&gt;cbind&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;mpg&lt;span class="p"&gt;,&lt;/span&gt; hp&lt;span class="p"&gt;,&lt;/span&gt; wt&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;~&lt;/span&gt; am &lt;span class="o"&gt;+&lt;/span&gt; cyl&lt;span class="p"&gt;,&lt;/span&gt;
+		data &lt;span class="o"&gt;=&lt;/span&gt; mtcars&lt;span class="p"&gt;,&lt;/span&gt;
+		FUN &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="kr"&gt;function&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;x&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="kt"&gt;c&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;mean &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="kp"&gt;mean&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;x&lt;span class="p"&gt;),&lt;/span&gt; sd &lt;span class="o"&gt;=&lt;/span&gt; sd&lt;span class="p"&gt;(&lt;/span&gt;x&lt;span class="p"&gt;))))&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;pre class="example"&gt;
+  am cyl  n   mpg.mean     mpg.sd   hp.mean     hp.sd   wt.mean     wt.sd
+1  0   4  3 22.9000000  1.4525839  84.66667  19.65536 2.9350000 0.4075230
+2  0   6  4 19.1250000  1.6317169 115.25000   9.17878 3.3887500 0.1162164
+3  0   8 12 15.0500000  2.7743959 194.16667  33.35984 4.1040833 0.7683069
+4  1   4  8 28.0750000  4.4838599  81.87500  22.65542 2.0422500 0.4093485
+5  1   6  3 20.5666667  0.7505553 131.66667  37.52777 2.7550000 0.1281601
+6  1   8  2 15.4000000  0.5656854 299.50000  50.20458 3.3700000 0.2828427
+&lt;/pre&gt;
+
+&lt;p&gt;
+OK, &lt;code&gt;tapply&lt;/code&gt; and &lt;code&gt;ave&lt;/code&gt; were busts, aggregate is close but not quite what we want. How about &lt;code&gt;by&lt;/code&gt;?
+&lt;/p&gt;
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kp"&gt;by&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;mtcars&lt;span class="p"&gt;,&lt;/span&gt;
+   mtcars&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="kt"&gt;c&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;"am"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;"cyl"&lt;/span&gt;&lt;span class="p"&gt;)],&lt;/span&gt;
+   FUN &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="kr"&gt;function&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;x&lt;span class="p"&gt;)&lt;/span&gt;
+   &lt;span class="p"&gt;{&lt;/span&gt;
+     &lt;span class="kp"&gt;with&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;x&lt;span class="p"&gt;,&lt;/span&gt;
+	  &lt;span class="kt"&gt;c&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;n &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="kp"&gt;nrow&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;x&lt;span class="p"&gt;),&lt;/span&gt;
+	    mpg_mean &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="kp"&gt;mean&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;mpg&lt;span class="p"&gt;),&lt;/span&gt;
+	    mpg_sd &lt;span class="o"&gt;=&lt;/span&gt; sd&lt;span class="p"&gt;(&lt;/span&gt;mpg&lt;span class="p"&gt;),&lt;/span&gt;
+	    hp_mean &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="kp"&gt;mean&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;hp&lt;span class="p"&gt;),&lt;/span&gt;
+	    hp_sd &lt;span class="o"&gt;=&lt;/span&gt; sd&lt;span class="p"&gt;(&lt;/span&gt;hp&lt;span class="p"&gt;),&lt;/span&gt;
+	    wt_mean &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="kp"&gt;mean&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;wt&lt;span class="p"&gt;),&lt;/span&gt;
+	    wt_sd &lt;span class="o"&gt;=&lt;/span&gt; sd&lt;span class="p"&gt;(&lt;/span&gt;wt&lt;span class="p"&gt;)))&lt;/span&gt;
+   &lt;span class="p"&gt;},&lt;/span&gt;
+   simplify &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="kc"&gt;FALSE&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;pre class="example"&gt;
+ am: 0
+cyl: 4
+        n  mpg_mean    mpg_sd   hp_mean     hp_sd   wt_mean     wt_sd 
+ 3.000000 22.900000  1.452584 84.666667 19.655364  2.935000  0.407523 
+------------------------------------------------------------------------------------- 
+am: 1
+cyl: 4
+         n   mpg_mean     mpg_sd    hp_mean      hp_sd    wt_mean      wt_sd 
+ 8.0000000 28.0750000  4.4838599 81.8750000 22.6554156  2.0422500  0.4093485 
+------------------------------------------------------------------------------------- 
+am: 0
+cyl: 6
+          n    mpg_mean      mpg_sd     hp_mean       hp_sd     wt_mean       wt_sd 
+  4.0000000  19.1250000   1.6317169 115.2500000   9.1787799   3.3887500   0.1162164 
+------------------------------------------------------------------------------------- 
+am: 1
+cyl: 6
+          n    mpg_mean      mpg_sd     hp_mean       hp_sd     wt_mean       wt_sd 
+  3.0000000  20.5666667   0.7505553 131.6666667  37.5277675   2.7550000   0.1281601 
+------------------------------------------------------------------------------------- 
+am: 0
+cyl: 8
+          n    mpg_mean      mpg_sd     hp_mean       hp_sd     wt_mean       wt_sd 
+ 12.0000000  15.0500000   2.7743959 194.1666667  33.3598379   4.1040833   0.7683069 
+------------------------------------------------------------------------------------- 
+am: 1
+cyl: 8
+          n    mpg_mean      mpg_sd     hp_mean       hp_sd     wt_mean       wt_sd 
+  2.0000000  15.4000000   0.5656854 299.5000000  50.2045815   3.3700000   0.2828427
+&lt;/pre&gt;
+
+&lt;p&gt;
+Well, maybe that's better. It's not really any less verbose than the aggregate-and-merge strategy, and the result isn't very friendly. Maybe we should just roll our own.
+&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kp"&gt;do.call&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kp"&gt;rbind&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+	&lt;span class="kp"&gt;lapply&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kp"&gt;split&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;mtcars&lt;span class="p"&gt;,&lt;/span&gt; mtcars&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="kt"&gt;c&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;"am"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;"cyl"&lt;/span&gt;&lt;span class="p"&gt;)]),&lt;/span&gt;
+	       &lt;span class="kr"&gt;function&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;x&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+		 &lt;span class="kp"&gt;with&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;x&lt;span class="p"&gt;,&lt;/span&gt; 
+		      &lt;span class="kt"&gt;data.frame&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;am &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="kp"&gt;unique&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;am&lt;span class="p"&gt;),&lt;/span&gt;
+				 cyl &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="kp"&gt;unique&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;cyl&lt;span class="p"&gt;),&lt;/span&gt;
+				 n &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="kp"&gt;nrow&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;x&lt;span class="p"&gt;),&lt;/span&gt;
+				 mpg_mean &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="kp"&gt;mean&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;mpg&lt;span class="p"&gt;),&lt;/span&gt;
+				 mpg_sd &lt;span class="o"&gt;=&lt;/span&gt; sd&lt;span class="p"&gt;(&lt;/span&gt;mpg&lt;span class="p"&gt;),&lt;/span&gt;
+				 hp_mean &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="kp"&gt;mean&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;hp&lt;span class="p"&gt;),&lt;/span&gt;
+				 hp_sd &lt;span class="o"&gt;=&lt;/span&gt; sd&lt;span class="p"&gt;(&lt;/span&gt;hp&lt;span class="p"&gt;),&lt;/span&gt;
+				 wt_mean &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="kp"&gt;mean&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;wt&lt;span class="p"&gt;),&lt;/span&gt;
+				 wt_sd &lt;span class="o"&gt;=&lt;/span&gt; sd&lt;span class="p"&gt;(&lt;/span&gt;wt&lt;span class="p"&gt;)))&lt;/span&gt;
+	       &lt;span class="p"&gt;}))&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;pre class="example"&gt;
+    am cyl  n mpg_mean    mpg_sd   hp_mean    hp_sd  wt_mean     wt_sd
+0.4  0   4  3 22.90000 1.4525839  84.66667 19.65536 2.935000 0.4075230
+1.4  1   4  8 28.07500 4.4838599  81.87500 22.65542 2.042250 0.4093485
+0.6  0   6  4 19.12500 1.6317169 115.25000  9.17878 3.388750 0.1162164
+1.6  1   6  3 20.56667 0.7505553 131.66667 37.52777 2.755000 0.1281601
+0.8  0   8 12 15.05000 2.7743959 194.16667 33.35984 4.104083 0.7683069
+1.8  1   8  2 15.40000 0.5656854 299.50000 50.20458 3.370000 0.2828427
+&lt;/pre&gt;
+
+&lt;p&gt;
+By now we've tried four different approaches, but nothing seems to make the calculation particularly natural or convenient. Is this really a "coherent and integrated" collection of functions? It feels more like a haphazard collection of overlapping functions that can be abused in different ways. So here are some questions. 
+&lt;/p&gt;
+&lt;ol class="org-ol"&gt;
+&lt;li&gt;Given that &lt;code&gt;aggregate&lt;/code&gt; appears to be more flexible than &lt;code&gt;tapply&lt;/code&gt; and &lt;code&gt;ave&lt;/code&gt;, do we really need the later two?
+&lt;/li&gt;
+&lt;li&gt;Can &lt;code&gt;aggregate&lt;/code&gt; be generalized so that we can apply functions to data.frames instead of to the columns of those data.frames?
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+
+&lt;div id="outline-container-sec-2-2" class="outline-3"&gt;
+&lt;h3 id="sec-2-2"&gt;Can we do better?&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-2-2"&gt;
+&lt;p&gt;
+Of course we can do better. Many an R programmer has gazed out over the rubble of &lt;code&gt;tapply&lt;/code&gt;, &lt;code&gt;ave&lt;/code&gt;, &lt;code&gt;by&lt;/code&gt; and &lt;code&gt;aggregate&lt;/code&gt; and mused "surely I can bring order and harmony to this jumble. Follow me and we will create a 'group by' operation to end all SQL jealousy in the kingdom of R." And what comes of this musing? Let us look with wonder upon the bubbling exuberant creativity of the R community.
+&lt;/p&gt;
+&lt;/div&gt;
+
+&lt;div id="outline-container-sec-2-2-1" class="outline-4"&gt;
+&lt;h4 id="sec-2-2-1"&gt;doBy::describeBy&lt;/h4&gt;
+&lt;div class="outline-text-4" id="text-2-2-1"&gt;
+&lt;p&gt;
+Very similar to &lt;code&gt;aggregate&lt;/code&gt;, same limitations.
+&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;doBy&lt;span class="o"&gt;::&lt;/span&gt;summaryBy&lt;span class="p"&gt;(&lt;/span&gt;mpg &lt;span class="o"&gt;+&lt;/span&gt; hp &lt;span class="o"&gt;+&lt;/span&gt; wt &lt;span class="o"&gt;~&lt;/span&gt; am &lt;span class="o"&gt;+&lt;/span&gt; cyl&lt;span class="p"&gt;,&lt;/span&gt;
+		data &lt;span class="o"&gt;=&lt;/span&gt; mtcars&lt;span class="p"&gt;,&lt;/span&gt;
+		FUN &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="kr"&gt;function&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;x&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="kt"&gt;c&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;n &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="kp"&gt;length&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;x&lt;span class="p"&gt;),&lt;/span&gt; mean &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="kp"&gt;mean&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;x&lt;span class="p"&gt;),&lt;/span&gt; sd &lt;span class="o"&gt;=&lt;/span&gt; sd&lt;span class="p"&gt;(&lt;/span&gt;x&lt;span class="p"&gt;)))&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;pre class="example"&gt;
+  am cyl mpg.n mpg.mean    mpg.sd hp.n   hp.mean    hp.sd wt.n  wt.mean     wt.sd
+1  0   4     3 22.90000 1.4525839    3  84.66667 19.65536    3 2.935000 0.4075230
+2  0   6     4 19.12500 1.6317169    4 115.25000  9.17878    4 3.388750 0.1162164
+3  0   8    12 15.05000 2.7743959   12 194.16667 33.35984   12 4.104083 0.7683069
+4  1   4     8 28.07500 4.4838599    8  81.87500 22.65542    8 2.042250 0.4093485
+5  1   6     3 20.56667 0.7505553    3 131.66667 37.52777    3 2.755000 0.1281601
+6  1   8     2 15.40000 0.5656854    2 299.50000 50.20458    2 3.370000 0.2828427
+&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div id="outline-container-sec-2-2-2" class="outline-4"&gt;
+&lt;h4 id="sec-2-2-2"&gt;Hmisc::summary.formula&lt;/h4&gt;
+&lt;div class="outline-text-4" id="text-2-2-2"&gt;
+&lt;p&gt;
+Similar to aggregate, large number of confusing options. This one automatically computes N for each group, so it actually works for our example.
+&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;Hmisc&lt;span class="o"&gt;::&lt;/span&gt;summary.formula&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kp"&gt;cbind&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;mpg&lt;span class="p"&gt;,&lt;/span&gt; hp&lt;span class="p"&gt;,&lt;/span&gt; wt&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;~&lt;/span&gt; am &lt;span class="o"&gt;+&lt;/span&gt; cyl&lt;span class="p"&gt;,&lt;/span&gt;
+		       data &lt;span class="o"&gt;=&lt;/span&gt; mtcars&lt;span class="p"&gt;,&lt;/span&gt;
+		       fun &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="kr"&gt;function&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;x&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+			 &lt;span class="kp"&gt;apply&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;x&lt;span class="p"&gt;,&lt;/span&gt;
+			       &lt;span class="m"&gt;2&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+			       FUN &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="kr"&gt;function&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;y&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+				 &lt;span class="kt"&gt;c&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;mean &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="kp"&gt;mean&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;y&lt;span class="p"&gt;),&lt;/span&gt; sd &lt;span class="o"&gt;=&lt;/span&gt; sd&lt;span class="p"&gt;(&lt;/span&gt;y&lt;span class="p"&gt;))&lt;/span&gt;
+			       &lt;span class="p"&gt;})&lt;/span&gt;
+		       &lt;span class="p"&gt;})&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;pre class="example"&gt;
+ cbind(mpg, hp, wt)    N=32
+
++-------+---+--+--------+--------+---------+--------+--------+---------+
+|       |   |N |mpg mean|mpg sd  |hp mean  |hp sd   |wt mean |wt sd    |
++-------+---+--+--------+--------+---------+--------+--------+---------+
+|am     |No |19|17.14737|3.833966|160.26316|53.90820|3.768895|0.7774001|
+|       |Yes|13|24.39231|6.166504|126.84615|84.06232|2.411000|0.6169816|
++-------+---+--+--------+--------+---------+--------+--------+---------+
+|cyl    |4  |11|26.66364|4.509828| 82.63636|20.93453|2.285727|0.5695637|
+|       |6  | 7|19.74286|1.453567|122.28571|24.26049|3.117143|0.3563455|
+|       |8  |14|15.10000|2.560048|209.21429|50.97689|3.999214|0.7594047|
++-------+---+--+--------+--------+---------+--------+--------+---------+
+|Overall|   |32|20.09062|6.026948|146.68750|68.56287|3.217250|0.9784574|
++-------+---+--+--------+--------+---------+--------+--------+---------+
+&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div id="outline-container-sec-2-2-3" class="outline-4"&gt;
+&lt;h4 id="sec-2-2-3"&gt;dplyr::summarize&lt;/h4&gt;
+&lt;div class="outline-text-4" id="text-2-2-3"&gt;
+&lt;p&gt;
+This one is very popular, and for good reason. It works well.
+&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;dplyr&lt;span class="o"&gt;::&lt;/span&gt;summarize&lt;span class="p"&gt;(&lt;/span&gt;dplyr&lt;span class="o"&gt;::&lt;/span&gt;group_by&lt;span class="p"&gt;(&lt;/span&gt;mtcars&lt;span class="p"&gt;,&lt;/span&gt; am&lt;span class="p"&gt;,&lt;/span&gt; cyl&lt;span class="p"&gt;),&lt;/span&gt;
+		 n &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="kp"&gt;length&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;mpg&lt;span class="p"&gt;),&lt;/span&gt;
+		 mean_mpg &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="kp"&gt;mean&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;mpg&lt;span class="p"&gt;),&lt;/span&gt;
+		 sd_mpg &lt;span class="o"&gt;=&lt;/span&gt; sd&lt;span class="p"&gt;(&lt;/span&gt;mpg&lt;span class="p"&gt;),&lt;/span&gt;
+		 mean_hp &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="kp"&gt;mean&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;hp&lt;span class="p"&gt;),&lt;/span&gt;
+		 sd_hp &lt;span class="o"&gt;=&lt;/span&gt; sd&lt;span class="p"&gt;(&lt;/span&gt;hp&lt;span class="p"&gt;),&lt;/span&gt;
+		 mean_wt &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="kp"&gt;mean&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;wt&lt;span class="p"&gt;),&lt;/span&gt;
+		 sd_hp &lt;span class="o"&gt;=&lt;/span&gt; sd&lt;span class="p"&gt;(&lt;/span&gt;hp&lt;span class="p"&gt;))&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;pre class="example"&gt;
+ Source: local data frame [6 x 8]
+Groups: am [?]
+
+     am   cyl     n mean_mpg    sd_mpg   mean_hp    sd_hp  mean_wt
+  &amp;lt;dbl&amp;gt; &amp;lt;dbl&amp;gt; &amp;lt;int&amp;gt;    &amp;lt;dbl&amp;gt;     &amp;lt;dbl&amp;gt;     &amp;lt;dbl&amp;gt;    &amp;lt;dbl&amp;gt;    &amp;lt;dbl&amp;gt;
+1     0     4     3 22.90000 1.4525839  84.66667 19.65536 2.935000
+2     0     6     4 19.12500 1.6317169 115.25000  9.17878 3.388750
+3     0     8    12 15.05000 2.7743959 194.16667 33.35984 4.104083
+4     1     4     8 28.07500 4.4838599  81.87500 22.65542 2.042250
+5     1     6     3 20.56667 0.7505553 131.66667 37.52777 2.755000
+6     1     8     2 15.40000 0.5656854 299.50000 50.20458 3.370000
+&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div id="outline-container-sec-2-2-4" class="outline-4"&gt;
+&lt;h4 id="sec-2-2-4"&gt;dplyr::do&lt;/h4&gt;
+&lt;div class="outline-text-4" id="text-2-2-4"&gt;
+&lt;p&gt;
+If you have a large number of columns to summarize you might not want to type them all out. In that case you can use &lt;code&gt;do&lt;/code&gt;.
+&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;do&lt;span class="p"&gt;(&lt;/span&gt;group_by&lt;span class="p"&gt;(&lt;/span&gt;mtcars&lt;span class="p"&gt;,&lt;/span&gt; am&lt;span class="p"&gt;,&lt;/span&gt; cyl&lt;span class="p"&gt;),&lt;/span&gt;
+   &lt;span class="kp"&gt;as.data.frame&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kt"&gt;c&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kt"&gt;list&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;n &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="kp"&gt;ncol&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="m"&gt;.&lt;/span&gt;&lt;span class="p"&gt;)),&lt;/span&gt;
+		   &lt;span class="kp"&gt;as.list&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kp"&gt;sapply&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="m"&gt;.&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="kt"&gt;c&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;"mpg"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;"wt"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;"hp"&lt;/span&gt;&lt;span class="p"&gt;)],&lt;/span&gt;
+				  &lt;span class="kr"&gt;function&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;x&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="kt"&gt;c&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;mean &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="kp"&gt;mean&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;x&lt;span class="p"&gt;)))),&lt;/span&gt;
+		   &lt;span class="kp"&gt;as.list&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kp"&gt;sapply&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="m"&gt;.&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="kt"&gt;c&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;"mpg"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;"wt"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;"hp"&lt;/span&gt;&lt;span class="p"&gt;)],&lt;/span&gt;
+				  &lt;span class="kr"&gt;function&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;x&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="kt"&gt;c&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;sd &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="kp"&gt;mean&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;x&lt;span class="p"&gt;)))))))&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;pre class="example"&gt;
+ Source: local data frame [6 x 9]
+Groups: am, cyl [6]
+
+     am   cyl     n mpg.mean  wt.mean   hp.mean   mpg.sd    wt.sd     hp.sd
+  &amp;lt;dbl&amp;gt; &amp;lt;dbl&amp;gt; &amp;lt;int&amp;gt;    &amp;lt;dbl&amp;gt;    &amp;lt;dbl&amp;gt;     &amp;lt;dbl&amp;gt;    &amp;lt;dbl&amp;gt;    &amp;lt;dbl&amp;gt;     &amp;lt;dbl&amp;gt;
+1     0     4    11 22.90000 2.935000  84.66667 22.90000 2.935000  84.66667
+2     0     6    11 19.12500 3.388750 115.25000 19.12500 3.388750 115.25000
+3     0     8    11 15.05000 4.104083 194.16667 15.05000 4.104083 194.16667
+4     1     4    11 28.07500 2.042250  81.87500 28.07500 2.042250  81.87500
+5     1     6    11 20.56667 2.755000 131.66667 20.56667 2.755000 131.66667
+6     1     8    11 15.40000 3.370000 299.50000 15.40000 3.370000 299.50000
+&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div id="outline-container-sec-2-2-5" class="outline-4"&gt;
+&lt;h4 id="sec-2-2-5"&gt;tables::tabular&lt;/h4&gt;
+&lt;div class="outline-text-4" id="text-2-2-5"&gt;
+&lt;p&gt;
+This one focuses on creating LaTeX and HTML tables. It creates its own SAS-inspired mini-language that is IMO very confusing, though possibly worth it if you frequently need to create complex publication ready tables.
+&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="c1"&gt;#library(tables)&lt;/span&gt;
+tables&lt;span class="o"&gt;::&lt;/span&gt;tabular&lt;span class="p"&gt;((&lt;/span&gt;Factor&lt;span class="p"&gt;(&lt;/span&gt;am&lt;span class="p"&gt;))&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;Factor&lt;span class="p"&gt;(&lt;/span&gt;cyl&lt;span class="p"&gt;))&lt;/span&gt; &lt;span class="o"&gt;~&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;n &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="m"&gt;1&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;mpg &lt;span class="o"&gt;+&lt;/span&gt; wt &lt;span class="o"&gt;+&lt;/span&gt; hp&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;mean &lt;span class="o"&gt;+&lt;/span&gt; sd&lt;span class="p"&gt;),&lt;/span&gt; data &lt;span class="o"&gt;=&lt;/span&gt; mtcars&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;pre class="example"&gt;
+                                                 
+          mpg          wt           hp           
+am cyl n  mean  sd     mean  sd     mean   sd    
+0  4    3 22.90 1.4526 2.935 0.4075  84.67 19.655
+   6    4 19.12 1.6317 3.389 0.1162 115.25  9.179
+   8   12 15.05 2.7744 4.104 0.7683 194.17 33.360
+1  4    8 28.07 4.4839 2.042 0.4093  81.88 22.655
+   6    3 20.57 0.7506 2.755 0.1282 131.67 37.528
+   8    2 15.40 0.5657 3.370 0.2828 299.50 50.205
+&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div id="outline-container-sec-2-2-6" class="outline-4"&gt;
+&lt;h4 id="sec-2-2-6"&gt;data.table::`[`&lt;/h4&gt;
+&lt;div class="outline-text-4" id="text-2-2-6"&gt;
+&lt;p&gt;
+The data.table package implements an alternative to the venerable &lt;code&gt;data.frame&lt;/code&gt; class in R and provides sophisticated manipulation via an indexing-like interface.
+&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;as.data.table&lt;span class="p"&gt;(&lt;/span&gt;mtcars&lt;span class="p"&gt;)[,&lt;/span&gt;
+		      &lt;span class="kt"&gt;list&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;n &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="m"&gt;.&lt;/span&gt;N&lt;span class="p"&gt;,&lt;/span&gt;
+			   mpg_mean &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="kp"&gt;mean&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;mpg&lt;span class="p"&gt;),&lt;/span&gt;
+			   mpg_sd &lt;span class="o"&gt;=&lt;/span&gt; sd&lt;span class="p"&gt;(&lt;/span&gt;mpg&lt;span class="p"&gt;),&lt;/span&gt;
+			   wt_mean &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="kp"&gt;mean&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;wt&lt;span class="p"&gt;),&lt;/span&gt;
+			   wt_sd &lt;span class="o"&gt;=&lt;/span&gt; sd&lt;span class="p"&gt;(&lt;/span&gt;wt&lt;span class="p"&gt;),&lt;/span&gt;
+			   hp_mean &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="kp"&gt;mean&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;hp&lt;span class="p"&gt;),&lt;/span&gt;
+			   hp_sd &lt;span class="o"&gt;=&lt;/span&gt; sd&lt;span class="p"&gt;(&lt;/span&gt;hp&lt;span class="p"&gt;)),&lt;/span&gt;
+		      by &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="kt"&gt;c&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;"am"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;"cyl"&lt;/span&gt;&lt;span class="p"&gt;)]&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;
+Are we done yet? Well, I'm going to stop, but we could go on. There are at least 9 ways to skin this particular cat in R. 
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div id="outline-container-sec-2-3" class="outline-3"&gt;
+&lt;h3 id="sec-2-3"&gt;How do I &lt;span class="underline"&gt;_&lt;/span&gt; in R?&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-2-3"&gt;
+&lt;p&gt;
+So there are lots of ways to calculate statistics by some grouping variable(s) in R. Why can't you be happy that you have so many excellent choices?
+&lt;/p&gt;
+
+&lt;p&gt;
+I can't be happy about it because it makes my life more difficult. First, I need to identify my options. Then I need to evaluate them, and learn the particulars of my chosen package. This all takes effort that I would rather spend on other things. Now, if this problem was limited to the domain of calculating statistics by group, I wouldn't be writing this post. But this issue is almost everywhere in R.
+&lt;/p&gt;
+&lt;/div&gt;
+
+&lt;div id="outline-container-sec-2-3-1" class="outline-4"&gt;
+&lt;h4 id="sec-2-3-1"&gt;How do I read text data?&lt;/h4&gt;
+&lt;div class="outline-text-4" id="text-2-3-1"&gt;
+&lt;p&gt;
+I have a .csv file I want to read into R. Should I use
+&lt;/p&gt;
+&lt;ul class="org-ul"&gt;
+&lt;li&gt;read.csv
+&lt;/li&gt;
+&lt;li&gt;readr::read&lt;sub&gt;csv&lt;/sub&gt;
+&lt;/li&gt;
+&lt;li&gt;data.table::fread
+&lt;/li&gt;
+&lt;li&gt;rio::import
+&lt;/li&gt;
+&lt;li&gt;hypoparsr::parse&lt;sub&gt;file&lt;/sub&gt;
+&lt;/li&gt;
+&lt;li&gt;cvsread::cvsread
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;
+or something else?
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div id="outline-container-sec-2-3-2" class="outline-4"&gt;
+&lt;h4 id="sec-2-3-2"&gt;How do I fit a linear regression model?&lt;/h4&gt;
+&lt;div class="outline-text-4" id="text-2-3-2"&gt;
+&lt;p&gt;
+I want to fit a simple linear regression model. Should I use
+&lt;/p&gt;
+&lt;ul class="org-ul"&gt;
+&lt;li&gt;lm
+&lt;/li&gt;
+&lt;li&gt;rms::ols
+&lt;/li&gt;
+&lt;li&gt;Zelig::zlm
+&lt;/li&gt;
+&lt;li&gt;glm2::glm2
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;
+or something else?
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div id="outline-container-sec-2-3-3" class="outline-4"&gt;
+&lt;h4 id="sec-2-3-3"&gt;How do I make a table from model coefficients?&lt;/h4&gt;
+&lt;div class="outline-text-4" id="text-2-3-3"&gt;
+&lt;p&gt;
+I've fit a model and would like to put the results in a nice table. Should I use
+&lt;/p&gt;
+&lt;ul class="org-ul"&gt;
+&lt;li&gt;xtable::xtable
+&lt;/li&gt;
+&lt;li&gt;rockchalk::outreg
+&lt;/li&gt;
+&lt;li&gt;apsrtable::apsrtable
+&lt;/li&gt;
+&lt;li&gt;htmlTable::htmlTable
+&lt;/li&gt;
+&lt;li&gt;etable::tabular.ade
+&lt;/li&gt;
+&lt;li&gt;knitr::ktable
+&lt;/li&gt;
+&lt;li&gt;texreg::texreg
+&lt;/li&gt;
+&lt;li&gt;stargazer::stargazer
+&lt;/li&gt;
+&lt;li&gt;ascii::ascii
+&lt;/li&gt;
+&lt;li&gt;estout::esttab
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;
+or some other thing?
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div id="outline-container-sec-2-4" class="outline-3"&gt;
+&lt;h3 id="sec-2-4"&gt;&lt;span class="todo TODO"&gt;TODO&lt;/span&gt; Summary [summarize the post thus far]&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-2-4"&gt;
+&lt;p&gt;
+There is an overwhelming number of choices for doing just about anything in R.
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div id="outline-container-sec-3" class="outline-2"&gt;
+&lt;h2 id="sec-3"&gt;What is R really?&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-3"&gt;
+&lt;p&gt;
+OK, so there is some duplication among R functions and packages and people need to choose. There are both good and bad consequences of this, but the totality of the situation is that &lt;b&gt;it is no longer clear what R is&lt;/b&gt;.
+&lt;/p&gt;
+&lt;/div&gt;
+
+&lt;div id="outline-container-sec-3-1" class="outline-3"&gt;
+&lt;h3 id="sec-3-1"&gt;R is not data.frames&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-3-1"&gt;
+&lt;p&gt;
+Most people who use R use it for statistical analysis and graphics. The basic data structure in most popular statistical package is a rectangular structure with variables in the columns and observations in the rows. In R this structure is called a &lt;code&gt;data.frame&lt;/code&gt; and learning how to operate on and with data.frames is a basic skill that any R user must have.
+&lt;/p&gt;
+
+&lt;p&gt;
+The previous sentence may have been true at one time, but it no longer is. There are now at least three popular alternatives; &lt;code&gt;data.frame&lt;/code&gt;, &lt;code&gt;data.table&lt;/code&gt; and &lt;code&gt;tibble&lt;/code&gt;. It is now possible to carry out sophisticated data manipulation and analysis in R without ever learning fundamental &lt;code&gt;data.frame&lt;/code&gt; methods such as `[.data.frame`. All of these methods work differently.
+&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kp"&gt;head&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;mtcars&lt;span class="p"&gt;)[,&lt;/span&gt; &lt;span class="m"&gt;1&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;pre class="example"&gt;
+[1] 21.0 21.0 22.8 21.4 18.7 18.1
+&lt;/pre&gt;
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;as.data.table&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kp"&gt;head&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;mtcars&lt;span class="p"&gt;))[,&lt;/span&gt; &lt;span class="m"&gt;1&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;pre class="example"&gt;
+[1] 1
+&lt;/pre&gt;
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;as_tibble&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kp"&gt;head&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;mtcars&lt;span class="p"&gt;))[,&lt;/span&gt; &lt;span class="m"&gt;1&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;pre class="example"&gt;
+# A tibble: 6 × 1
+    mpg
+  &amp;lt;dbl&amp;gt;
+1  21.0
+2  21.0
+3  22.8
+4  21.4
+5  18.7
+6  18.1
+&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div id="outline-container-sec-3-2" class="outline-3"&gt;
+&lt;h3 id="sec-3-2"&gt;R is not a language that uses parenthetical argument lists, like c&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-3-2"&gt;
+&lt;p&gt;
+One of the first things I used to teach people about R is that function calls have the form &lt;code&gt;functionName(arg1, arg2, ..., argn)&lt;/code&gt;, and that even when all arguments are optional and you want to accept the defaults you need the &lt;code&gt;()&lt;/code&gt; after the function name. This is no longer true. Many people now write strange looking R expressions like
+&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kn"&gt;library&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;magrittr&lt;span class="p"&gt;)&lt;/span&gt;
+mtcars &lt;span class="o"&gt;%&amp;gt;%&lt;/span&gt; &lt;span class="kp"&gt;head&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;
+R has always had flexible syntax, but with developments like this you can write R that looks nothing like what us old-timers expect R code to be.
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div id="outline-container-sec-3-3" class="outline-3"&gt;
+&lt;h3 id="sec-3-3"&gt;R is not coherent&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-3-3"&gt;
+&lt;p&gt;
+There is no &lt;a href="https://www.python.org/dev/peps/pep-0020/#the-zen-of-python"&gt;zen-like "one obvious way to do it"&lt;/a&gt; it R. 
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div id="outline-container-sec-3-4" class="outline-3"&gt;
+&lt;h3 id="sec-3-4"&gt;R is being built phoenix-like from its own ashes&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-3-4"&gt;
+&lt;p&gt;
+There is good news and there is bad news. The good news is that new and more coherent and integrated zones are being carved out of the R landscape. For example, the &lt;a href="https://blog.rstudio.org/2016/09/15/tidyverse-1-0-0/"&gt;tidyverse&lt;/a&gt; brings greater simplicity and constancy to many common operations in R. The bad news is that you can't escape the cold hard &lt;a href="http://xkcd.com/927/"&gt;XKCD reality&lt;/a&gt; that producing a "better" way of doing things means there is &lt;span class="underline"&gt;one more&lt;/span&gt; way of doing that thing. 
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div id="outline-container-sec-4" class="outline-2"&gt;
+&lt;h2 id="sec-4"&gt;And now, the thrilling conclusion&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-4"&gt;
+&lt;p&gt;
+Now finally we've reach the part of the blog where I tell you how everyone is doing it wrong and if you would just listen to me we could solve all our problems. The truth is I don't have great answers or solutions for these issues. The best I can do is offer some general thoughts.
+&lt;/p&gt;
+&lt;/div&gt;
+
+&lt;div id="outline-container-sec-4-1" class="outline-3"&gt;
+&lt;h3 id="sec-4-1"&gt;It could be worse&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-4-1"&gt;
+&lt;p&gt;
+This post probably sounds critical of R, but don't get me wrong, I'm a huge fan of R. Every time I venture into Python, Javascript, Scala, or even Julia it makes me appreciate R even more. R is easy and useful, and having too much choice is certainly better than having too little.
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div id="outline-container-sec-4-2" class="outline-3"&gt;
+&lt;h3 id="sec-4-2"&gt;We can do better&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-4-2"&gt;
+&lt;p&gt;
+Collaborate more. Update documentation to recommend current best-of-breed packages.
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;</description><category>R</category><guid>http://people.fas.harvard.edu/~izahn/posts/coming-to-terms-with-the-pace-of-change-in-r/</guid><pubDate>Tue, 20 Sep 2016 13:58:33 GMT</pubDate></item><item><title>Extracting content from .pdf files</title><link>http://people.fas.harvard.edu/~izahn/posts/extracting-content-from-pdf-files/</link><dc:creator>Ista Zahn</dc:creator><description>&lt;p&gt;
 One of common question I get as a &lt;a href="http://dss.iq.harvard.edu"&gt;data science consultant&lt;/a&gt; involves extracting content from &lt;code&gt;.pdf&lt;/code&gt; files. In the best-case scenario the content can be extracted to consistently formatted text files and parsed from there into a usable form. In the worst case the file will need to be run through an optical character recognition (OCR) program to extract the text.
 &lt;/p&gt;
 

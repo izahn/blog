@@ -15,7 +15,7 @@
  </url>
  <url>
   <loc>http://people.fas.harvard.edu/~izahn/archive.html</loc>
-  <lastmod>2016-08-12T20:38:00Z</lastmod>
+  <lastmod>2016-12-07T20:24:00Z</lastmod>
  </url>
  <url>
   <loc>http://people.fas.harvard.edu/~izahn/blog/</loc>
@@ -23,7 +23,7 @@
  </url>
  <url>
   <loc>http://people.fas.harvard.edu/~izahn/categories/</loc>
-  <lastmod>2016-08-12T20:38:00Z</lastmod>
+  <lastmod>2016-12-07T20:24:00Z</lastmod>
  </url>
  <url>
   <loc>http://people.fas.harvard.edu/~izahn/categories/atom/</loc>
@@ -58,6 +58,10 @@
   <lastmod>2016-08-02T02:20:00Z</lastmod>
  </url>
  <url>
+  <loc>http://people.fas.harvard.edu/~izahn/categories/learning/</loc>
+  <lastmod>2016-12-07T20:24:00Z</lastmod>
+ </url>
+ <url>
   <loc>http://people.fas.harvard.edu/~izahn/categories/ocr/</loc>
   <lastmod>2016-08-12T20:38:00Z</lastmod>
  </url>
@@ -74,8 +78,16 @@
   <lastmod>2016-08-02T02:21:00Z</lastmod>
  </url>
  <url>
+  <loc>http://people.fas.harvard.edu/~izahn/categories/resources/</loc>
+  <lastmod>2016-12-07T20:24:00Z</lastmod>
+ </url>
+ <url>
   <loc>http://people.fas.harvard.edu/~izahn/categories/shift-jis/</loc>
   <lastmod>2016-06-21T03:39:00Z</lastmod>
+ </url>
+ <url>
+  <loc>http://people.fas.harvard.edu/~izahn/categories/tutorials/</loc>
+  <lastmod>2016-12-07T20:24:00Z</lastmod>
  </url>
  <url>
   <loc>http://people.fas.harvard.edu/~izahn/categories/utf-8/</loc>
@@ -94,12 +106,20 @@
   <lastmod>2016-08-02T02:21:00Z</lastmod>
  </url>
  <url>
+  <loc>http://people.fas.harvard.edu/~izahn/posts/coming-to-terms-with-the-pace-of-change-in-r/</loc>
+  <lastmod>2016-12-07T20:24:00Z</lastmod>
+ </url>
+ <url>
   <loc>http://people.fas.harvard.edu/~izahn/posts/extracting-content-from-pdf-files/</loc>
   <lastmod>2016-08-02T02:20:00Z</lastmod>
  </url>
  <url>
   <loc>http://people.fas.harvard.edu/~izahn/posts/reading-data-with-non-native-encoding-in-r/</loc>
   <lastmod>2016-06-21T11:05:00Z</lastmod>
+ </url>
+ <url>
+  <loc>http://people.fas.harvard.edu/~izahn/posts/resources-for-learning-r/</loc>
+  <lastmod>2016-12-07T20:24:00Z</lastmod>
  </url>
  <url>
   <loc>http://people.fas.harvard.edu/~izahn/posts/useless-but-fun-r-packages/</loc>

@@ -1,0 +1,413 @@
+#+BEGIN_COMMENT
+.. title: Coming to terms with the pace of change in R
+.. slug: coming-to-terms-with-the-pace-of-change-in-r
+.. date: 2016-09-20 09:58:33 UTC-04:00
+.. tags: R
+.. category: R
+.. link: 
+.. description: R is changing rapidly and for the better. Keeping up is worth it.  
+.. type: text
+#+END_COMMENT
+
+#+PROPERTY: cache no
+#+PROPERTY: results output
+#+PROPERTY: session *R*
+#+PROPERTY: exports both
+#+PROPERTY: tangle R_windows_encoding.R
+
+
+* Is it you or have I become old and cranky?
+I've been using R and mostly enjoying it since 2006. Lately I've been having some misgivings about the direction R as a community is headed. Some of these misgivings no doubt stem from reluctance to learn new ways of doing things after investing so much time mastering the old ways, but underneath my old-man crankiness I believe there are real and important challenges facing the R community. R has grown considerably since I started using it a decade ago, and this has mostly been a good thing as new packages implement new and better functionality. Recently, popular contributed packages have been replacing core R functionality with new approaches, leading to a fragmentation of the user base and increasing cognitive load by requiring analysts to choose a package (or set of packages) before they even write the first line of code.
+
+#+HTML: <!-- TEASER_END -->
+
+* R is "a large, coherent, integrated collection of intermediate tools for data analysis"
+The quote is taken from the official R manual [[https://cran.r-project.org/doc/manuals/R-intro.html#Introduction-and-preliminaries][An Introduction to R]]. The "coherent" and "integrated" claims have always been questionable in some areas, but this situation is getting far worse as contributed packages re-invent basic R features and replace classic R idioms with new ones. Let me show you what I'm talking about.
+
+** Is there a coherent integrated "group by" in R?
+ Suppose I want to aggregate a data set by calculating group sizes, means, and standard deviations. There are many ways to do it in base R, and none are quite satisfactory.
+
+ First up is the =tapply= function. It works well for simple aggregation, but won't help us here because it can only handle a single =x= variable, and it produces confusing return values if =FUN= returns a vector of length greater than one. That is to say, it works fine for calculating a single summary statistic by group
+ #+BEGIN_SRC R
+   tapply(mtcars$wt, mtcars[c("am", "cyl")],
+          FUN = mean)
+ #+END_SRC
+
+ #+RESULTS:
+ :    cyl
+ : am        4       6        8
+ :   0 2.93500 3.38875 4.104083
+ :   1 2.04225 2.75500 3.370000
+
+ but anything more complicated quickly becomes a mess
+ #+BEGIN_SRC R
+   tapply(mtcars$wt, mtcars[c("am", "cyl")],
+           FUN = function(x) c(n = length(x), mean = mean(x), sd = sd(x)))
+ #+END_SRC
+
+ #+RESULTS:
+ :    cyl
+ : am  4         6         8        
+ :   0 Numeric,3 Numeric,3 Numeric,3
+ :   1 Numeric,3 Numeric,3 Numeric,3
+
+ Next we might consider the =ave= function, but a quick look at the documentation suggests it won't be any better than =tapply=. OK, let's try something else. Maybe =aggregate= will help us.
+ #+BEGIN_SRC R
+   aggregate(cbind(mpg, hp, wt) ~ am + cyl,
+             data = mtcars,
+             FUN = function(x) c(n = length(x), mean = mean(x), sd = sd(x)))
+ #+END_SRC
+
+ #+RESULTS:
+ :   am cyl      mpg.n   mpg.mean     mpg.sd      hp.n   hp.mean     hp.sd       wt.n    wt.mean      wt.sd
+ : 1  0   4  3.0000000 22.9000000  1.4525839   3.00000  84.66667  19.65536  3.0000000  2.9350000  0.4075230
+ : 2  1   4  8.0000000 28.0750000  4.4838599   8.00000  81.87500  22.65542  8.0000000  2.0422500  0.4093485
+ : 3  0   6  4.0000000 19.1250000  1.6317169   4.00000 115.25000   9.17878  4.0000000  3.3887500  0.1162164
+ : 4  1   6  3.0000000 20.5666667  0.7505553   3.00000 131.66667  37.52777  3.0000000  2.7550000  0.1281601
+ : 5  0   8 12.0000000 15.0500000  2.7743959  12.00000 194.16667  33.35984 12.0000000  4.1040833  0.7683069
+ : 6  1   8  2.0000000 15.4000000  0.5656854   2.00000 299.50000  50.20458  2.0000000  3.3700000  0.2828427
+
+ =aggregate= appears to be closer to what we want than =tapply=, but it still either requires post-processing to remove the redundant group size column, or multiple calls to produce the desired result, e.g.,
+ #+BEGIN_SRC R
+   merge(aggregate(cbind(n = mpg) ~ am +cyl,
+                   data = mtcars,
+                   FUN = length),
+         aggregate(cbind(mpg, hp, wt) ~ am + cyl,
+                   data = mtcars,
+                   FUN = function(x) c(mean = mean(x), sd = sd(x))))
+ #+END_SRC
+
+ #+RESULTS:
+ :   am cyl  n   mpg.mean     mpg.sd   hp.mean     hp.sd   wt.mean     wt.sd
+ : 1  0   4  3 22.9000000  1.4525839  84.66667  19.65536 2.9350000 0.4075230
+ : 2  0   6  4 19.1250000  1.6317169 115.25000   9.17878 3.3887500 0.1162164
+ : 3  0   8 12 15.0500000  2.7743959 194.16667  33.35984 4.1040833 0.7683069
+ : 4  1   4  8 28.0750000  4.4838599  81.87500  22.65542 2.0422500 0.4093485
+ : 5  1   6  3 20.5666667  0.7505553 131.66667  37.52777 2.7550000 0.1281601
+ : 6  1   8  2 15.4000000  0.5656854 299.50000  50.20458 3.3700000 0.2828427
+
+ OK, =tapply= and =ave= were busts, aggregate is close but not quite what we want. How about =by=?
+
+ #+BEGIN_SRC R
+   by(mtcars,
+      mtcars[c("am", "cyl")],
+      FUN = function(x)
+      {
+        with(x,
+             c(n = nrow(x),
+               mpg_mean = mean(mpg),
+               mpg_sd = sd(mpg),
+               hp_mean = mean(hp),
+               hp_sd = sd(hp),
+               wt_mean = mean(wt),
+               wt_sd = sd(wt)))
+      },
+      simplify = FALSE) 
+ #+END_SRC
+
+ #+RESULTS:
+ #+begin_example
+  am: 0
+ cyl: 4
+         n  mpg_mean    mpg_sd   hp_mean     hp_sd   wt_mean     wt_sd 
+  3.000000 22.900000  1.452584 84.666667 19.655364  2.935000  0.407523 
+ ------------------------------------------------------------------------------------- 
+ am: 1
+ cyl: 4
+          n   mpg_mean     mpg_sd    hp_mean      hp_sd    wt_mean      wt_sd 
+  8.0000000 28.0750000  4.4838599 81.8750000 22.6554156  2.0422500  0.4093485 
+ ------------------------------------------------------------------------------------- 
+ am: 0
+ cyl: 6
+           n    mpg_mean      mpg_sd     hp_mean       hp_sd     wt_mean       wt_sd 
+   4.0000000  19.1250000   1.6317169 115.2500000   9.1787799   3.3887500   0.1162164 
+ ------------------------------------------------------------------------------------- 
+ am: 1
+ cyl: 6
+           n    mpg_mean      mpg_sd     hp_mean       hp_sd     wt_mean       wt_sd 
+   3.0000000  20.5666667   0.7505553 131.6666667  37.5277675   2.7550000   0.1281601 
+ ------------------------------------------------------------------------------------- 
+ am: 0
+ cyl: 8
+           n    mpg_mean      mpg_sd     hp_mean       hp_sd     wt_mean       wt_sd 
+  12.0000000  15.0500000   2.7743959 194.1666667  33.3598379   4.1040833   0.7683069 
+ ------------------------------------------------------------------------------------- 
+ am: 1
+ cyl: 8
+           n    mpg_mean      mpg_sd     hp_mean       hp_sd     wt_mean       wt_sd 
+   2.0000000  15.4000000   0.5656854 299.5000000  50.2045815   3.3700000   0.2828427
+ #+end_example
+
+ Well, maybe that's better. It's not really any less verbose than the aggregate-and-merge strategy, and the result isn't very friendly. Maybe we should just roll our own.
+ #+BEGIN_SRC R
+     do.call(rbind,
+             lapply(split(mtcars, mtcars[c("am", "cyl")]),
+                    function(x) {
+                      with(x, 
+                           data.frame(am = unique(am),
+                                      cyl = unique(cyl),
+                                      n = nrow(x),
+                                      mpg_mean = mean(mpg),
+                                      mpg_sd = sd(mpg),
+                                      hp_mean = mean(hp),
+                                      hp_sd = sd(hp),
+                                      wt_mean = mean(wt),
+                                      wt_sd = sd(wt)))
+                    }))
+ #+END_SRC
+
+ #+RESULTS:
+ :     am cyl  n mpg_mean    mpg_sd   hp_mean    hp_sd  wt_mean     wt_sd
+ : 0.4  0   4  3 22.90000 1.4525839  84.66667 19.65536 2.935000 0.4075230
+ : 1.4  1   4  8 28.07500 4.4838599  81.87500 22.65542 2.042250 0.4093485
+ : 0.6  0   6  4 19.12500 1.6317169 115.25000  9.17878 3.388750 0.1162164
+ : 1.6  1   6  3 20.56667 0.7505553 131.66667 37.52777 2.755000 0.1281601
+ : 0.8  0   8 12 15.05000 2.7743959 194.16667 33.35984 4.104083 0.7683069
+ : 1.8  1   8  2 15.40000 0.5656854 299.50000 50.20458 3.370000 0.2828427
+
+ By now we've tried four different approaches, but nothing seems to make the calculation particularly natural or convenient. Is this really a "coherent and integrated" collection of functions? It feels more like a haphazard collection of overlapping functions that can be abused in different ways. So here are some questions. 
+ 1. Given that =aggregate= appears to be more flexible than =tapply= and =ave=, do we really need the later two?
+ 2. Can =aggregate= be generalized so that we can apply functions to data.frames instead of to the columns of those data.frames?
+
+
+** Can we do better?
+ Of course we can do better. Many an R programmer has gazed out over the rubble of =tapply=, =ave=, =by= and =aggregate= and mused "surely I can bring order and harmony to this jumble. Follow me and we will create a 'group by' operation to end all SQL jealousy in the kingdom of R." And what comes of this musing? Let us look with wonder upon the bubbling exuberant creativity of the R community.
+
+*** doBy::describeBy
+ Very similar to =aggregate=, same limitations.
+ #+BEGIN_SRC R
+   doBy::summaryBy(mpg + hp + wt ~ am + cyl,
+                   data = mtcars,
+                   FUN = function(x) c(n = length(x), mean = mean(x), sd = sd(x)))
+ #+END_SRC
+
+ #+RESULTS:
+ :   am cyl mpg.n mpg.mean    mpg.sd hp.n   hp.mean    hp.sd wt.n  wt.mean     wt.sd
+ : 1  0   4     3 22.90000 1.4525839    3  84.66667 19.65536    3 2.935000 0.4075230
+ : 2  0   6     4 19.12500 1.6317169    4 115.25000  9.17878    4 3.388750 0.1162164
+ : 3  0   8    12 15.05000 2.7743959   12 194.16667 33.35984   12 4.104083 0.7683069
+ : 4  1   4     8 28.07500 4.4838599    8  81.87500 22.65542    8 2.042250 0.4093485
+ : 5  1   6     3 20.56667 0.7505553    3 131.66667 37.52777    3 2.755000 0.1281601
+ : 6  1   8     2 15.40000 0.5656854    2 299.50000 50.20458    2 3.370000 0.2828427
+
+*** Hmisc::summary.formula
+ Similar to aggregate, large number of confusing options. This one automatically computes N for each group, so it actually works for our example.
+ #+BEGIN_SRC R
+   Hmisc::summary.formula(cbind(mpg, hp, wt) ~ am + cyl,
+                          data = mtcars,
+                          fun = function(x) {
+                            apply(x,
+                                  2,
+                                  FUN = function(y) {
+                                    c(mean = mean(y), sd = sd(y))
+                                  })
+                          })
+ #+END_SRC
+
+ #+RESULTS:
+ #+begin_example
+  cbind(mpg, hp, wt)    N=32
+
+ +-------+---+--+--------+--------+---------+--------+--------+---------+
+ |       |   |N |mpg mean|mpg sd  |hp mean  |hp sd   |wt mean |wt sd    |
+ +-------+---+--+--------+--------+---------+--------+--------+---------+
+ |am     |No |19|17.14737|3.833966|160.26316|53.90820|3.768895|0.7774001|
+ |       |Yes|13|24.39231|6.166504|126.84615|84.06232|2.411000|0.6169816|
+ +-------+---+--+--------+--------+---------+--------+--------+---------+
+ |cyl    |4  |11|26.66364|4.509828| 82.63636|20.93453|2.285727|0.5695637|
+ |       |6  | 7|19.74286|1.453567|122.28571|24.26049|3.117143|0.3563455|
+ |       |8  |14|15.10000|2.560048|209.21429|50.97689|3.999214|0.7594047|
+ +-------+---+--+--------+--------+---------+--------+--------+---------+
+ |Overall|   |32|20.09062|6.026948|146.68750|68.56287|3.217250|0.9784574|
+ +-------+---+--+--------+--------+---------+--------+--------+---------+
+ #+end_example
+
+*** dplyr::summarize
+ This one is very popular, and for good reason. It works well.
+ #+BEGIN_SRC R
+   dplyr::summarize(dplyr::group_by(mtcars, am, cyl),
+                    n = length(mpg),
+                    mean_mpg = mean(mpg),
+                    sd_mpg = sd(mpg),
+                    mean_hp = mean(hp),
+                    sd_hp = sd(hp),
+                    mean_wt = mean(wt),
+                    sd_hp = sd(hp))
+ #+END_SRC
+
+ #+RESULTS:
+ #+begin_example
+  Source: local data frame [6 x 8]
+ Groups: am [?]
+
+      am   cyl     n mean_mpg    sd_mpg   mean_hp    sd_hp  mean_wt
+   <dbl> <dbl> <int>    <dbl>     <dbl>     <dbl>    <dbl>    <dbl>
+ 1     0     4     3 22.90000 1.4525839  84.66667 19.65536 2.935000
+ 2     0     6     4 19.12500 1.6317169 115.25000  9.17878 3.388750
+ 3     0     8    12 15.05000 2.7743959 194.16667 33.35984 4.104083
+ 4     1     4     8 28.07500 4.4838599  81.87500 22.65542 2.042250
+ 5     1     6     3 20.56667 0.7505553 131.66667 37.52777 2.755000
+ 6     1     8     2 15.40000 0.5656854 299.50000 50.20458 3.370000
+ #+end_example
+
+*** dplyr::do
+ If you have a large number of columns to summarize you might not want to type them all out. In that case you can use =do=.
+ #+BEGIN_SRC R
+   do(group_by(mtcars, am, cyl),
+      as.data.frame(c(list(n = ncol(.)),
+                      as.list(sapply(.[c("mpg", "wt", "hp")],
+                                     function(x) c(mean = mean(x)))),
+                      as.list(sapply(.[c("mpg", "wt", "hp")],
+                                     function(x) c(sd = mean(x)))))))
+ #+END_SRC
+
+ #+RESULTS:
+ #+begin_example
+  Source: local data frame [6 x 9]
+ Groups: am, cyl [6]
+
+      am   cyl     n mpg.mean  wt.mean   hp.mean   mpg.sd    wt.sd     hp.sd
+   <dbl> <dbl> <int>    <dbl>    <dbl>     <dbl>    <dbl>    <dbl>     <dbl>
+ 1     0     4    11 22.90000 2.935000  84.66667 22.90000 2.935000  84.66667
+ 2     0     6    11 19.12500 3.388750 115.25000 19.12500 3.388750 115.25000
+ 3     0     8    11 15.05000 4.104083 194.16667 15.05000 4.104083 194.16667
+ 4     1     4    11 28.07500 2.042250  81.87500 28.07500 2.042250  81.87500
+ 5     1     6    11 20.56667 2.755000 131.66667 20.56667 2.755000 131.66667
+ 6     1     8    11 15.40000 3.370000 299.50000 15.40000 3.370000 299.50000
+ #+end_example
+
+*** tables::tabular
+ This one focuses on creating LaTeX and HTML tables. It creates its own SAS-inspired mini-language that is IMO very confusing, though possibly worth it if you frequently need to create complex publication ready tables.
+ #+BEGIN_SRC R
+   #library(tables)
+   tables::tabular((Factor(am))*(Factor(cyl)) ~ (n = 1) + (mpg + wt + hp)*(mean + sd), data = mtcars)  
+ #+END_SRC
+
+ #+RESULTS:
+ :                                                   
+ :            mpg          wt           hp           
+ :  am cyl n  mean  sd     mean  sd     mean   sd    
+ :  0  4    3 22.90 1.4526 2.935 0.4075  84.67 19.655
+ :     6    4 19.12 1.6317 3.389 0.1162 115.25  9.179
+ :     8   12 15.05 2.7744 4.104 0.7683 194.17 33.360
+ :  1  4    8 28.07 4.4839 2.042 0.4093  81.88 22.655
+ :     6    3 20.57 0.7506 2.755 0.1282 131.67 37.528
+ :     8    2 15.40 0.5657 3.370 0.2828 299.50 50.205
+
+*** data.table::`[`
+ The data.table package implements an alternative to the venerable =data.frame= class in R and provides sophisticated manipulation via an indexing-like interface.
+ #+BEGIN_SRC R
+   as.data.table(mtcars)[,
+                         list(n = .N,
+                              mpg_mean = mean(mpg),
+                              mpg_sd = sd(mpg),
+                              wt_mean = mean(wt),
+                              wt_sd = sd(wt),
+                              hp_mean = mean(hp),
+                              hp_sd = sd(hp)),
+                         by = c("am", "cyl")]                           
+ #+END_SRC
+
+ Are we done yet? Well, I'm going to stop, but we could go on. There are at least 9 ways to skin this particular cat in R. 
+
+** How do I ___ in R?
+ So there are lots of ways to calculate statistics by some grouping variable(s) in R. Why can't you be happy that you have so many excellent choices?
+
+ I can't be happy about it because it makes my life more difficult. First, I need to identify my options. Then I need to evaluate them, and learn the particulars of my chosen package. This all takes effort that I would rather spend on other things. Now, if this problem was limited to the domain of calculating statistics by group, I wouldn't be writing this post. But this issue is almost everywhere in R.
+
+*** How do I read text data?
+ I have a .csv file I want to read into R. Should I use
+ - read.csv
+ - readr::read_csv
+ - data.table::fread
+ - rio::import
+ - hypoparsr::parse_file
+ - cvsread::cvsread
+ or something else?
+
+*** How do I fit a linear regression model?
+
+ I want to fit a simple linear regression model. Should I use
+ - lm
+ - rms::ols
+ - Zelig::zlm
+ - glm2::glm2
+ or something else?
+
+*** How do I make a table from model coefficients?
+ I've fit a model and would like to put the results in a nice table. Should I use
+ - xtable::xtable
+ - rockchalk::outreg
+ - apsrtable::apsrtable
+ - htmlTable::htmlTable
+ - etable::tabular.ade
+ - knitr::ktable
+ - texreg::texreg
+ - stargazer::stargazer
+ - ascii::ascii
+ - estout::esttab
+ or some other thing?
+
+** TODO Summary [summarize the post thus far]
+There is an overwhelming number of choices for doing just about anything in R.
+
+* What is R really?
+OK, so there is some duplication among R functions and packages and people need to choose. There are both good and bad consequences of this, but the totality of the situation is that *it is no longer clear what R is*.
+
+** R is not data.frames
+ Most people who use R use it for statistical analysis and graphics. The basic data structure in most popular statistical package is a rectangular structure with variables in the columns and observations in the rows. In R this structure is called a =data.frame= and learning how to operate on and with data.frames is a basic skill that any R user must have.
+
+ The previous sentence may have been true at one time, but it no longer is. There are now at least three popular alternatives; =data.frame=, =data.table= and =tibble=. It is now possible to carry out sophisticated data manipulation and analysis in R without ever learning fundamental =data.frame= methods such as `[.data.frame`. All of these methods work differently.
+#+BEGIN_SRC R
+  head(mtcars)[, 1]
+#+END_SRC  
+
+#+RESULTS:
+: [1] 21.0 21.0 22.8 21.4 18.7 18.1
+
+#+BEGIN_SRC R
+  as.data.table(head(mtcars))[, 1]
+#+END_SRC  
+
+#+RESULTS:
+: [1] 1
+
+#+BEGIN_SRC R
+  as_tibble(head(mtcars))[, 1]
+#+END_SRC  
+
+#+RESULTS:
+: # A tibble: 6 × 1
+:     mpg
+:   <dbl>
+: 1  21.0
+: 2  21.0
+: 3  22.8
+: 4  21.4
+: 5  18.7
+: 6  18.1
+
+** R is not a language that uses parenthetical argument lists, like c
+One of the first things I used to teach people about R is that function calls have the form =functionName(arg1, arg2, ..., argn)=, and that even when all arguments are optional and you want to accept the defaults you need the =()= after the function name. This is no longer true. Many people now write strange looking R expressions like
+#+BEGIN_SRC R
+  library(magrittr)
+  mtcars %>% head
+#+END_SRC
+
+R has always had flexible syntax, but with developments like this you can write R that looks nothing like what us old-timers expect R code to be.
+
+** R is not coherent
+There is no [[https://www.python.org/dev/peps/pep-0020/#the-zen-of-python][zen-like "one obvious way to do it"]] it R. 
+
+** R is being built phoenix-like from its own ashes
+There is good news and there is bad news. The good news is that new and more coherent and integrated zones are being carved out of the R landscape. For example, the [[https://blog.rstudio.org/2016/09/15/tidyverse-1-0-0/][tidyverse]] brings greater simplicity and constancy to many common operations in R. The bad news is that you can't escape the cold hard [[http://xkcd.com/927/][XKCD reality]] that producing a "better" way of doing things means there is _one more_ way of doing that thing. 
+
+* And now, the thrilling conclusion
+
+Now finally we've reach the part of the blog where I tell you how everyone is doing it wrong and if you would just listen to me we could solve all our problems. The truth is I don't have great answers or solutions for these issues. The best I can do is offer some general thoughts.
+
+** It could be worse
+This post probably sounds critical of R, but don't get me wrong, I'm a huge fan of R. Every time I venture into Python, Javascript, Scala, or even Julia it makes me appreciate R even more. R is easy and useful, and having too much choice is certainly better than having too little.
+
+** We can do better
+Collaborate more. Update documentation to recommend current best-of-breed packages.
